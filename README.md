@@ -1,6 +1,20 @@
 # Distributed_Systems_TCP_Chat
 ## TCP-based Chat System with Server and Client.
 
+### Aufgabenverteilung
+Frontend
+- Arthur
+
+Server
+- Lukas
+
+Lastenverteilung & Fehlerumgang
+- Tobi
+
+JUnit-Tests
+- Julie
+- Todd
+
 ### Umgebungseinstellungen
 JDK 11
 ### WICHTIGE constrains
