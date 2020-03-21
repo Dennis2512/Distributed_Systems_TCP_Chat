@@ -4,10 +4,13 @@
 ### Aufgabenverteilung
 Frontend
 - Arthur
+
 Server
 - Lukas
+
 Lastenverteilung & Fehlerumgang
 - Tobi
+
 JUnit-Tests
 - Julie
 - Todd
