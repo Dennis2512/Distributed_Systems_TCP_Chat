@@ -7,6 +7,7 @@ Frontend
 
 Server
 - Lukas
+- Dennis
 
 Lastenverteilung & Fehlerumgang
 - Tobi
@@ -42,4 +43,3 @@ Client:
 - Fehlerbehandlung: ExceptionHandling & JUnit-Tests
 - Demo: Fehler eines Server -> Serverausfall - anderer soll einsrpingen
 - Trafficregelungen: Datenlast aufteilen
-- 
