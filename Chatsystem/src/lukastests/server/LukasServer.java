@@ -1,4 +1,4 @@
-package lukastests;
+package lukastests.server;
 
 import java.net.*;
 import java.io.*;
@@ -10,17 +10,15 @@ public class LukasServer {
     public static void main(String[] args) {
         try {
             // server
+            Users users = new Users();
             ServerSocket server = new ServerSocket(SERVER_PORT);
             System.out.println("Server läuft");
             // verbindungen
-            int id = 0;
             ArrayList<Userconnection> connections = new ArrayList<Userconnection>();
             while (true) {
-                id++;
-                Userconnection ucon = new Userconnection(id, server.accept(), connections);
+                Userconnection ucon = new Userconnection(server.accept(), connections, users);
                 connections.add(ucon);
                 ucon.start();
-                System.out.println(id + " started.");
             }
         } catch (Exception e) {
             System.err.println(e);

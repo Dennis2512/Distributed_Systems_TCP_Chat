@@ -1,4 +1,4 @@
-package lukastests;
+package lukastests.server;
 
 import java.net.*;
 import java.io.*;
@@ -7,8 +7,8 @@ import java.util.*;
 public class User {
     private String kennung;
     private String password;
-    private String partner;
-    private boolean online = false;
+    private User partner;
+    private boolean online;
 
     public User(String kennung, String password) {
         this.kennung = kennung;
@@ -28,13 +28,17 @@ public class User {
         this.online = false;
     }
 
+    public void setPartner(User p) {
+        this.partner = p;
+    }
+
     // getter
 
     public String getKennung() {
         return this.kennung;
     }
 
-    public String getPartner() {
+    public User getPartner() {
         return this.partner;
     }
 
