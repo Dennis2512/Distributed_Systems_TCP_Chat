@@ -1,6 +1,7 @@
 package lukastests.server;
 
 import java.sql.*;
+import java.util.*;
 import java.io.*;
 
 public class ChatLog {
@@ -34,22 +35,24 @@ public class ChatLog {
     //   ENTWEDER neue Datei erstellen mit Header 
     //   ODER aus der alten Datei die letzten 2 Zeilen löschen und msg anfügen.
 
-    private boolean doesFileExist (String filename, String sender_name, String partner_name){
+    /*private boolean doesFileExist (String filename, String sender_name, String partner_name){
         
         if(filename.contains(sender_name) && filename.contains(partner_name)){
             return true; 
         } else {
             return false;
         }
-    }
+    }*/
 
     public void writeLog(File file, String msg, Timestamp timeStmp, String sender_name, String partner_name){
         // Fügt neue LogDatei hinzu falls benötigte noch nicht vorhanden
-        if(doesFileExist(file.getName(), sender_name, partner_name) == false){
+        if(!file.exists()){
             try {
                 file.createNewFile();
                 logWriter = new BufferedWriter(new FileWriter(file, true));
-                logWriter.append(",{" + '\n');
+                logWriter.append("{" + '\n');
+                logWriter.append("\"chatItems\": [" + '\n');
+                logWriter.append("{" + '\n');
                 logWriter.append("\"time\": " + "\"" + timeStmp + "\"," + '\n');
                 logWriter.append("\"sender_name\": " + "\"" + sender_name + "\"," + '\n');
                 logWriter.append("\"partner_name\": " + "\"" + partner_name + "\"," + '\n');
@@ -63,31 +66,27 @@ public class ChatLog {
                 e.printStackTrace();
             }    
         } else {
+            //count lines --> von der Anzahl von lines kann man  Abziehen.
 
+            // ArrayList[10]        10 = Anz lines
+            // wenn Nachricht geschrieben wird: Arraylist[ (10-2) + 8 ]
+            // neue Nachricht: Arraylist[ (16-2) + 8 ]
+            // usw
+            
+            String line;
             try (FileReader myFileReader = new FileReader(file); BufferedReader myLineReader = new BufferedReader(myFileReader)){
-
-                String line;
-                while((line = myLineReader.readLine()) != null){
-                    if(line == "]"){
-                        line.replace("]", " ");
-                        line = myLineReader.readLine();
-                        line.replace("}", " ");
-                    }
-                    System.out.println(line);
-                }
-    
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+
             try {
             // Fügt das chatItem in die JSON Datei ein
             logWriter = new BufferedWriter(new FileWriter(file, true));
-            logWriter.append("{" + '\n');
-            logWriter.append("\"chatItems\": [" + '\n');
-            logWriter.append("{" + '\n');
+            
+            logWriter.append(",{" + '\n');
             logWriter.append("\"time\": " + "\"" + timeStmp + "\"," + '\n');
             logWriter.append("\"sender_name\": " + "\"" + sender_name + "\"," + '\n');
             logWriter.append("\"partner_name\": " + "\"" + partner_name + "\"," + '\n');
@@ -104,3 +103,18 @@ public class ChatLog {
         }
     }
 }
+
+
+/*
+try (
+    BufferedReader br = new BufferedReader(new FileReader(resourcesFilePath));
+    BufferedWriter writer = Files.newBufferedWriter(outputFilePath, charset);
+) {
+    String line;
+
+    while ((line = br.readLine()) != null) {
+        String repl = line.replaceAll("Orange:(.*)","OrangeAndApples:$1");
+        writer.writeln(repl);
+    }
+}
+*/
