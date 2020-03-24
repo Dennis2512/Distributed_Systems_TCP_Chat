@@ -8,9 +8,10 @@ public class Users {
     private User[] users;
 
     public Users() {
-        this.users = new User[2];
+        this.users = new User[3];
         this.users[0] = new User("LB", "LBpass");
         this.users[1] = new User("TB", "TBpass");
+        this.users[2] = new User("DN", "DNpass");
     }
 
     public User[] getUsers() {

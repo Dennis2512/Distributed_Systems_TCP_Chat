@@ -92,6 +92,10 @@ public class Userconnection extends Thread {
                             out.println("Keine Verbindung zum Partner gefunden. Ist er online?");
                         } else {
                             this.partnerCon.send(msg);
+                            ChatLog cLog = new ChatLog(msg, this.user.getKennung(), this.user.getPartner().getKennung());
+
+                            // Schreibt die nachricht in die Datei 
+                            // Methode in anderer Klasse und wird hier aufgerufen
                         }
                         break;
                     default:
@@ -117,6 +121,7 @@ public class Userconnection extends Thread {
     }
 
     public void send(String msg) {
+        //ChatLog cLog = new ChatLog(msg, this.user.getKennung(), this.user.getPartner().getKennung());
         this.out.println(msg);
     }
 
