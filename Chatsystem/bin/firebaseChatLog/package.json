@@ -1,0 +1,14 @@
+{
+  "name": "firebasechatlog",
+  "version": "1.0.0",
+  "description": "This will save users messages to Firebase Realtime Database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dennis Neumann",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^7.12.0"
+  }
+}
