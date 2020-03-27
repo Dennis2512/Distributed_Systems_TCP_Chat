@@ -178,10 +178,9 @@ public class Userconnection extends Thread {
                         "C:/Users/Dennis/Desktop/Distributed_Systems_TCP_Chat/Chatsystem/src/firebaseChatLog/function.js"),
                         StandardCharsets.UTF_8));
             } catch (ScriptException e) {
-                e.printStackTrace();
+                System.err.println(e);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.err.println(e);
             }
 
             Invocable inv = (Invocable) engine;
@@ -189,9 +188,9 @@ public class Userconnection extends Thread {
             try {
                 inv.invokeFunction("doAll", msg, this.user.getKennung(), this.user.getPartner().getKennung());
             } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+                System.err.println(e);
             } catch (ScriptException e) {
-                e.printStackTrace();
+                System.err.println(e);
             }
 
             // Schreibt die Nachricht in die Datei
