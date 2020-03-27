@@ -1,8 +1,16 @@
 package lukastests.server;
 
 import java.net.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.io.*;
 import java.util.*;
+
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 public class Userconnection extends Thread {
 
@@ -13,6 +21,9 @@ public class Userconnection extends Thread {
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
+
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName("JavaScript");
 
     public Userconnection(Socket socket, ArrayList<Userconnection> cons, Users users) {
         this.socket = socket;
@@ -44,6 +55,7 @@ public class Userconnection extends Thread {
                         break;
                     case "LOGOUT":
                         this.logout();
+
                         break;
                     default:
                         System.out.println("Unexpected input.");
@@ -159,6 +171,31 @@ public class Userconnection extends Thread {
             this.partnerCon.send(msg);
             // nachricht wird im chatlog hinterlegt
             new ChatLog(msg, this.user.getKennung(), this.user.getPartner().getKennung());
+
+            // Calling the firebase script:
+            try {
+                engine.eval(Files.newBufferedReader(Paths.get(
+                        "C:/Users/Dennis/Desktop/Distributed_Systems_TCP_Chat/Chatsystem/src/firebaseChatLog/function.js"),
+                        StandardCharsets.UTF_8));
+            } catch (ScriptException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            Invocable inv = (Invocable) engine;
+            // call function from script file
+            try {
+                inv.invokeFunction("doAll", msg, this.user.getKennung(), this.user.getPartner().getKennung());
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (ScriptException e) {
+                e.printStackTrace();
+            }
+
+            // Schreibt die Nachricht in die Datei
+            // Methode in anderer Klasse und wird hier aufgerufen
         }
     }
 
