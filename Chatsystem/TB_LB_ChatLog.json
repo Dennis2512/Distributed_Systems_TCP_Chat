@@ -1,0 +1,34 @@
+{
+"chatItems": [
+{
+"time": "2020-03-27 21:44:45.534",
+"sender_name": "LB",
+"partner_name": "TB",
+"msg": "MSG_LB: hi"
+}
+]
+}
+,{
+"time": "2020-03-27 21:44:48.402",
+"sender_name": "TB",
+"partner_name": "LB",
+"msg": "MSG_TB: i"
+}
+]
+}
+,{
+"time": "2020-03-27 21:45:15.043",
+"sender_name": "TB",
+"partner_name": "LB",
+"msg": "MSG_TB: hi?"
+}
+]
+}
+,{
+"time": "2020-03-27 21:45:18.676",
+"sender_name": "LB",
+"partner_name": "TB",
+"msg": "MSG_LB: hello"
+}
+]
+}

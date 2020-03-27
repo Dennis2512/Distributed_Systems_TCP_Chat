@@ -1,9 +1,5 @@
 package lukastests.server;
 
-import java.net.*;
-import java.io.*;
-import java.util.*;
-
 public class User {
     private String kennung;
     private String password;
