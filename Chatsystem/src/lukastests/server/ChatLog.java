@@ -1,7 +1,6 @@
 package lukastests.server;
 
 import java.sql.*;
-import java.util.*;
 import java.io.*;
 
 public class ChatLog {
@@ -21,6 +20,8 @@ public class ChatLog {
         // Remove Timestamps in basic version
         CreateTimestamp cTs = new CreateTimestamp();
         Timestamp timeStmp = cTs.getTimestamp();
+
+        // chatpartner_alphabetisch ordnen vllt?
         File senderFile = new File(".\\" + sender_name + "_" + partner_name + "_ChatLog.txt");
         File partnerFile = new File(".\\" + partner_name + "_" + sender_name + "_ChatLog.txt");
 
@@ -68,6 +69,7 @@ public class ChatLog {
             // usw
 
             String line;
+
             try (FileReader myFileReader = new FileReader(file);
                     BufferedReader myLineReader = new BufferedReader(myFileReader)) {
             } catch (FileNotFoundException e) {
@@ -79,11 +81,13 @@ public class ChatLog {
             try {
                 // Fügt das chatItem in die JSON Datei ein
                 logWriter = new BufferedWriter(new FileWriter(file, true));
+
                 logWriter.append("\"time\": " + "\"" + timeStmp + "\"," + '\n');
                 logWriter.append("\"sender_name\": " + "\"" + sender_name + "\"," + '\n');
                 logWriter.append("\"partner_name\": " + "\"" + partner_name + "\"," + '\n');
                 // logWriter.append("\"group_name\": " + "\"" + group_name + "\"," + '\n');
                 logWriter.append("\"msg\": " + "\"" + msg + "\"" + '\n');
+
                 logWriter.close();
             } catch (IOException e) {
                 e.printStackTrace();

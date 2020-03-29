@@ -1,9 +1,5 @@
 package lukastests.server;
 
-import java.net.*;
-import java.io.*;
-import java.util.*;
-
 public class Users {
     private User[] users;
 
