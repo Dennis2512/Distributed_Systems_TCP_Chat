@@ -61,16 +61,6 @@ public class LukasClient {
                 }
 
             }
-<<<<<<< HEAD
-            // clear console
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            System.out.println("Chatroom mit " + partner);
-            InputThread inThread = new InputThread(out, kennung);
-            inThread.start();
-            ServerThread serverThread = new ServerThread(in/* , userInput */);
-            serverThread.start();
-=======
->>>>>>> 7225ea0b7f00b280b509089014a6aff451438b0a
         } catch (ConnectException e) {
             System.err.println(e);
         } catch (IOException e) {
