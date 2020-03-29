@@ -56,7 +56,7 @@ public class LukasClient {
             System.out.println("Chatroom mit " + partner);
             InputThread inThread = new InputThread(out, kennung);
             inThread.start();
-            ServerThread serverThread = new ServerThread(in, userInput);
+            ServerThread serverThread = new ServerThread(in/* , userInput */);
             serverThread.start();
         } catch (ConnectException e) {
             System.err.println(e);
