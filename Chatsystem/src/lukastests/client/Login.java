@@ -30,11 +30,13 @@ public class Login extends Thread {
                 this.out.println("LOGIN_" + k + "_" + p);
                 // wenn erfolgreich, dann angemeldeten nutzer setzen
                 String ans = in.readLine();
-                if (ans.equals("Angemeldet als " + k)) {
+                if (ans.equals("SUCCESS")) {
                     this.kennung = k;
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    System.out.println("Angemeldet als " + this.kennung);
+                } else {
+                    System.out.println(ans);
                 }
-                System.out.println(ans);
             }
         } catch (IOException e) {
             System.err.println(e);
