@@ -26,7 +26,7 @@ import javax.swing.border.Border;
 
 public class ChatFenster extends JFrame {
 
-	private static JTextField tf_message;
+	protected static JTextField tf_message;
 	private static JButton btn_sendMessage;
 	private static JMenuBar mnbr_chat;
 	private static JMenu mnu_chatInfo;
@@ -134,7 +134,7 @@ public class ChatFenster extends JFrame {
 		btn_clearMessage.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				tf_message.setText("");
 			}
 		});
