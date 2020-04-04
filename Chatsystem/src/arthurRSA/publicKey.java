@@ -7,12 +7,12 @@ public class publicKey{
     BigInteger n;
     BigInteger e;
 
-    publicKey(BigInteger n,BigInteger e){
+    public publicKey(BigInteger n,BigInteger e){
         this.n = n;
         this.e = e;
     }
 
-    publicKey(){
+    public publicKey(){
 
     }
 

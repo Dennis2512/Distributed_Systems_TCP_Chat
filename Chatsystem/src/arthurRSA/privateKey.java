@@ -6,12 +6,12 @@ public class privateKey{
     BigInteger n;
     BigInteger d;
 
-    privateKey(BigInteger n, BigInteger d){
+    public privateKey(BigInteger n, BigInteger d){
         this.n = n;
         this.d = d;
     }
 
-    privateKey(){
+    public privateKey(){
         
     }
 
