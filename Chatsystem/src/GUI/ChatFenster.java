@@ -147,6 +147,7 @@ public class ChatFenster extends JFrame {
 					JOptionPane.showMessageDialog(null, "Geben Sie bitte erst eine Nachricht ein!");
 				}else{
 				String nachricht = tf_message.getText();
+				nachricht = emojiFinder.shortcutSwitcher(nachricht);
 				ta_Messages.setText(ta_Messages.getText() + "\n" + nachricht);
 				}
 			}
