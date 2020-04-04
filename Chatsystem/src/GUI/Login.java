@@ -168,10 +168,10 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String kennung = tf_kennung.getText().toString();
 				String passwordCleartext = String.valueOf(tf_password.getPassword());
-				//String passwordHashed = HashPassword.hashPasswordWithMd5(passwordCleartext);
+				String passwordHashed = HashPassword.hashWithRSA(passwordCleartext);
 				System.out.println(kennung);
 				System.out.println(passwordCleartext);
-				//System.out.println(passwordHashed);
+				System.out.println(passwordHashed);
 				
 			}
         	

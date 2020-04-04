@@ -43,16 +43,19 @@ public class ChatFenster extends JFrame {
 	private static Border blackborder;
 	private static JPanel pnl_messages;
 	private static JTextArea ta_Messages;
-	private static Border blackline;
+    private static Border blackline;
+    private static JButton btn_emojis;
+    private static JFrame frm_chatwindow;
 	
 	
 	public ChatFenster() {
 		super("Chat Window");
-		//JFrame chatwindow = new JFrame();
+	    JFrame frm_chatwindow = new JFrame();
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		greenborder = BorderFactory.createLineBorder(new Color(46, 139, 87), 2);
 		blackborder = BorderFactory.createTitledBorder("Nachrichten");
-		pnl_main = new JPanel(new BorderLayout());
+        pnl_main = new JPanel(new BorderLayout());
+        btn_emojis = new JButton("Emojis");
 		pnl_top = new JPanel(new GridBagLayout());
 		pnl_center = new JPanel(new GridLayout(1, 1));
 		pnl_messages = new JPanel(new GridLayout(1, 1));
@@ -95,6 +98,9 @@ public class ChatFenster extends JFrame {
 		btn_sendMessage.setBackground(new Color(50, 205,50));
         btn_sendMessage.setForeground(new Color(255, 255, 255));
         btn_sendMessage.setFont(new Font("Calibri", Font.BOLD, 30));
+        btn_emojis.setBackground(new Color(50, 205,50));
+        btn_emojis.setForeground(new Color(255, 255, 255));
+        btn_emojis.setFont(new Font("Calibri", Font.BOLD, 30));
 		tf_message = new JTextField();
 		tf_message.setFont(new Font("Calibri", Font.BOLD, 30));
 		tf_message.setBorder(greenborder);
@@ -109,9 +115,12 @@ public class ChatFenster extends JFrame {
 		
 	        pnl_bottom.add(btn_clearMessage);
 	        pnl_bottom.add(Box.createHorizontalGlue());
-	        pnl_bottom.add(tf_message);
+            pnl_bottom.add(tf_message);
+            pnl_bottom.add(Box.createHorizontalGlue());
+            pnl_bottom.add(btn_emojis);
 	        pnl_bottom.add(Box.createHorizontalGlue());
-	        pnl_bottom.add(btn_sendMessage);
+            pnl_bottom.add(btn_sendMessage);
+           
 		
 		this.getContentPane().add(pnl_main);
 		this.setSize(500, 500);
@@ -142,7 +151,17 @@ public class ChatFenster extends JFrame {
 				}
 			}
 			
-		});
+        });
+        
+        btn_emojis.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e){
+				EmojiOverview emojiWindow = new EmojiOverview();
+				frm_chatwindow.setVisible(false);
+			}
+			
+        });
 		
 	
 		
