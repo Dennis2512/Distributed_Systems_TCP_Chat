@@ -163,21 +163,11 @@ public class EmojiOverview extends JFrame{
         pnl_emojisOverview.add(btn_glasses);
         pnl_emojisOverview.add(btn_party);
         
-
-
-        this.getContentPane().add(pnl_emojisOverview);
-		this.setSize(500, 500);
-		this.setVisible(true);
-    }
-
-    public static void main(String args[]){
-
-       //Add ActionListener for each emojibutton
         btn_relieved.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String emoji = btn_relieved.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                String emoji = btn_relieved.getText();
+               ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
 			}
         });
 
@@ -549,6 +539,18 @@ public class EmojiOverview extends JFrame{
 			}
         });
 
+
+        this.getContentPane().add(pnl_emojisOverview);
+		this.setSize(500, 500);
+		this.setVisible(true);
     }
+
+    //public static void main(String args[]){
+
+       //Add ActionListener for each emojibutton
+      // EmojiOverview eo = new EmojiOverview();
+    
+
+    //}
 
 }

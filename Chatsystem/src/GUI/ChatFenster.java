@@ -2,7 +2,6 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -120,7 +119,39 @@ public class ChatFenster extends JFrame {
             pnl_bottom.add(btn_emojis);
 	        pnl_bottom.add(Box.createHorizontalGlue());
             pnl_bottom.add(btn_sendMessage);
-           
+		   
+			btn_clearMessage.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					tf_message.setText("");
+				}
+			});
+			
+			btn_sendMessage.addActionListener(new ActionListener() {
+	
+				@Override
+				public void actionPerformed(ActionEvent e){
+					if(tf_message.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "Geben Sie bitte erst eine Nachricht ein!");
+					}else{
+					String nachricht = tf_message.getText();
+					nachricht = emojiFinder.shortcutSwitcher(nachricht);
+					ta_Messages.setText(ta_Messages.getText() + "\n" + nachricht);
+					}
+				}
+				
+			});
+			
+			btn_emojis.addActionListener(new ActionListener() {
+	
+				@Override
+				public void actionPerformed(ActionEvent e){
+					EmojiOverview emojiWindow = new EmojiOverview();
+					frm_chatwindow.setVisible(false);
+				}
+				
+			});
 		
 		this.getContentPane().add(pnl_main);
 		this.setSize(500, 500);
@@ -129,44 +160,13 @@ public class ChatFenster extends JFrame {
 	
 	
 	
-	public static void main(String[] args) {
-		ChatFenster f1 =new ChatFenster();
-		btn_clearMessage.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tf_message.setText("");
-			}
-		});
+	//public static void main(String[] args) {
+	//	ChatFenster f1 =new ChatFenster();
 		
-		btn_sendMessage.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e){
-				if(tf_message.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Geben Sie bitte erst eine Nachricht ein!");
-				}else{
-				String nachricht = tf_message.getText();
-				nachricht = emojiFinder.shortcutSwitcher(nachricht);
-				ta_Messages.setText(ta_Messages.getText() + "\n" + nachricht);
-				}
-			}
-			
-        });
-        
-        btn_emojis.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e){
-				EmojiOverview emojiWindow = new EmojiOverview();
-				frm_chatwindow.setVisible(false);
-			}
-			
-        });
 		
 	
 		
-	}
+	//}
 	
 	
 }
