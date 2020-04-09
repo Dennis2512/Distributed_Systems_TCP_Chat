@@ -69,6 +69,7 @@ public class Chatsession extends JFrame implements ActionListener {
         this.setLayout(null);
         this.setLocation(400, 100);
         this.setAlwaysOnTop(true);
+        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // show window
@@ -117,7 +118,7 @@ public class Chatsession extends JFrame implements ActionListener {
     }
 
     public void printMsg(Message msg) {
-        this.textarea.append(msg.getSender() + ": " + msg.getText() + '\n');
+        this.textarea.append(msg.getTime() + " " + msg.getSender() + ": " + msg.getText() + '\n');
         this.textarea.setCaretPosition(this.textarea.getDocument().getLength());
     }
 

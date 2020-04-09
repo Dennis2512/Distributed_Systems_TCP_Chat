@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 
 public class Client {
-
     public static void main(String[] args) throws UnknownHostException, IOException {
         Socket connection = new Socket("localhost", 187);
         try {
