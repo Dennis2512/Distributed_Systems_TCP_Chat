@@ -150,7 +150,8 @@ public class Login extends JFrame {
 				System.out.println(kennung);
 				ChatFenster chatwindow = new ChatFenster();
         //loginFenster.setVisible(false);
-				loginFenster.dispose();
+        loginFenster.dispose();
+       
 			}
         });
         	
