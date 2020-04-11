@@ -2,19 +2,11 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.text.AttributeSet.ColorAttribute;
-import javax.swing.text.StyleConstants.ColorConstants;
-
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
@@ -157,8 +149,8 @@ public class Login extends JFrame {
 				System.out.println(password);
 				System.out.println(kennung);
 				ChatFenster chatwindow = new ChatFenster();
-				loginFenster.setVisible(false);
-				
+        //loginFenster.setVisible(false);
+				loginFenster.dispose();
 			}
         });
         	
