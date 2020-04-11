@@ -2,11 +2,25 @@ package basisversion.client;
 
 import java.io.*;
 import java.net.*;
+import java.util.Random;
 
 public class Client {
-    public static void main(String[] args) throws UnknownHostException, IOException {
-        Socket connection = new Socket("localhost", 187);
+
+    public static void main(String[] args) {
+        Socket connection = null;
         try {
+            int port = selectPort();
+            while (connection == null) {
+                System.out.println("Verbinde mit Server...");
+                try {
+                    connection = new Socket("localhost", port);
+                } catch (IOException ex) {
+                    port = changePort(port);
+                } catch (Exception ex) {
+                    System.err.println(ex);
+                }
+            }
+
             BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
             // login or register
             String user = null;
@@ -62,9 +76,25 @@ public class Client {
 
         } catch (InterruptedException e) {
             System.err.println(e);
+        } catch (IOException e) {
+            System.err.println(e);
         } finally {
-            connection.close();
+            try {
+                connection.close();
+            } catch (IOException e) {
+                System.err.println(e);
+            }
         }
 
+    }
+
+    private static int selectPort() {
+        Random ran = new Random();
+        return (187 + ran.nextInt(2));
+
+    }
+
+    public static int changePort(int port) {
+        return port == 187 ? 188 : 187;
     }
 }
