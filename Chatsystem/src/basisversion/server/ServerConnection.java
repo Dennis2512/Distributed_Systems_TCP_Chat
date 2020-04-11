@@ -1,21 +1,32 @@
 package basisversion.server;
 
-import java.io.IOException;
-import java.net.*;
+import java.net.Socket;
 
-public class ServerConnection extends Thread {
+public class Serverconnection {
 
-    Socket serverconnection;
-    int port;
+    private Socket connection;
 
-    public ServerConnection(int port) {
-        this.port = port;
+    public void setConnection(Socket connection) {
+        this.connection = connection;
     }
 
-    public void run() {
-        while (true) {
-
+    public void init() {
+        try {
+            Init init = new Init(this.connection);
+            init.start();
+            init.join();
+        } catch (InterruptedException e) {
+            System.err.println(e);
         }
-    } // run
+    }
 
-} // class
+    public void startInit() {
+        try {
+            Transfer transfer = new Transfer(this.connection);
+            transfer.start();
+            transfer.join();
+        } catch (InterruptedException e) {
+            System.err.println(e);
+        }
+    }
+}

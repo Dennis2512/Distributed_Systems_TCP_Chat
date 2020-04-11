@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 
 public class Users {
-
     File userfile = new File("C:\\Users\\A704594\\Desktop\\Git\\Distributed_Systems_TCP_Chat\\Chatsystem\\users.txt");
     BufferedReader reader;
     BufferedWriter writer;

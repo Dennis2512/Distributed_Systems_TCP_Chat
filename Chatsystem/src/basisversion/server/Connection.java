@@ -13,11 +13,14 @@ public class Connection extends Thread {
     ArrayList<Connection> connections;
     ObjectInputStream ois;
     ObjectOutputStream oos;
+    Serverconnection serverconnection;
 
-    public Connection(Socket connection, ArrayList<Connection> connections, Users users) throws IOException {
+    public Connection(Socket connection, ArrayList<Connection> connections, Users users,
+            Serverconnection serverconnection) throws IOException {
         this.connection = connection;
         this.connections = connections;
         this.users = users;
+        this.serverconnection = serverconnection;
     }
 
     public void run() {
@@ -45,6 +48,9 @@ public class Connection extends Thread {
                         break;
                     case "LEAVE":
                         this.leave();
+                        break;
+                    case "SERVER":
+                        this.server();
                         break;
                     default:
                         System.out.println("Unexpected input.");
@@ -210,4 +216,16 @@ public class Connection extends Thread {
             System.err.println(e);
         }
     }
-}
+
+    private void server() {
+        try {
+            this.connections.remove(this);
+            this.oos.writeObject(new Message("server", "START", "starting init transfer", "time"));
+            this.serverconnection.setConnection(this.connection);
+            this.serverconnection.startInit();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
+} // class

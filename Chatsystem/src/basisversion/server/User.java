@@ -3,6 +3,7 @@ package basisversion.server;
 import java.util.ArrayList;
 
 public class User {
+
     private String kennung;
     private String password;
     private Connection con;
