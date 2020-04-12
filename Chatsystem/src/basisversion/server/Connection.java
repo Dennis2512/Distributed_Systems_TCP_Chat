@@ -222,7 +222,7 @@ public class Connection extends Thread {
             this.connections.remove(this);
             this.oos.writeObject(new Message("server", "START", "starting init transfer", "time"));
             this.serverconnection.setConnection(this.connection);
-            this.serverconnection.startInit();
+            this.serverconnection.startInit(this.users);
         } catch (Exception e) {
             System.err.println(e);
         }

@@ -20,9 +20,9 @@ public class Serverconnection {
         }
     }
 
-    public void startInit() {
+    public void startInit(Users users) {
         try {
-            Transfer transfer = new Transfer(this.connection);
+            Transfer transfer = new Transfer(this.connection, users);
             transfer.start();
             transfer.join();
         } catch (InterruptedException e) {
