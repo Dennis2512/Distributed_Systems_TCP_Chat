@@ -184,14 +184,10 @@ public class Login extends JFrame {
         } catch (ClassNotFoundException e) {
           e.printStackTrace();
         }
-
-        // nur zum Prüfen ob alles auch klappt
-        System.out.println("kennung: " + kennung);
-        System.out.println("passwort: " + password);
-
       }
     });
 
+    // register Button
     btn_register.addActionListener(new ActionListener() {
 
       @Override
@@ -225,11 +221,6 @@ public class Login extends JFrame {
         } catch (ClassNotFoundException ex) {
           ex.printStackTrace();
         }
-
-        System.out.println(kennung);
-        System.out.println(passwordCleartext);
-        System.out.println(passwordHashed);
-
       }
 
     });
