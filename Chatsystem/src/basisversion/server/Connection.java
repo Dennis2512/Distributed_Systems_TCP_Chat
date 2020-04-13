@@ -13,10 +13,10 @@ public class Connection extends Thread {
     ArrayList<Connection> connections;
     ObjectInputStream ois;
     ObjectOutputStream oos;
-    ServerConnection serverconnection;
+    Serverconnection serverconnection;
 
     public Connection(Socket connection, ArrayList<Connection> connections, Users users,
-            ServerConnection serverconnection) throws IOException {
+            Serverconnection serverconnection) throws IOException {
         this.connection = connection;
         this.connections = connections;
         this.users = users;
@@ -222,7 +222,7 @@ public class Connection extends Thread {
             this.connections.remove(this);
             this.oos.writeObject(new Message("server", "START", "starting init transfer", "time"));
             this.serverconnection.setConnection(this.connection);
-            this.serverconnection.startInit();
+            this.serverconnection.startInit(this.users);
         } catch (Exception e) {
             System.err.println(e);
         }

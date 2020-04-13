@@ -11,17 +11,17 @@ public class Server2 {
         ServerSocket server = new ServerSocket(188);
         // Nutzer initialisieren
         Users users = new Users();
-        ServerConnection serverconnection;
+        Serverconnection serverconnection;
         try {
             // wenn der andere server bereits am laufen ist verbindung als serververbindung
             // speichern und anderem server mitteilen, dass diese verbindung die
             // serververbindung ist
             Socket tmp = new Socket("localhost", exchangeport);
-            serverconnection = new ServerConnection();
+            serverconnection = new Serverconnection();
             serverconnection.setConnection(tmp);
             serverconnection.init();
         } catch (IOException e) {
-            serverconnection = new ServerConnection();
+            serverconnection = new Serverconnection();
         }
 
         try {
