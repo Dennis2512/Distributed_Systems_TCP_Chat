@@ -13,10 +13,10 @@ public class Connection extends Thread {
     ArrayList<Connection> connections;
     ObjectInputStream ois;
     ObjectOutputStream oos;
-    Serverconnection serverconnection;
+    ServerConnection serverconnection;
 
     public Connection(Socket connection, ArrayList<Connection> connections, Users users,
-            Serverconnection serverconnection) throws IOException {
+            ServerConnection serverconnection) throws IOException {
         this.connection = connection;
         this.connections = connections;
         this.users = users;
