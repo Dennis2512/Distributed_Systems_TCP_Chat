@@ -13,10 +13,10 @@ public class Connection extends Thread {
     ArrayList<Connection> connections;
     ObjectInputStream ois;
     ObjectOutputStream oos;
-    Serverconnection serverconnection;
+    ServerConnection serverconnection;
 
     public Connection(Socket connection, ArrayList<Connection> connections, Users users,
-            Serverconnection serverconnection) throws IOException {
+            ServerConnection serverconnection) throws IOException {
         this.connection = connection;
         this.connections = connections;
         this.users = users;
@@ -168,6 +168,7 @@ public class Connection extends Thread {
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                     this.oos.writeObject(c.getChat());
                 }
+                this.sync(new Message(this.user.getKennung(), "CONNECT", receiver.getKennung(), "time"));
             }
         } catch (IOException e) {
             System.err.println(e);
@@ -187,6 +188,7 @@ public class Connection extends Thread {
                 this.user.write(msg);
                 this.oos.writeObject(new Message("server", "SENT", time + " " + msg.getSender() + ": " + msg.getText(),
                         Customtime.get()));
+                this.sync(msg);
             }
         } catch (IOException e) {
             System.err.println(e);
@@ -220,7 +222,7 @@ public class Connection extends Thread {
     private void server() {
         try {
             this.connections.remove(this);
-            this.oos.writeObject(new Message("server", "START", "starting init transfer", "time"));
+            this.oos.writeObject(new Message("server", "START", "Init start...", "time"));
             this.serverconnection.setConnection(this.connection);
             this.serverconnection.startInit(this.users);
         } catch (Exception e) {
@@ -228,4 +230,9 @@ public class Connection extends Thread {
         }
     }
 
+    private void sync(Message msg) {
+        if (this.serverconnection.isOpen()) {
+            this.serverconnection.sendMsg(msg);
+        }
+    }
 } // class

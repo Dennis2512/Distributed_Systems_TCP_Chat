@@ -19,7 +19,7 @@ public class Server2 {
             Socket tmp = new Socket("localhost", exchangeport);
             serverconnection = new Serverconnection();
             serverconnection.setConnection(tmp);
-            serverconnection.init();
+            serverconnection.init(users);
         } catch (IOException e) {
             serverconnection = new Serverconnection();
         }

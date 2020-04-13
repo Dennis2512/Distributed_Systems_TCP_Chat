@@ -5,7 +5,6 @@ import java.net.*;
 import java.util.Random;
 
 public class Client {
-
     public static void main(String[] args) {
         Socket connection = null;
         try {
@@ -14,6 +13,7 @@ public class Client {
                 System.out.println("Verbinde mit Server...");
                 try {
                     connection = new Socket("localhost", port);
+                    System.out.println("Verbunden mit Server " + (port == 187 ? 1 : 2));
                 } catch (IOException ex) {
                     port = changePort(port);
                 } catch (Exception ex) {
