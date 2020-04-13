@@ -14,10 +14,11 @@ public class Chat {
 
     public void send(Message msg) {
         this.chat.add(msg);
-        // allen usern die diesen chat offen haben die aktuelle nachricht schicken
+        // allen usern die diesen chat offen haben und online sind die aktuelle
+        // nachricht schicken
         for (int i = 0; i < this.users.size(); i++) {
             User tmp = this.users.get(i);
-            if (tmp.getActiveChat() == this && !tmp.getKennung().equals(msg.getSender())) {
+            if (tmp.getActiveChat() == this && !tmp.getKennung().equals(msg.getSender()) && tmp.isOnline()) {
                 tmp.send(msg);
             }
         }
@@ -43,5 +44,9 @@ public class Chat {
             i++;
         }
         return gefunden;
+    }
+
+    public void setChat(ArrayList<Message> chat) {
+        this.chat = chat;
     }
 }

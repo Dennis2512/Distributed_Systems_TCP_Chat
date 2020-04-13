@@ -2,6 +2,7 @@ package basisversion.server;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Transfer extends Thread {
 
@@ -16,17 +17,18 @@ public class Transfer extends Thread {
 
     public void run() {
         try {
-            for (int iu = 0; iu < this.users.getUsers().size(); iu++) {
-                User user = this.users.getUsers().get(iu);
-                for (int ic = 0; ic < user.getChats().size(); ic++) {
-                    Chat chat = user.getChats().get(ic);
-                    // user senden
-                    // chatverlauf senden
-                }
+            ArrayList<Chat> chats = this.getAllChats();
+            for (int i = 0; i < chats.size(); i++) {
+                Chat chat = chats.get(i);
+                // send users
+                this.oos = new ObjectOutputStream(this.connection.getOutputStream());
+                this.oos.writeObject(new Message("server", "NEWCHAT", this.chatuserstring(chat), "time"));
+                this.oos = new ObjectOutputStream(this.connection.getOutputStream());
+                this.oos.writeObject(chat.getChat());
             }
             // mitteilen dass init zuende ist
             this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-            this.oos.writeObject(new Message("server", "DONE", "Done.", "time"));
+            this.oos.writeObject(new Message("server", "DONE", "Initialized " + chats.size() + " chats.", "time"));
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -38,5 +40,19 @@ public class Transfer extends Thread {
             erg += chat.getUsers().get(i).getKennung() + "_";
         }
         return erg;
+    }
+
+    private ArrayList<Chat> getAllChats() {
+        ArrayList<Chat> chats = new ArrayList<Chat>();
+        for (int i = 0; i < this.users.getUsers().size(); i++) {
+            User user = this.users.getUsers().get(i);
+            for (int ii = 0; ii < user.getChats().size(); ii++) {
+                Chat chat = user.getChats().get(ii);
+                if (!chats.contains(chat)) {
+                    chats.add(chat);
+                }
+            }
+        }
+        return chats;
     }
 }
