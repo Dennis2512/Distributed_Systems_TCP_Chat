@@ -1,16 +1,20 @@
 package basisversion.server;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Users {
-    File userfile = new File("./users.txt");
+    String filepath;
+    File userfile;
     BufferedReader reader;
     BufferedWriter writer;
 
     private ArrayList<User> users;
 
     public Users() throws IOException {
+        this.filepath = Paths.get("").toAbsolutePath().normalize().toString() + "/users.txt";
+        this.userfile = new File(this.filepath);
         this.users = new ArrayList<User>();
         this.writer = new BufferedWriter(new FileWriter(userfile, true));
         this.init();
@@ -25,6 +29,7 @@ public class Users {
             String password = line.substring(line.lastIndexOf('_') + 1);
             this.users.add(new User(kennung, password));
         }
+        System.out.println(this.users.size());
         this.reader.close();
     }
 
