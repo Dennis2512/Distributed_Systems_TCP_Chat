@@ -10,15 +10,16 @@ public class Connect extends Thread {
 
     private BufferedReader console;
 
-    private String partner;
+    private String partner, user;
     private Socket connection;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private ArrayList<Message> chat;
 
-    public Connect(Socket connection) {
+    public Connect(Socket connection, String user) {
         this.console = new BufferedReader(new InputStreamReader(System.in));
         this.connection = connection;
+        this.user = user;
     }
 
     @SuppressWarnings("unchecked")
@@ -30,7 +31,7 @@ public class Connect extends Thread {
                 System.out.println("Kennung ihres Chatpartners eingeben:");
                 String p = this.console.readLine();
                 // chat aufbauen
-                this.oos.writeObject(new Message("client", "CONNECT", p, "time"));
+                this.oos.writeObject(new Message(user, "CONNECT", p, "time"));
                 // wenn erfolgreich, dann angemeldeten nutzer setzen
                 this.ois = new ObjectInputStream(this.connection.getInputStream());
                 Message ans = (Message) ois.readObject();

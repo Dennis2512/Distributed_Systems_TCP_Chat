@@ -11,28 +11,28 @@ public class Server1 {
         ServerSocket server = new ServerSocket(187);
         // Nutzer initialisieren
         Users users = new Users();
-        ServerConnection serverconnection;
+        ArrayList<Connection> connections = new ArrayList<Connection>();
         try {
-            // wenn der andere server bereits am laufen ist verbindung als serververbindung
-            // speichern und anderem server mitteilen, dass diese verbindung die
-            // serververbindung ist
+            // wenn der andere server online ist, dann verbindung aufbauen und als
+            // serververbindung kennzeichnen
             Socket tmp = new Socket("localhost", exchangeport);
-            serverconnection = new ServerConnection();
-            serverconnection.setConnection(tmp);
-            serverconnection.init(users);
+            Connection con = new Connection(tmp, connections, users, true);
+            connections.add(con);
+            con.start();
+            // anderem server bescheid geben
+            con.send(new Message("server", "SERVERINIT", "This is the serverconnection", "time"));
         } catch (IOException e) {
-            serverconnection = new ServerConnection();
+            // nichts zu tun
         }
 
         try {
             // server starten
             System.out.println("Server 1 läuft");
 
-            // verbindungen empfangen und speichern
-            ArrayList<Connection> connections = new ArrayList<Connection>();
+            // verbindungen erwarten und speichern
             while (true) {
                 // connections aufbauen
-                Connection con = new Connection(server.accept(), connections, users, serverconnection);
+                Connection con = new Connection(server.accept(), connections, users, false);
                 connections.add(con);
                 con.start();
             }

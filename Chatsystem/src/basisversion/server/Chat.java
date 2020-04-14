@@ -49,4 +49,17 @@ public class Chat {
     public void setChat(ArrayList<Message> chat) {
         this.chat = chat;
     }
+
+    // gibt user der nicht der anfragende ist aus
+    public User getChatPartner(User user) {
+        User u = null;
+        int i = 0;
+        while (u == null && i < this.users.size()) {
+            if (this.users.get(i) != user) {
+                u = this.users.get(i);
+            }
+            i++;
+        }
+        return u;
+    }
 }

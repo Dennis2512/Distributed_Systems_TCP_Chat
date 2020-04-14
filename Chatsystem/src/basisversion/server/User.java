@@ -9,11 +9,13 @@ public class User {
     private Connection con;
     private Chat activeChat;
     private ArrayList<Chat> chats;
+    private boolean online;
 
     public User(String kennung, String password) {
         this.kennung = kennung;
         this.password = password;
         this.chats = new ArrayList<Chat>();
+        this.online = false;
     }
 
     // login
@@ -21,6 +23,7 @@ public class User {
     public boolean login(String password, Connection con) {
         if (this.password.equals(password)) {
             this.con = con;
+            this.online = true;
             return true;
         } else {
             return false;
@@ -30,6 +33,7 @@ public class User {
     public void logout() {
         this.con = null;
         this.activeChat = null;
+        this.online = false;
     }
 
     public Chat getChatWith(User user) {
@@ -64,7 +68,9 @@ public class User {
 
     // send to this user
     public void send(Message msg) {
-        this.con.send(msg);
+        if (this.con != null) {
+            this.con.send(msg);
+        }
     }
 
     // getter
@@ -74,7 +80,7 @@ public class User {
     }
 
     public boolean isOnline() {
-        return this.con != null;
+        return this.online;
     }
 
     public Chat getActiveChat() {
@@ -83,5 +89,11 @@ public class User {
 
     public ArrayList<Chat> getChats() {
         return this.chats;
+    }
+
+    public void serverlogin(Connection con) {
+        if (con.serverconnection) {
+            this.online = true;
+        }
     }
 }

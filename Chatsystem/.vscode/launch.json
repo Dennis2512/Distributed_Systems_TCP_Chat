@@ -1,0 +1,98 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-ChatOverview<Chatsystem>",
+            "request": "launch",
+            "mainClass": "GUI.ChatOverview",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Main<Chatsystem>",
+            "request": "launch",
+            "mainClass": "GUI.Main",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Main<Chatsystem>(1)",
+            "request": "launch",
+            "mainClass": "arthurRSA.Main",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Client<Chatsystem>",
+            "request": "launch",
+            "mainClass": "basisversion.client.Client",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Server1<Chatsystem>",
+            "request": "launch",
+            "mainClass": "basisversion.server.Server1",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Server2<Chatsystem>",
+            "request": "launch",
+            "mainClass": "basisversion.server.Server2",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-ChatUI<Chatsystem>",
+            "request": "launch",
+            "mainClass": "lukastests.client.ChatUI",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-LukasClient<Chatsystem>",
+            "request": "launch",
+            "mainClass": "lukastests.client.LukasClient",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-LukasServer<Chatsystem>",
+            "request": "launch",
+            "mainClass": "lukastests.server.LukasServer",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Client<Chatsystem>(1)",
+            "request": "launch",
+            "mainClass": "tobipackage.Client",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Server<Chatsystem>",
+            "request": "launch",
+            "mainClass": "tobipackage.Server",
+            "projectName": "Chatsystem"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Serverstruktur<Chatsystem>",
+            "request": "launch",
+            "mainClass": "tobipackage.Serverstruktur",
+            "projectName": "Chatsystem"
+        }
+    ]
+}

@@ -1,6 +1,5 @@
 package GUI;
 
-import basisversion.server.ServerConnection;
 import java.io.*;
 import java.net.*;
 import java.util.Random;
@@ -8,7 +7,6 @@ import java.util.Random;
 public class Main {
 
     Socket connection;
-    ServerConnection serverconnection;
     Login login;
 
     public static void main(String[] args) {

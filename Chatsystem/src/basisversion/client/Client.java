@@ -49,7 +49,7 @@ public class Client {
                 String action = console.readLine();
                 if (action.equals("c")) {
                     // start connect
-                    Connect connect = new Connect(connection);
+                    Connect connect = new Connect(connection, user);
                     connect.start();
                     connect.join();
                     // chat starten, und erst fortfahren sobald der chat geschlossen wurde
@@ -95,6 +95,7 @@ public class Client {
     }
 
     public static int changePort(int port) {
+        // wechselt zwischen port 187 und 188
         return port == 187 ? 188 : 187;
     }
 }

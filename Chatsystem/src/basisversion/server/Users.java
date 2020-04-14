@@ -48,13 +48,18 @@ public class Users {
         try {
             this.writer.append("\nkennung_" + kennung + "_password_" + password);
             this.writer.flush();
-            this.init();
+            this.users.add(new User(kennung, password));
             return true;
         } catch (IOException e) {
             System.err.println(e);
             System.out.println("Error while register");
             return false;
         }
+    }
+
+    public void adduser(User user) {
+        if (user != null)
+            this.users.add(user);
     }
 
 }
