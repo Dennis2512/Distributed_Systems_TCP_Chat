@@ -119,22 +119,25 @@ public class User {
         }
     }
 
-    public ArrayList<ArrayList<String>> getChatOverview() {
-        ArrayList<ArrayList<String>> chatlist = new ArrayList<>();
+    public ArrayList<String> getChatOverview() {
+        ArrayList<String> chatlist = new ArrayList<>();
         for (int i = 0; i < this.chats.size(); i++) {
             Chat c = this.chats.get(i);
-            chatlist.add(this.toChatnames(c));
+            chatlist.add(this.toChatname(c));
         }
         return chatlist;
     }
 
-    private ArrayList<String> toChatnames(Chat chat) {
-        ArrayList<String> names = new ArrayList<>();
+    private String toChatname(Chat chat) {
+        String names = "";
         for (int i = 0; i < chat.getUsers().size(); i++) {
             User u = chat.getUsers().get(i);
             if (u != this) {
-                names.add(u.getKennung());
+                names += u.getKennung() + ",";
             }
+        }
+        if (names.length() > 0) {
+            names = names.substring(0, names.lastIndexOf(','));
         }
         return names;
     }

@@ -4,10 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-
-import chatsystemerweiterung.dennis_firestore.saveData;
 
 public class Connection extends Thread {
 

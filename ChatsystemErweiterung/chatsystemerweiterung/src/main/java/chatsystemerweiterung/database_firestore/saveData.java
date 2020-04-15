@@ -22,13 +22,11 @@ public class saveData {
             String path = "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
 
             FileInputStream serviceAccount = new FileInputStream(path);
-        
 
             FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("https://distributedsystemstcpchat.firebaseio.com")
-                .build();
-        
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setDatabaseUrl("https://distributedsystemstcpchat.firebaseio.com").build();
+
             FirebaseApp.initializeApp(options);
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,9 +41,9 @@ public class saveData {
         data.put("sender", "Dennis");
         data.put("partner", "Lukas");
         data.put("msg", "Hallo du da");
-        //asynchronously write data
+        // asynchronously write data
         ApiFuture<WriteResult> result = docRef.set(data);
-        
+        System.out.println(result.toString());
     }
 
 }
