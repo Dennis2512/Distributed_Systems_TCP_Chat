@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.*;
 
@@ -21,8 +22,10 @@ public class Chatsession extends JFrame implements ActionListener {
     private JButton button;
     private String user, partner;
     private JScrollPane scroll;
+    private SimpleDateFormat sdf;
 
     public Chatsession(ArrayList<Message> initchat, Socket connection, String user, String partner) {
+        this.sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         this.connection = connection;
         this.user = user;
         this.partner = partner;
@@ -113,13 +116,13 @@ public class Chatsession extends JFrame implements ActionListener {
         String value = "";
         for (int i = 0; i < chat.size(); i++) {
             Message tmp = chat.get(i);
-            value = value + tmp.getTime() + " " + tmp.getSender() + ": " + tmp.getText() + '\n';
+            value = value + this.sdf.format(tmp.getTime()) + " " + tmp.getSender() + ": " + tmp.getText() + '\n';
         }
         return value;
     }
 
     public void printMsg(Message msg) {
-        this.textarea.append(msg.getTime() + " " + msg.getSender() + ": " + msg.getText() + '\n');
+        this.textarea.append(this.sdf.format(msg.getTime()) + " " + msg.getSender() + ": " + msg.getText() + '\n');
         this.textarea.setCaretPosition(this.textarea.getDocument().getLength());
     }
 

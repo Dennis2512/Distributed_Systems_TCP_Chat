@@ -2,6 +2,7 @@ package chatsystemerweiterung.server;
 
 import java.io.*;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -192,28 +193,34 @@ public class Connection extends Thread {
 
     private void connect(Message msg) {
         try {
-            // prüfe ob es nutzer gibt
-            User receiver = this.users.getUser(msg.getText());
-            if (receiver == null) {
+            // userarray aller chatteilnehmer erzeugen
+            ArrayList<User> receivers = this.users.toUserArray(msg.getText());
+            if (receivers == null) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 this.oos.writeObject(
-                        new Message("server", "error", "Nutzer konnte nicht gefunden werden.", Customtime.get()));
-            } else if (this.user == receiver) {
+                        new Message("server", "error", "Fehler beim Suchen der Nutzer.", Customtime.get()));
+            } else if (receivers.size() == 0) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 this.oos.writeObject(
-                        new Message("server", "error", "Chatten mit sich selber nicht möglich.", Customtime.get()));
+                        new Message("server", "error", "Nutzer konnten nicht gefunden werden.", Customtime.get()));
+            } else if (receivers.contains(this.user)) {
+                this.oos = new ObjectOutputStream(this.connection.getOutputStream());
+                this.oos.writeObject(new Message("server", "error",
+                        "Man kann sich nicht selber zu einem Chat hinzufügen.", Customtime.get()));
             } else if (this.user.getActiveChat() != null) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 this.oos.writeObject(
                         new Message("server", "error", "Erst bisherigen Chat verlassen.", Customtime.get()));
             } else {
                 this.sync(msg);
-                Chat c = this.user.getChatWith(receiver);
+                receivers.add(this.user);
+                Chat c = this.user.getChatWith(receivers);
                 if (c == null) {
-                    c = new Chat(new ArrayList<User>(Arrays.asList(this.user, receiver)));
-                    this.user.addChat(c);
+                    c = new Chat(receivers);
+                    for (int i = 0; i < receivers.size(); i++) {
+                        receivers.get(i).addChat(c);
+                    }
                     this.user.setActiveChat(c);
-                    receiver.addChat(c);
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                     this.oos.writeObject(
                             new Message("server", "NEWCHAT", "Es wurde ein neuer Chat begonnen.", Customtime.get()));
@@ -226,6 +233,7 @@ public class Connection extends Thread {
                     this.oos.writeObject(c.getChat());
                 }
             }
+
         } catch (IOException e) {
             System.err.println(e);
         }
@@ -245,8 +253,9 @@ public class Connection extends Thread {
                 msg.setTime(time);
                 this.user.write(msg);
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "SENT", time + " " + msg.getSender() + ": " + msg.getText(),
-                        Customtime.get()));
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                this.oos.writeObject(new Message("server", "SENT",
+                        sdf.format(time) + " " + msg.getSender() + ": " + msg.getText(), Customtime.get()));
                 this.sync(msg);
             }
         } catch (IOException e) {
@@ -316,15 +325,17 @@ public class Connection extends Thread {
 
     private void serverconnect(Message msg) {
         User user = this.users.getUser(msg.getSender());
-        User receiver = this.users.getUser(msg.getText());
-        if (user != null && receiver != null) {
-            Chat c = user.getChatWith(receiver);
+        ArrayList<User> receivers = this.users.toUserArray(msg.getText());
+        receivers.add(user);
+        if (user != null && receivers != null) {
+            Chat c = user.getChatWith(receivers);
             if (c != null) {
                 user.setActiveChat(c);
             } else {
-                c = new Chat(new ArrayList<User>(Arrays.asList(user, receiver)));
-                user.addChat(c);
-                receiver.addChat(c);
+                c = new Chat(receivers);
+                for (int i = 0; i < receivers.size(); i++) {
+                    receivers.get(i).addChat(c);
+                }
                 user.setActiveChat(c);
             }
         }

@@ -15,6 +15,7 @@ public class Chat {
 
     public void send(Message msg) {
         this.chat.add(msg);
+        // nachricht an die richtige position bringen
         Collections.sort(this.chat);
         // allen usern die diesen chat offen haben und online sind die aktuelle
         // nachricht schicken

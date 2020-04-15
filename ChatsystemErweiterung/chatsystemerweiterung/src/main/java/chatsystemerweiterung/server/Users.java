@@ -70,4 +70,36 @@ public class Users {
             this.users.add(user);
     }
 
+    public ArrayList<User> toUserArray(String string) {
+        ArrayList<User> list = new ArrayList<>();
+        if (string.contains(",")) {
+            String akt;
+            while (string.length() > 0) {
+                if (string.contains(",")) {
+                    akt = string.substring(0, string.indexOf(','));
+                } else {
+                    akt = string;
+                }
+                User u = this.getUser(akt);
+                if (u != null) {
+                    list.add(u);
+                } else {
+                    return null;
+                }
+                if (string.contains(",")) {
+                    string = string.substring(string.indexOf(',') + 1);
+                } else {
+                    string = "";
+                }
+            }
+        } else {
+            User u = this.getUser(string);
+            if (u != null) {
+                list.add(u);
+            }
+        }
+
+        return list;
+    }
+
 }

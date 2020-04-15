@@ -48,6 +48,28 @@ public class User {
         return c;
     }
 
+    public Chat getChatWith(ArrayList<User> userlist) {
+        Chat c = null;
+        int i = 0;
+        while (i < this.chats.size() && c == null) {
+            ArrayList<User> tmp = this.chats.get(i).getUsers();
+            if (tmp.size() == userlist.size()) {
+                boolean same = true;
+                for (int ii = 0; ii < tmp.size(); ii++) {
+                    User u = tmp.get(ii);
+                    if (!userlist.contains(u)) {
+                        same = false;
+                    }
+                }
+                if (same) {
+                    c = this.chats.get(i);
+                }
+            }
+            i++;
+        }
+        return c;
+    }
+
     public void setActiveChat(Chat chat) {
         if (this.chats.contains(chat)) {
             this.activeChat = chat;
