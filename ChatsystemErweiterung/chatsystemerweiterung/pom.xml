@@ -16,6 +16,13 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <!-- Firestore Database -->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>6.12.2</version>
+        </dependency>
+        <!-- End of Firestore Database -->
     </dependencies>
     <build>
         <pluginManagement>
