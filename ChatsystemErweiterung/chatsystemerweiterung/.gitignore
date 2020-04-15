@@ -30,4 +30,4 @@ buildNumber.properties
 #
 # Firestore Database Key
 #
-src/main/java/chatsystemerweiterung/dennis_firestore/serviceAccountKey.json
+src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json

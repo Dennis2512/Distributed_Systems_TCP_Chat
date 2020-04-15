@@ -1,4 +1,4 @@
-package chatsystemerweiterung.dennis_firestore;
+package chatsystemerweiterung.database_firestore;
 
 import java.io.FileInputStream;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class saveData {
 
         try {
 
-            String path = "src/main/java/chatsystemerweiterung/dennis_firestore/serviceAccountKey.json";
+            String path = "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
 
             FileInputStream serviceAccount = new FileInputStream(path);
         
