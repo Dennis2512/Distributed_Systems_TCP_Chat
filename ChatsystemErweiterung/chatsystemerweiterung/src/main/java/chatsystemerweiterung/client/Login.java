@@ -2,6 +2,7 @@ package chatsystemerweiterung.client;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import chatsystemerweiterung.server.Message;
 
@@ -18,6 +19,7 @@ public class Login extends Thread {
         this.connection = connection;
     }
 
+    @SuppressWarnings("unchecked")
     public void run() {
         try {
             while (this.kennung == null) {
@@ -37,6 +39,10 @@ public class Login extends Thread {
                 if (ans.getType().equals("SUCCESS")) {
                     this.kennung = k;
                     System.out.println("Angemeldet als " + this.kennung);
+                    this.ois = new ObjectInputStream(this.connection.getInputStream());
+                    ArrayList<ArrayList<String>> tmps = (ArrayList<ArrayList<String>>) this.ois.readObject();
+                    tmps.forEach(t -> t.forEach(tt -> System.out.println(tt)));
+                    System.out.println(tmps.size());
                 } else {
                     System.out.println(ans.getText());
                 }

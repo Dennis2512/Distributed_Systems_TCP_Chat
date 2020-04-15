@@ -13,7 +13,11 @@ public class Users {
     private ArrayList<User> users;
 
     public Users() throws IOException {
-        this.filepath = Paths.get("").toAbsolutePath().normalize().toString() + "/users.txt";
+        this.filepath = Paths.get("").toAbsolutePath().normalize().toString();
+        if (!this.filepath.contains("Chatsystem")) {
+            this.filepath += "\\Chatsystem";
+        }
+        this.filepath += "\\users.txt";
         this.userfile = new File(this.filepath);
         this.users = new ArrayList<User>();
         this.writer = new BufferedWriter(new FileWriter(userfile, true));
@@ -29,7 +33,6 @@ public class Users {
             String password = line.substring(line.lastIndexOf('_') + 1);
             this.users.add(new User(kennung, password));
         }
-        System.out.println(this.users.size());
         this.reader.close();
     }
 
