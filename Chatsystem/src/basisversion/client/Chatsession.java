@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.*;
 import javax.swing.*;
 
+import basisversion.server.Customtime;
 import basisversion.server.Message;
 
 public class Chatsession extends JFrame implements ActionListener {
@@ -85,7 +86,7 @@ public class Chatsession extends JFrame implements ActionListener {
             public void windowClosed(WindowEvent e) {
                 try {
                     ObjectOutputStream oos = new ObjectOutputStream(connection.getOutputStream());
-                    oos.writeObject(new Message(user, "LEAVE", "", "time"));
+                    oos.writeObject(new Message(user, "LEAVE", "", Customtime.get()));
                 } catch (IOException err) {
                     System.err.println(err);
                 }
@@ -101,7 +102,7 @@ public class Chatsession extends JFrame implements ActionListener {
             String text = this.textfield.getText();
             if (!text.equals("")) {
                 ObjectOutputStream oos = new ObjectOutputStream(this.connection.getOutputStream());
-                oos.writeObject(new Message(this.user, "MSG", this.textfield.getText(), "time"));
+                oos.writeObject(new Message(this.user, "MSG", this.textfield.getText(), Customtime.get()));
             }
         } catch (IOException err) {
             System.err.println(err);

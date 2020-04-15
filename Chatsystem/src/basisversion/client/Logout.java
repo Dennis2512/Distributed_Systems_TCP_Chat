@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import basisversion.server.Customtime;
 import basisversion.server.Message;
 
 public class Logout extends Thread {
@@ -21,7 +22,7 @@ public class Logout extends Thread {
     public void run() {
         try {
             this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-            this.oos.writeObject(new Message("client", "LOGOUT", "", "time"));
+            this.oos.writeObject(new Message("client", "LOGOUT", "", Customtime.get()));
             this.ois = new ObjectInputStream(connection.getInputStream());
             Message msg = (Message) this.ois.readObject();
             if (msg.getType().equals("SUCCESS")) {

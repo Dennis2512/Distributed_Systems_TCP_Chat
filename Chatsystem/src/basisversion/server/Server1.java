@@ -3,6 +3,7 @@ package basisversion.server;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Server1 {
     private static int exchangeport = 188;
@@ -20,7 +21,7 @@ public class Server1 {
             connections.add(con);
             con.start();
             // anderem server bescheid geben
-            con.send(new Message("server", "SERVERINIT", "This is the serverconnection", "time"));
+            con.send(new Message("server", "SERVERINIT", "This is the serverconnection", new Date()));
         } catch (IOException e) {
             // nichts zu tun
         }

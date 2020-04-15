@@ -1,6 +1,7 @@
 package basisversion.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Chat {
 
@@ -14,6 +15,7 @@ public class Chat {
 
     public void send(Message msg) {
         this.chat.add(msg);
+        Collections.sort(this.chat);
         // allen usern die diesen chat offen haben und online sind die aktuelle
         // nachricht schicken
         for (int i = 0; i < this.users.size(); i++) {

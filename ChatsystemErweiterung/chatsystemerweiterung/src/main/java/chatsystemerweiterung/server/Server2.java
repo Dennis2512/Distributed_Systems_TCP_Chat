@@ -20,7 +20,7 @@ public class Server2 {
             connections.add(con);
             con.start();
             // anderem server bescheid geben
-            con.send(new Message("server", "SERVERINIT", "This is the serverconnection", "time"));
+            con.send(new Message("server", "SERVERINIT", "This is the serverconnection", new Date()));
         } catch (IOException e) {
             // nichts zu tun
         }

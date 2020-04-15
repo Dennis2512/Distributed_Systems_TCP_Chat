@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import chatsystemerweiterung.server.Customtime;
 import chatsystemerweiterung.server.Message;
 
 public class Connect extends Thread {
@@ -31,7 +32,7 @@ public class Connect extends Thread {
                 System.out.println("Kennung ihres Chatpartners eingeben:");
                 String p = this.console.readLine();
                 // chat aufbauen
-                this.oos.writeObject(new Message(user, "CONNECT", p, "time"));
+                this.oos.writeObject(new Message(user, "CONNECT", p, Customtime.get()));
                 // wenn erfolgreich, dann angemeldeten nutzer setzen
                 this.ois = new ObjectInputStream(this.connection.getInputStream());
                 Message ans = (Message) ois.readObject();

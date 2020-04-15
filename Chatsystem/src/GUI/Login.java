@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Login extends JFrame {
 
@@ -153,6 +155,7 @@ public class Login extends JFrame {
 
       // login Button
       @Override
+      @SuppressWarnings("unchecked")
       public void actionPerformed(ActionEvent ae) {
 
         String kennung = tf_kennung.getText();
@@ -163,7 +166,7 @@ public class Login extends JFrame {
           oos = new ObjectOutputStream(connection.getOutputStream());
 
           // versuchen mit kennung und password anzumelden
-          oos.writeObject(new Message(kennung, "LOGIN", password, ""));
+          oos.writeObject(new Message(kennung, "LOGIN", password, new Date()));
           // wenn erfolgreich, dann angemeldeten nutzer setzen
           ois = new ObjectInputStream(connection.getInputStream());
 
@@ -171,6 +174,10 @@ public class Login extends JFrame {
 
           // wenn erfolgreich Login-Fenster schließen und Chatfenster öffnen
           if (ans.getType().equals("SUCCESS")) {
+            // hier wird der string für die übersicht geholt
+            ois = new ObjectInputStream(connection.getInputStream());
+            ArrayList<ArrayList<String>> chats = (ArrayList<ArrayList<String>>) ois.readObject();
+            System.out.println(chats.size());
             ChatFenster chatwindow = new ChatFenster();
             loginFenster.dispose();
             JOptionPane.showMessageDialog(loginFenster, "Angemeldet als " + kennung);
@@ -200,7 +207,7 @@ public class Login extends JFrame {
           oos = new ObjectOutputStream(connection.getOutputStream());
 
           // versuchen mit kennung und password anzumelden
-          oos.writeObject(new Message(kennung, "REGISTER", passwordCleartext, ""));
+          oos.writeObject(new Message(kennung, "REGISTER", passwordCleartext, new Date()));
           // wenn erfolgreich, dann angemeldeten nutzer setzen
           ois = new ObjectInputStream(connection.getInputStream());
 

@@ -3,6 +3,7 @@ package chatsystemerweiterung.client;
 import java.io.*;
 import java.net.Socket;
 
+import chatsystemerweiterung.server.Customtime;
 import chatsystemerweiterung.server.Message;
 
 public class Register extends Thread {
@@ -29,7 +30,7 @@ public class Register extends Thread {
                 System.out.println("Password:");
                 String p = this.console.readLine();
                 // versuchen mit kennung und password anzumelden
-                this.oos.writeObject(new Message(k, "REGISTER", p, "time"));
+                this.oos.writeObject(new Message(k, "REGISTER", p, Customtime.get()));
                 // wenn erfolgreich, dann angemeldeten nutzer setzen
                 this.ois = new ObjectInputStream(connection.getInputStream());
                 Message ans = (Message) ois.readObject();

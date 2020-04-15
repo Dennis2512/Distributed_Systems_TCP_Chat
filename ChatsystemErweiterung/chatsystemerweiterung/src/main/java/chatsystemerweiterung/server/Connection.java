@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class Connection extends Thread {
 
@@ -92,7 +93,7 @@ public class Connection extends Thread {
                 System.out.println("Verbindung zum Server wurde verloren.");
             } else {
                 if (this.user != null) {
-                    this.sync(new Message(this.user.getKennung(), "DISCONNECT", "", ""));
+                    this.sync(new Message(this.user.getKennung(), "DISCONNECT", "", new Date()));
                     System.out.println("Verbindung zu " + this.user.getKennung() + " wurde getrennt.");
                     this.user.logout();
                     this.connections.remove(this);
@@ -167,7 +168,7 @@ public class Connection extends Thread {
     private void logout() {
         try {
             if (this.user != null) { // prüfen ob nutzer angemeldet ist
-                this.sync(new Message(this.user.getKennung(), "LOGOUT", "", ""));
+                this.sync(new Message(this.user.getKennung(), "LOGOUT", "", Customtime.get()));
                 System.out.println(this.user.getKennung() + " hat sich abgemeldet.");
                 // logout
                 this.user.logout();
@@ -240,7 +241,7 @@ public class Connection extends Thread {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 this.oos.writeObject(new Message("server", "error", "Chat nicht gefunden.", Customtime.get()));
             } else {
-                String time = Customtime.get();
+                Date time = Customtime.get();
                 msg.setTime(time);
                 this.user.write(msg);
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
@@ -262,7 +263,7 @@ public class Connection extends Thread {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 this.oos.writeObject(new Message("server", "error", "Kein aktiver Chat gefunden.", Customtime.get()));
             } else {
-                this.sync(new Message(this.user.getKennung(), "LEAVE", "", ""));
+                this.sync(new Message(this.user.getKennung(), "LEAVE", "", Customtime.get()));
                 this.user.leaveChat();
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 this.oos.writeObject(new Message("server", "LEFT", "Chat verlassen.", Customtime.get()));
@@ -384,14 +385,14 @@ public class Connection extends Thread {
         try {
             this.serverconnection = true;
             this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-            this.oos.writeObject(new Message("server", "INIT", "Starting init...", "time"));
+            this.oos.writeObject(new Message("server", "INIT", "Starting init...", Customtime.get()));
             // chats senden
             ArrayList<Chat> chats = this.getAllChats();
             for (int i = 0; i < chats.size(); i++) {
                 Chat chat = chats.get(i);
                 // send users
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "NEWCHAT", this.chatuserstring(chat), "time"));
+                this.oos.writeObject(new Message("server", "NEWCHAT", this.chatuserstring(chat), Customtime.get()));
                 // send messages
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 this.oos.writeObject(chat.getChat());
@@ -405,12 +406,13 @@ public class Connection extends Thread {
                         tmp = u.getActiveChat().getChatPartner(u).getKennung();
                     }
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                    this.oos.writeObject(new Message(u.getKennung(), "ONLINE", tmp, "time"));
+                    this.oos.writeObject(new Message(u.getKennung(), "ONLINE", tmp, Customtime.get()));
                 }
             }
             // mitteilen dass init zuende ist
             this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-            this.oos.writeObject(new Message("server", "DONE", "Initialized " + chats.size() + " chats.", "time"));
+            this.oos.writeObject(
+                    new Message("server", "DONE", "Initialized " + chats.size() + " chats.", Customtime.get()));
         } catch (Exception e) {
             System.err.println(e);
         }

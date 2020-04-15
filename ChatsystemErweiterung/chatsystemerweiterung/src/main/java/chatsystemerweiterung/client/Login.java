@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import chatsystemerweiterung.server.Customtime;
 import chatsystemerweiterung.server.Message;
 
 public class Login extends Thread {
@@ -31,7 +32,7 @@ public class Login extends Thread {
                 System.out.println("Password:");
                 String p = this.console.readLine();
                 // versuchen mit kennung und password anzumelden
-                this.oos.writeObject(new Message(k, "LOGIN", p, ""));
+                this.oos.writeObject(new Message(k, "LOGIN", p, Customtime.get()));
                 // wenn erfolgreich, dann angemeldeten nutzer setzen
                 this.ois = new ObjectInputStream(this.connection.getInputStream());
 
@@ -40,9 +41,8 @@ public class Login extends Thread {
                     this.kennung = k;
                     System.out.println("Angemeldet als " + this.kennung);
                     this.ois = new ObjectInputStream(this.connection.getInputStream());
-                    ArrayList<ArrayList<String>> tmps = (ArrayList<ArrayList<String>>) this.ois.readObject();
-                    tmps.forEach(t -> t.forEach(tt -> System.out.println(tt)));
-                    System.out.println(tmps.size());
+                    ArrayList<ArrayList<String>> chatoverview = (ArrayList<ArrayList<String>>) this.ois.readObject();
+                    System.out.println(chatoverview.size());
                 } else {
                     System.out.println(ans.getText());
                 }
