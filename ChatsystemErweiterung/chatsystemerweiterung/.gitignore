@@ -25,3 +25,9 @@ buildNumber.properties
 .classpath
 .project
 .vscode/
+
+
+#
+# Firestore Database Key
+#
+src/main/java/chatsystemerweiterung/dennis_firestore/serviceAccountKey.json
