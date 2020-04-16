@@ -1,6 +1,7 @@
 package chatsystemerweiterung.GUI;
 
 import chatsystemerweiterung.server.Message;
+import chatsystemerweiterung.server.User;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -18,6 +19,7 @@ import java.util.Date;
 
 public class Login extends JFrame {
 
+  private ChatFenster cF;
   private static final long serialVersionUID = -3535356855875972122L;
   private JLabel lbl_kennung;
   private JLabel lbl_password;
@@ -167,11 +169,15 @@ public class Login extends JFrame {
           // wenn erfolgreich, dann angemeldeten nutzer setzen
           ois = new ObjectInputStream(connection.getInputStream());
           Message ans = (Message) ois.readObject();
+
           if (ans.getType().equals("SUCCESS")) {
             // hier wird der string für die übersicht geholt
             ois = new ObjectInputStream(connection.getInputStream());
             ArrayList<String> chats = (ArrayList<String>) ois.readObject();
-            new ChatFenster();
+
+            cF = new ChatFenster(connection, kennung);
+            cF.build();
+
             loginFenster.dispose();
             JOptionPane.showMessageDialog(loginFenster, "Angemeldet als " + kennung);
           } else {

@@ -19,6 +19,8 @@ public class Users {
         }
         this.filepath += "\\users.txt";
         this.userfile = new File(this.filepath);
+
+        // this.userfile = new File("./ChatsystemErweiterung/users.txt");
         this.users = new ArrayList<User>();
         this.writer = new BufferedWriter(new FileWriter(userfile, true));
         this.init();
