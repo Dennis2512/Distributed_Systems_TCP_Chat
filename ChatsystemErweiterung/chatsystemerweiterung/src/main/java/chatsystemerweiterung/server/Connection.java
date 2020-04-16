@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import chatsystemerweiterung.rsa.Security;
+
 public class Connection extends Thread {
 
     private User user;
@@ -15,6 +17,7 @@ public class Connection extends Thread {
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     public boolean serverconnection;
+    private Security security;
 
     public Connection(Socket connection, ArrayList<Connection> connections, Users users, boolean serverconnection)
             throws IOException {
@@ -22,6 +25,7 @@ public class Connection extends Thread {
         this.connections = connections;
         this.users = users;
         this.serverconnection = serverconnection;
+        this.security = new Security();
     }
 
     public void run() {
@@ -29,7 +33,7 @@ public class Connection extends Thread {
 
             while (true) {
                 this.ois = new ObjectInputStream(this.connection.getInputStream());
-                Message msg = (Message) ois.readObject();
+                Message msg = this.security.decryptMessage((Message) ois.readObject());
                 switch (msg.getType()) {
                     case "LOGIN":
                         if (this.serverconnection) {
@@ -119,10 +123,11 @@ public class Connection extends Thread {
                 // prüfen ob passwort korrekt war
                 if (tmp.login(msg.getText(), this)) {
                     // aktuellen nutzer dieser verbindung setzen
-                    this.sync(msg);
+                    this.sync(security.encryptMessage(msg));
                     this.user = tmp;
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                    this.oos.writeObject(new Message("server", "SUCCESS", "Angemeldet.", Customtime.get()));
+                    this.oos.writeObject(this.security
+                            .encryptMessage(new Message("server", "SUCCESS", "Angemeldet.", Customtime.get())));
                     System.out.println(msg.getSender() + " hat sich angemeldet.");
                     // alle bisherigen chats des angemeldeten nutzers mitsenden
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());

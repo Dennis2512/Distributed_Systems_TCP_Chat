@@ -1,5 +1,7 @@
 package chatsystemerweiterung.GUI;
 
+import chatsystemerweiterung.rsa.RSA;
+import chatsystemerweiterung.rsa.Security;
 import chatsystemerweiterung.server.Message;
 
 import javax.swing.*;
@@ -45,9 +47,11 @@ public class Login extends JFrame {
   private ObjectOutputStream oos;
   // information to keep around
   private Socket connection;
+  private Security security;
 
   public Login(Socket con) {
     this.connection = con;
+    this.security = new Security();
   }
 
   public void build(Socket con) {
@@ -159,14 +163,14 @@ public class Login extends JFrame {
 
         String kennung = tf_kennung.getText();
         String password = String.valueOf(tf_password.getPassword());
-
+        Message msg = security.encryptMessage(new Message(kennung, "LOGIN", password, new Date()));
         // versucht sich mit den gelesenen Infos anzumelden
         try {
           oos = new ObjectOutputStream(connection.getOutputStream());
-          oos.writeObject(new Message(kennung, "LOGIN", password, new Date()));
+          oos.writeObject(msg);
           // wenn erfolgreich, dann angemeldeten nutzer setzen
           ois = new ObjectInputStream(connection.getInputStream());
-          Message ans = (Message) ois.readObject();
+          Message ans = security.decryptMessage((Message) ois.readObject());
           if (ans.getType().equals("SUCCESS")) {
             // hier wird der string für die übersicht geholt
             ois = new ObjectInputStream(connection.getInputStream());

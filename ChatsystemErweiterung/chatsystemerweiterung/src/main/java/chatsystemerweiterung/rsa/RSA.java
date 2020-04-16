@@ -18,7 +18,8 @@ public class RSA {
         // System.out.println("wordPasInt: "+wordPasInt);
         // System.out.println("Verschlüsselt: "+wordPasInt.modPow(e,n));
         // System.out.println("STOP");
-        return "" + wordPasInt.modPow(e, n);
+        String erg = "" + wordPasInt.modPow(e, n);
+        return erg;
     }
 
     public static String decry(String word, BigInteger n, BigInteger d) {

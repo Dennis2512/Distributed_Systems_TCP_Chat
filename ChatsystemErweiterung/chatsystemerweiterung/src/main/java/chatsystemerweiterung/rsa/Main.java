@@ -1,11 +1,8 @@
 package chatsystemerweiterung.rsa;
 
 public class Main {
-    public static void main(String[] args) {
-        testRSA();
-    }
 
-    public static void testRSA() {
+    public static void main(String[] args) {
         int n = 1;
         int m = 0;
         while (true) {
