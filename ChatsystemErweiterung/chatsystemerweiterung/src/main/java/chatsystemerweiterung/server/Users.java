@@ -13,14 +13,14 @@ public class Users {
     private ArrayList<User> users;
 
     public Users() throws IOException {
-        // this.filepath = Paths.get("").toAbsolutePath().normalize().toString();
-        // if (!this.filepath.contains("ChatsystemErweiterung")) {
-        // this.filepath += "\\ChatsystemErweiterung";
-        // }
-        // this.filepath += "\\users.txt";
-        // this.userfile = new File(this.filepath);
+        this.filepath = Paths.get("").toAbsolutePath().normalize().toString();
+        if (!this.filepath.contains("ChatsystemErweiterung")) {
+            this.filepath += "\\ChatsystemErweiterung";
+        }
+        this.filepath += "\\users.txt";
+        this.userfile = new File(this.filepath);
 
-        this.userfile = new File("./ChatsystemErweiterung/users.txt");
+        this.userfile = new File(this.filepath);
         this.users = new ArrayList<User>();
         this.writer = new BufferedWriter(new FileWriter(userfile, true));
         this.init();

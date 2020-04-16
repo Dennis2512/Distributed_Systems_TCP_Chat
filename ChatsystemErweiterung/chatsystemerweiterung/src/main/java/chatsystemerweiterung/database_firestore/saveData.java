@@ -1,6 +1,7 @@
 package chatsystemerweiterung.database_firestore;
 
 import java.io.FileInputStream;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,14 +18,19 @@ public class saveData {
 
     public void saveChat(String sender, String partner, String msg, String time) {
         try {
-            String path = "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
+            String filepath = Paths.get("").toAbsolutePath().normalize().toString();
+            if (!filepath.contains("ChatsystemErweiterung")) {
+                filepath += "\\ChatsystemErweiterung";
+            }
+            filepath += "\\chatsystemerweiterung\\src\\main\\java\\chatsystemerweiterung\\database_firestore\\serviceAccountKey.json";
+            // String path =
+            // "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
 
-            FileInputStream serviceAccount = new FileInputStream(path);
+            FileInputStream serviceAccount = new FileInputStream(filepath);
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://distributedsystemstcpchat.firebaseio.com").build();
-
             FirebaseApp.initializeApp(options);
         } catch (Exception e) {
             e.printStackTrace();

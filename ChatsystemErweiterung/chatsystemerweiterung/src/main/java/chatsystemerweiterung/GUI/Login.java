@@ -172,8 +172,9 @@ public class Login extends JFrame {
           oos.writeObject(msg);
           // wenn erfolgreich, dann angemeldeten nutzer setzen
           ois = new ObjectInputStream(connection.getInputStream());
-          Message ans = security.decryptMessage((Message) ois.readObject());
-          if (ans.getType().equals("SUCCESS")) {
+          Message res = (Message) ois.readObject();
+          Message decryptedmsg = security.decryptMessage(res);
+          if (decryptedmsg.getType().equals("SUCCESS")) {
             // hier wird der string für die übersicht geholt
             ois = new ObjectInputStream(connection.getInputStream());
             ArrayList<String> chats = (ArrayList<String>) ois.readObject();
@@ -188,7 +189,7 @@ public class Login extends JFrame {
             tf_password.setBackground(new Color(255, 107, 107));
             kennung = "";
             password = "";
-            JOptionPane.showMessageDialog(loginFenster, ans.getText());
+            JOptionPane.showMessageDialog(loginFenster, res.getText());
           }
         } catch (IOException e) {
           System.err.println(e);

@@ -31,6 +31,7 @@ import com.google.api.SystemParameter;
 
 import chatsystemerweiterung.GUI.Listen;
 import chatsystemerweiterung.database_firestore.saveData;
+import chatsystemerweiterung.rsa.Security;
 import chatsystemerweiterung.server.Customtime;
 import chatsystemerweiterung.server.Message;
 import chatsystemerweiterung.server.User;
@@ -72,6 +73,7 @@ public class ChatFenster extends JFrame {
 	private SimpleDateFormat sdf;
 
 	private saveData save;
+	private Security security;
 
 	public ChatFenster(Socket con, String user) {
 		super("Chat Window");
@@ -82,7 +84,7 @@ public class ChatFenster extends JFrame {
 		end = false;
 		ta_Messages = new JTextArea();
 		save = new saveData();
-
+		this.security = new Security();
 	}
 
 	public void sent(Message text) {
@@ -102,6 +104,7 @@ public class ChatFenster extends JFrame {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void build() {
 
 		// Verbindung zum anderen Chatpartner aufbauen
@@ -111,7 +114,8 @@ public class ChatFenster extends JFrame {
 			// System.out.println("Kennung ihres Chatpartners eingeben:");
 			// String p = this.console.readLine();
 			// chat aufbauen
-			this.oos.writeObject(new Message(user, "CONNECT", partner, Customtime.get()));
+			Message msg = this.security.encryptMessage(new Message(user, "CONNECT", partner, Customtime.get()));
+			this.oos.writeObject(msg);
 			// wenn erfolgreich, dann angemeldeten nutzer setzen
 			this.ois = new ObjectInputStream(this.connection.getInputStream());
 			Message ans = (Message) ois.readObject();
@@ -227,7 +231,8 @@ public class ChatFenster extends JFrame {
 					try {
 
 						ObjectOutputStream oos = new ObjectOutputStream(connection.getOutputStream());
-						oos.writeObject(new Message(user, "MSG", nachricht, Customtime.get()));
+						Message msg = security.encryptMessage(new Message(user, "MSG", nachricht, Customtime.get()));
+						oos.writeObject(msg);
 
 					} catch (IOException err) {
 						System.err.println(err);
