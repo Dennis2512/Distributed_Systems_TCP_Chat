@@ -30,6 +30,7 @@ import javax.swing.border.Border;
 import com.google.api.SystemParameter;
 
 import chatsystemerweiterung.GUI.Listen;
+import chatsystemerweiterung.database_firestore.saveData;
 import chatsystemerweiterung.server.Customtime;
 import chatsystemerweiterung.server.Message;
 import chatsystemerweiterung.server.User;
@@ -70,6 +71,8 @@ public class ChatFenster extends JFrame {
 	private String user, partner;
 	private SimpleDateFormat sdf;
 
+	private saveData save;
+
 	public ChatFenster(Socket con, String user) {
 		super("Chat Window");
 		this.sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -78,13 +81,16 @@ public class ChatFenster extends JFrame {
 		partner = "LB";
 		end = false;
 		ta_Messages = new JTextArea();
+		save = new saveData();
 
 	}
 
-	public void sent(String text) {
-		ta_Messages.setText(ta_Messages.getText() + text + '\n');
+	public void sent(Message text) {
+		ta_Messages.setText(ta_Messages.getText() + text.getText() + '\n');
 		tf_message.setText("");
 		ta_Messages.setCaretPosition(this.ta_Messages.getDocument().getLength());
+		save.saveChat(user, partner, text.getText(), (String) this.sdf.format(text.getTime()));
+
 	}
 
 	// empfangene Nachricht setzen
@@ -92,6 +98,8 @@ public class ChatFenster extends JFrame {
 		ta_Messages.append(this.sdf.format(msg.getTime()) + " " + msg.getSender() + ": " + msg.getText() + '\n');
 		ta_Messages.setCaretPosition(ta_Messages.getDocument().getLength());
 		System.out.println(this.sdf.format(msg.getTime()) + " " + msg.getSender() + ": " + msg.getText());
+		save.saveChat(partner, user, msg.getText(), (String) this.sdf.format(msg.getTime()));
+
 	}
 
 	public void build() {
