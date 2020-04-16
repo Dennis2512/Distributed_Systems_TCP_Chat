@@ -7,7 +7,11 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -23,8 +27,21 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import com.google.api.SystemParameter;
+
+import chatsystemerweiterung.GUI.Listen;
+import chatsystemerweiterung.database_firestore.saveData;
+import chatsystemerweiterung.server.Customtime;
+import chatsystemerweiterung.server.Message;
+import chatsystemerweiterung.server.User;
+
+import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
 public class ChatFenster extends JFrame {
 
+	private Socket connection;
 	protected static JTextField tf_message;
 	private static JButton btn_sendMessage;
 	private static JMenuBar mnbr_chat;
@@ -46,8 +63,77 @@ public class ChatFenster extends JFrame {
 	private static JButton btn_emojis;
 	private static JFrame frm_chatwindow;
 
-	public ChatFenster() {
+	private boolean end;
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
+
+	private ArrayList<Message> chat;
+	private String user, partner;
+	private SimpleDateFormat sdf;
+
+	private saveData save;
+
+	public ChatFenster(Socket con, String user) {
 		super("Chat Window");
+		this.sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+		connection = con;
+		this.user = user;
+		partner = "LB";
+		end = false;
+		ta_Messages = new JTextArea();
+		save = new saveData();
+
+	}
+
+	public void sent(Message text) {
+		ta_Messages.setText(ta_Messages.getText() + text.getText() + '\n');
+		tf_message.setText("");
+		ta_Messages.setCaretPosition(this.ta_Messages.getDocument().getLength());
+		save.saveChat(user, partner, text.getText(), (String) this.sdf.format(text.getTime()));
+
+	}
+
+	// empfangene Nachricht setzen
+	public void printMsg(Message msg) {
+		ta_Messages.append(this.sdf.format(msg.getTime()) + " " + msg.getSender() + ": " + msg.getText() + '\n');
+		ta_Messages.setCaretPosition(ta_Messages.getDocument().getLength());
+		System.out.println(this.sdf.format(msg.getTime()) + " " + msg.getSender() + ": " + msg.getText());
+		save.saveChat(partner, user, msg.getText(), (String) this.sdf.format(msg.getTime()));
+
+	}
+
+	public void build() {
+
+		// Verbindung zum anderen Chatpartner aufbauen
+		try {
+			this.oos = new ObjectOutputStream(this.connection.getOutputStream());
+			// kennung einlesen --> Hardgecoded für anfang
+			// System.out.println("Kennung ihres Chatpartners eingeben:");
+			// String p = this.console.readLine();
+			// chat aufbauen
+			this.oos.writeObject(new Message(user, "CONNECT", partner, Customtime.get()));
+			// wenn erfolgreich, dann angemeldeten nutzer setzen
+			this.ois = new ObjectInputStream(this.connection.getInputStream());
+			Message ans = (Message) ois.readObject();
+
+			if (ans.getType().equals("NEWCHAT")) {
+				System.out.println(ans.getText());
+				System.out.println("Neuer Chat generiert. LosChatten");
+			} else if (ans.getType().equals("LOADCHAT")) {
+				System.out.println(ans.getText());
+				System.out.println("Chat schon vorhanden. Chathistorie laden");
+				this.ois = new ObjectInputStream(this.connection.getInputStream());
+				this.chat = (ArrayList<Message>) ois.readObject();
+			} else {
+				System.out.println(ans.getText());
+			}
+
+		} catch (IOException e) {
+			System.err.println(e);
+		} catch (ClassNotFoundException e) {
+			System.err.println(e);
+		}
+
 		JFrame frm_chatwindow = new JFrame();
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		greenborder = BorderFactory.createLineBorder(new Color(46, 139, 87), 2);
@@ -70,7 +156,6 @@ public class ChatFenster extends JFrame {
 		mnu_chatInfo.add(mnuitm_chatOverview);
 		mnbr_chat.add(mnu_chatInfo);
 
-		ta_Messages = new JTextArea();
 		ta_Messages.setBorder(blackborder);
 		ta_Messages.setEditable(false);
 		mnbr_chat.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -119,6 +204,7 @@ public class ChatFenster extends JFrame {
 		pnl_bottom.add(Box.createHorizontalGlue());
 		pnl_bottom.add(btn_sendMessage);
 
+		// clear message
 		btn_clearMessage.addActionListener(new ActionListener() {
 
 			@Override
@@ -127,6 +213,7 @@ public class ChatFenster extends JFrame {
 			}
 		});
 
+		// Nachricht an den Chatpartner senden
 		btn_sendMessage.addActionListener(new ActionListener() {
 
 			@Override
@@ -136,7 +223,15 @@ public class ChatFenster extends JFrame {
 				} else {
 					String nachricht = tf_message.getText();
 					nachricht = emojiFinder.shortcutSwitcher(nachricht);
-					ta_Messages.setText(ta_Messages.getText() + "\n" + nachricht);
+					// nachricht senden
+					try {
+
+						ObjectOutputStream oos = new ObjectOutputStream(connection.getOutputStream());
+						oos.writeObject(new Message(user, "MSG", nachricht, Customtime.get()));
+
+					} catch (IOException err) {
+						System.err.println(err);
+					}
 				}
 			}
 
@@ -151,6 +246,9 @@ public class ChatFenster extends JFrame {
 			}
 
 		});
+
+		Listen listen = new Listen(connection, this);
+		listen.start();
 
 		this.getContentPane().add(pnl_main);
 		this.setSize(500, 500);

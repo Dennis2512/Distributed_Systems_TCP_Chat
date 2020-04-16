@@ -3,6 +3,7 @@ package chatsystemerweiterung.GUI;
 import chatsystemerweiterung.rsa.RSA;
 import chatsystemerweiterung.rsa.Security;
 import chatsystemerweiterung.server.Message;
+import chatsystemerweiterung.server.User;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,6 +21,7 @@ import java.util.Date;
 
 public class Login extends JFrame {
 
+  private ChatFenster cF;
   private static final long serialVersionUID = -3535356855875972122L;
   private JLabel lbl_kennung;
   private JLabel lbl_password;
@@ -175,7 +177,10 @@ public class Login extends JFrame {
             // hier wird der string für die übersicht geholt
             ois = new ObjectInputStream(connection.getInputStream());
             ArrayList<String> chats = (ArrayList<String>) ois.readObject();
-            new ChatFenster();
+
+            cF = new ChatFenster(connection, kennung);
+            cF.build();
+
             loginFenster.dispose();
             JOptionPane.showMessageDialog(loginFenster, "Angemeldet als " + kennung);
           } else {

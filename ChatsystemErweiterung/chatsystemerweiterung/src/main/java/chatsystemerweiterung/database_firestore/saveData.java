@@ -15,10 +15,8 @@ import com.google.firebase.cloud.FirestoreClient;
 
 public class saveData {
 
-    public static void main(String[] args) {
-
+    public void saveChat(String sender, String partner, String msg, String time) {
         try {
-
             String path = "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
 
             FileInputStream serviceAccount = new FileInputStream(path);
@@ -35,15 +33,59 @@ public class saveData {
         Firestore db = FirestoreClient.getFirestore();
 
         // Collection: chats, Document: chatroom_name
-        DocumentReference docRef = db.collection("chats").document("dn_test");
+        DocumentReference docRef1 = db.collection("chats").document(sender + "_" + partner);
         Map<String, Object> data = new HashMap<>();
-        data.put("timestmp", "123456");
-        data.put("sender", "Dennis");
-        data.put("partner", "Lukas");
-        data.put("msg", "Hallo du da");
+        data.put("timestmp", time);
+        data.put("sender", sender);
+        data.put("partner", partner);
+        data.put("msg", msg);
+
+        // zweiter Chatpartner daten
+        DocumentReference docRef2 = db.collection("chats").document(sender + "_" + partner);
+        Map<String, Object> data2 = new HashMap<>();
+        data2.put("timestmp", time);
+        data2.put("sender", sender);
+        data2.put("partner", partner);
+        data2.put("msg", msg);
+
         // asynchronously write data
-        ApiFuture<WriteResult> result = docRef.set(data);
+        ApiFuture<WriteResult> result = docRef1.set(data);
         System.out.println(result.toString());
+
+        ApiFuture<WriteResult> result2 = docRef2.set(data);
+        System.out.println(result2.toString());
     }
+
+    // public static void main(String[] args) {
+
+    // try {
+
+    // String path =
+    // "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
+
+    // FileInputStream serviceAccount = new FileInputStream(path);
+
+    // FirebaseOptions options = new FirebaseOptions.Builder()
+    // .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+    // .setDatabaseUrl("https://distributedsystemstcpchat.firebaseio.com").build();
+
+    // FirebaseApp.initializeApp(options);
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+
+    // Firestore db = FirestoreClient.getFirestore();
+
+    // // Collection: chats, Document: chatroom_name
+    // DocumentReference docRef = db.collection("chats").document("dn_test");
+    // Map<String, Object> data = new HashMap<>();
+    // data.put("timestmp", "123456");
+    // data.put("sender", "Dennis");
+    // data.put("partner", "Lukas");
+    // data.put("msg", "Hallo du da");
+    // // asynchronously write data
+    // ApiFuture<WriteResult> result = docRef.set(data);
+    // System.out.println(result.toString());
+    // }
 
 }
