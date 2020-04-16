@@ -53,7 +53,7 @@ public class saveData {
         System.out.println(result.toString());
 
         ApiFuture<WriteResult> result2 = docRef2.set(data);
-        System.out.println(result.toString());
+        System.out.println(result2.toString());
     }
 
     // public static void main(String[] args) {
