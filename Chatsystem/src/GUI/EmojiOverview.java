@@ -4,6 +4,12 @@ package GUI;
     import java.awt.GridLayout;
     import java.awt.event.ActionEvent;
     import java.awt.event.ActionListener;
+    import java.awt.GraphicsEnvironment;
+    import java.awt.*;
+    import java.io.IOException;
+    import java.io.File;
+    import java.io.*;
+
 
 public class EmojiOverview extends JFrame{
 
@@ -56,6 +62,8 @@ public class EmojiOverview extends JFrame{
     private static JButton btn_sunglasses;
     private static JButton btn_glasses;
     private static JButton btn_party;
+    private static Font customFont;
+    private static InputStream stream;
 
 
 
@@ -64,6 +72,21 @@ public class EmojiOverview extends JFrame{
     public EmojiOverview(){
 
         pnl_emojisOverview = new JPanel(new GridLayout(5, 10, 1, 1));
+        
+        try {
+        //     stream = this.getClass().getResourceAsStream("/assets/seguiemj.ttf");
+		//	customFont= Font.createFont(Font.TRUETYPE_FONT, stream);
+		 //  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+         //  ge.registerFont(customFont);
+         customFont = Font.createFont(Font.TRUETYPE_FONT, new File("Chatsystem\\assets\\seguiemj.ttf")).deriveFont(12f);
+         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+         ge.registerFont(customFont);
+	   } catch (IOException e) {
+		   e.printStackTrace();
+	   } catch(FontFormatException ef) {
+		   ef.printStackTrace();
+	   }
+
 
         //Initialize Buttons in Grid
         btn_relieved = new JButton(emojiFinder.emojis[0]);
@@ -113,6 +136,56 @@ public class EmojiOverview extends JFrame{
         btn_sunglasses = new JButton(emojiFinder.emojis[44]);
         btn_glasses = new JButton(emojiFinder.emojis[45]);
         btn_party = new JButton(emojiFinder.emojis[46]);
+
+       
+       //Set Fonts for emoji buttons
+       btn_relieved.setFont(customFont.deriveFont(18.0f));
+       btn_pray.setFont(customFont.deriveFont(18.0f));
+       btn_violin.setFont(customFont.deriveFont(18.0f));
+       btn_angry.setFont(customFont.deriveFont(18.0f));
+       btn_monocle.setFont(customFont.deriveFont(18.0f));
+       btn_point_up.setFont(customFont.deriveFont(18.0f));
+       btn_ok.setFont(customFont.deriveFont(18.0f));
+       btn_angel.setFont(customFont.deriveFont(18.0f));
+       btn_happy.setFont(customFont.deriveFont(18.0f));
+       btn_shush.setFont(customFont.deriveFont(18.0f));
+       btn_think.setFont(customFont.deriveFont(18.0f));
+       btn_money.setFont(customFont.deriveFont(18.0f));
+       btn_sweat.setFont(customFont.deriveFont(18.0f));
+       btn_loveeyes.setFont(customFont.deriveFont(18.0f));
+       btn_pensive.setFont(customFont.deriveFont(18.0f));
+       btn_fit.setFont(customFont.deriveFont(18.0f));
+       btn_brokenHeart.setFont(customFont.deriveFont(18.0f));
+       btn_rollingEyes.setFont(customFont.deriveFont(18.0f));
+       btn_inLove.setFont(customFont.deriveFont(18.0f));
+       btn_unhappy.setFont(customFont.deriveFont(18.0f));
+       btn_shruggin.setFont(customFont.deriveFont(18.0f));
+       btn_heart.setFont(customFont.deriveFont(18.0f));
+       btn_pointRight.setFont(customFont.deriveFont(18.0f));
+       btn_djinn.setFont(customFont.deriveFont(18.0f));
+       btn_grim.setFont(customFont.deriveFont(18.0f));
+       btn_cry.setFont(customFont.deriveFont(18.0f));
+       btn_moon.setFont(customFont.deriveFont(18.0f));
+       btn_pointLeft.setFont(customFont.deriveFont(18.0f));
+       btn_callMe.setFont(customFont.deriveFont(18.0f));
+       btn_mustache.setFont(customFont.deriveFont(18.0f));
+       btn_rofl.setFont(customFont.deriveFont(18.0f));
+       btn_smile.setFont(customFont.deriveFont(18.0f));
+       btn_thumb.setFont(customFont.deriveFont(18.0f));
+       btn_joy.setFont(customFont.deriveFont(18.0f));
+       btn_heartYellow.setFont(customFont.deriveFont(18.0f));
+       btn_heartBlack.setFont(customFont.deriveFont(18.0f));
+       btn_anotherSmile.setFont(customFont.deriveFont(18.0f));
+       btn_fullMoon.setFont(customFont.deriveFont(18.0f));
+       btn_grin.setFont(customFont.deriveFont(18.0f));
+       btn_sun.setFont(customFont.deriveFont(18.0f));
+       btn_thumbDown.setFont(customFont.deriveFont(18.0f));
+       btn_tongueOut.setFont(customFont.deriveFont(18.0f));
+       btn_100.setFont(customFont.deriveFont(18.0f));
+       btn_wink.setFont(customFont.deriveFont(18.0f));
+       btn_sunglasses.setFont(customFont.deriveFont(18.0f));
+       btn_glasses.setFont(customFont.deriveFont(18.0f));
+       btn_party.setFont(customFont.deriveFont(18.0f));
 
         //Add Buttons to Panel
         pnl_emojisOverview.add(btn_relieved);
@@ -552,5 +625,7 @@ public class EmojiOverview extends JFrame{
     
 
     //}
+
+   
 
 }
