@@ -61,7 +61,7 @@ public class Users {
             this.users.add(new User(kennung, password));
             return true;
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
             System.out.println("Error while register");
             return false;
         }
@@ -104,4 +104,12 @@ public class Users {
         return list;
     }
 
+    public ArrayList<String> toUserlist(User user) {
+        ArrayList<String> list = new ArrayList<String>();
+        for (User u : this.users) {
+            if (user != u)
+                list.add(u.getKennung());
+        }
+        return list;
+    }
 }

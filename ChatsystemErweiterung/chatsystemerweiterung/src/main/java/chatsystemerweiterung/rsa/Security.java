@@ -31,9 +31,9 @@ public class Security {
             d = new BigInteger(line);
             reader.close();
         } catch (FileNotFoundException e) {
-            System.err.println(e);
+            e.printStackTrace();
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -52,20 +52,33 @@ public class Security {
     public Message encryptMessage(Message msg) {
         try {
             ArrayList<EncryThread> threads = new ArrayList<>();
-            threads.add(new EncryThread(msg.getSender(), this.n, this.e));
-            threads.add(new EncryThread(msg.getType(), this.n, this.e));
-            threads.add(new EncryThread(msg.getText(), this.n, this.e));
+            if (msg.getSender().length() > 0)
+                threads.add(0, new EncryThread(msg.getSender(), this.n, this.e));
+            else
+                threads.add(0, null);
+            if (msg.getType().length() > 0)
+                threads.add(1, new EncryThread(msg.getType(), this.n, this.e));
+            else
+                threads.add(1, null);
+            if (msg.getText().length() > 0)
+                threads.add(2, new EncryThread(msg.getText(), this.n, this.e));
+            else
+                threads.add(2, null);
             for (EncryThread e : threads) {
-                e.start();
+                if (e != null)
+                    e.start();
             }
             for (EncryThread e : threads) {
-                e.join();
+                if (e != null)
+                    e.join();
             }
-            Message res = new Message(threads.get(0).encrypted, threads.get(1).encrypted, threads.get(2).encrypted,
-                    new Date());
+            String sender = threads.get(0) != null ? threads.get(0).encrypted : "";
+            String type = threads.get(1) != null ? threads.get(1).encrypted : "";
+            String text = threads.get(2) != null ? threads.get(2).encrypted : "";
+            Message res = new Message(sender, type, text, new Date());
             return res;
         } catch (InterruptedException e) {
-            System.err.println(e);
+            e.printStackTrace();
             return msg;
         }
 
@@ -74,20 +87,33 @@ public class Security {
     public Message decryptMessage(Message msg) {
         try {
             ArrayList<DecryThread> threads = new ArrayList<>();
-            threads.add(new DecryThread(msg.getSender(), this.n, this.d));
-            threads.add(new DecryThread(msg.getType(), this.n, this.d));
-            threads.add(new DecryThread(msg.getText(), this.n, this.d));
+            if (msg.getSender().length() > 0)
+                threads.add(0, new DecryThread(msg.getSender(), this.n, this.d));
+            else
+                threads.add(0, null);
+            if (msg.getType().length() > 0)
+                threads.add(1, new DecryThread(msg.getType(), this.n, this.d));
+            else
+                threads.add(1, null);
+            if (msg.getText().length() > 0)
+                threads.add(2, new DecryThread(msg.getText(), this.n, this.d));
+            else
+                threads.add(2, null);
             for (DecryThread d : threads) {
-                d.start();
+                if (d != null)
+                    d.start();
             }
             for (DecryThread d : threads) {
-                d.join();
+                if (d != null)
+                    d.join();
             }
-            Message res = new Message(threads.get(0).decrypted, threads.get(1).decrypted, threads.get(2).decrypted,
-                    new Date());
+            String sender = threads.get(0) != null ? threads.get(0).decrypted : "";
+            String type = threads.get(1) != null ? threads.get(1).decrypted : "";
+            String text = threads.get(2) != null ? threads.get(2).decrypted : "";
+            Message res = new Message(sender, type, text, new Date());
             return res;
         } catch (InterruptedException e) {
-            System.err.println(e);
+            e.printStackTrace();
             return msg;
         }
     }

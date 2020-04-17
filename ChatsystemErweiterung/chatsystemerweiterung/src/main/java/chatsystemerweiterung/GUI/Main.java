@@ -27,7 +27,7 @@ public class Main {
             } catch (IOException ex) {
                 port = changePort(port);
             } catch (Exception ex) {
-                System.err.println(ex);
+                ex.printStackTrace();
             }
         }
 

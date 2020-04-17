@@ -104,7 +104,7 @@ public class Connection extends Thread {
                 }
             }
         } catch (ClassNotFoundException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -114,16 +114,17 @@ public class Connection extends Thread {
             User tmp = this.users.getUser(msg.getSender());
             if (tmp == null) { // prüfen ob user gefunden wurde
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "error", "Nutzer existiert nicht", Customtime.get()));
+                this.oos.writeObject(this.security
+                        .encryptMessage(new Message("server", "error", "Nutzer existiert nicht", Customtime.get())));
             } else if (tmp.isOnline()) { // prüfen ob nutzer bereits angemeldet ist
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(
-                        new Message("server", "error", "Nutzer ist bereits angemeldet.", Customtime.get()));
+                this.oos.writeObject(this.security.encryptMessage(
+                        new Message("server", "error", "Nutzer ist bereits angemeldet.", Customtime.get())));
             } else {
                 // prüfen ob passwort korrekt war
                 if (tmp.login(msg.getText(), this)) {
                     // aktuellen nutzer dieser verbindung setzen
-                    this.sync(security.encryptMessage(msg));
+                    this.sync(msg);
                     this.user = tmp;
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                     this.oos.writeObject(this.security
@@ -132,13 +133,17 @@ public class Connection extends Thread {
                     // alle bisherigen chats des angemeldeten nutzers mitsenden
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                     this.oos.writeObject(this.user.getChatOverview());
+                    // alle möglichen user für einen neuen chat mitgeben
+                    this.oos = new ObjectOutputStream(this.connection.getOutputStream());
+                    this.oos.writeObject(this.users.toUserlist(this.user));
                 } else { // falsches passwort
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                    this.oos.writeObject(new Message("server", "error", "Falsches Passwort", Customtime.get()));
+                    this.oos.writeObject(this.security
+                            .encryptMessage(new Message("server", "error", "Falsches Passwort", Customtime.get())));
                 }
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -147,7 +152,8 @@ public class Connection extends Thread {
             // prüfen ob nutzer bereits existiert
             if (this.users.getUser(msg.getSender()) != null) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "error", "Nutzer existiert bereits.", Customtime.get()));
+                this.oos.writeObject(this.security
+                        .encryptMessage(new Message("server", "error", "Nutzer existiert bereits.", Customtime.get())));
             } else {
                 if (this.users.register(msg.getSender(), msg.getText())) { // registrierung erfolgreich
                     this.sync(msg);
@@ -155,17 +161,19 @@ public class Connection extends Thread {
                     this.user = this.users.getUser(msg.getSender());
                     this.user.login(msg.getText(), this);
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                    this.oos.writeObject(
-                            new Message("server", "SUCCESS", "Registriert und angemeldet.", Customtime.get()));
+                    this.oos.writeObject(this.security.encryptMessage(
+                            new Message("server", "SUCCESS", "Registriert und angemeldet.", Customtime.get())));
+                    this.oos = new ObjectOutputStream(this.connection.getOutputStream());
+                    this.oos.writeObject(this.users.toUserlist(this.user));
                     System.out.println(msg.getSender() + " hat sich registriert und angemeldet.");
                 } else { // fehlschlag
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                    this.oos.writeObject(
-                            new Message("server", "error", "Registrierung fehlgeschlagen", Customtime.get()));
+                    this.oos.writeObject(this.security.encryptMessage(
+                            new Message("server", "error", "Registrierung fehlgeschlagen", Customtime.get())));
                 }
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -180,18 +188,19 @@ public class Connection extends Thread {
                 this.user = null;
                 this.connections.remove(this);
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "SUCCESS", "Abgemeldet.", Customtime.get()));
+                this.oos.writeObject(
+                        this.security.encryptMessage(new Message("server", "LOGOUT", "Abgemeldet.", Customtime.get())));
                 // verbindungen schließen
                 this.oos.close();
                 this.ois.close();
                 this.connection.close();
             } else { // nicht angemeldet
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(
-                        new Message("server", "error", "Abmelden geht nur für angemeldete Nutzer", Customtime.get()));
+                this.oos.writeObject(this.security.encryptMessage(
+                        new Message("server", "error", "Abmelden geht nur für angemeldete Nutzer", Customtime.get())));
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -201,20 +210,20 @@ public class Connection extends Thread {
             ArrayList<User> receivers = this.users.toUserArray(msg.getText());
             if (receivers == null) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(
-                        new Message("server", "error", "Fehler beim Suchen der Nutzer.", Customtime.get()));
+                this.oos.writeObject(this.security.encryptMessage(
+                        new Message("server", "error", "Fehler beim Suchen der Nutzer.", Customtime.get())));
             } else if (receivers.size() == 0) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(
-                        new Message("server", "error", "Nutzer konnten nicht gefunden werden.", Customtime.get()));
+                this.oos.writeObject(this.security.encryptMessage(
+                        new Message("server", "error", "Nutzer konnten nicht gefunden werden.", Customtime.get())));
             } else if (receivers.contains(this.user)) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "error",
-                        "Man kann sich nicht selber zu einem Chat hinzufügen.", Customtime.get()));
+                this.oos.writeObject(this.security.encryptMessage(new Message("server", "error",
+                        "Man kann sich nicht selber zu einem Chat hinzufügen.", Customtime.get())));
             } else if (this.user.getActiveChat() != null) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(
-                        new Message("server", "error", "Erst bisherigen Chat verlassen.", Customtime.get()));
+                this.oos.writeObject(this.security.encryptMessage(
+                        new Message("server", "error", "Erst bisherigen Chat verlassen.", Customtime.get())));
             } else {
                 this.sync(msg);
                 receivers.add(this.user);
@@ -226,20 +235,20 @@ public class Connection extends Thread {
                     }
                     this.user.setActiveChat(c);
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                    this.oos.writeObject(
-                            new Message("server", "NEWCHAT", "Es wurde ein neuer Chat begonnen.", Customtime.get()));
+                    this.oos.writeObject(this.security.encryptMessage(
+                            new Message("server", "NEWCHAT", "Es wurde ein neuer Chat begonnen.", Customtime.get())));
                 } else {
                     this.user.setActiveChat(c);
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                    this.oos.writeObject(
-                            new Message("server", "LOADCHAT", "Chatverlauf wird geladen", Customtime.get()));
+                    this.oos.writeObject(this.security.encryptMessage(
+                            new Message("server", "LOADCHAT", "Chatverlauf wird geladen", Customtime.get())));
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                     this.oos.writeObject(c.getChat());
                 }
             }
 
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -248,22 +257,24 @@ public class Connection extends Thread {
         try {
             if (this.user == null) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "error", "Nicht angemeldet.", Customtime.get()));
+                this.oos.writeObject(this.security
+                        .encryptMessage(new Message("server", "error", "Nicht angemeldet.", Customtime.get())));
             } else if (this.user.getActiveChat() == null) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "error", "Chat nicht gefunden.", Customtime.get()));
+                this.oos.writeObject(this.security
+                        .encryptMessage(new Message("server", "error", "Chat nicht gefunden.", Customtime.get())));
             } else {
                 Date time = Customtime.get();
                 msg.setTime(time);
                 this.user.write(msg);
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-                this.oos.writeObject(new Message("server", "SENT",
-                        sdf.format(time) + " " + msg.getSender() + ": " + msg.getText(), Customtime.get()));
+                this.oos.writeObject(this.security.encryptMessage(new Message("server", "SENT",
+                        sdf.format(time) + " " + msg.getSender() + ": " + msg.getText(), Customtime.get())));
                 this.sync(msg);
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -271,27 +282,30 @@ public class Connection extends Thread {
         try {
             if (this.user == null) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "error", "Nicht angemeldet.", Customtime.get()));
+                this.oos.writeObject(this.security
+                        .encryptMessage(new Message("server", "error", "Nicht angemeldet.", Customtime.get())));
             } else if (this.user.getActiveChat() == null) {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "error", "Kein aktiver Chat gefunden.", Customtime.get()));
+                this.oos.writeObject(this.security.encryptMessage(
+                        new Message("server", "error", "Kein aktiver Chat gefunden.", Customtime.get())));
             } else {
                 this.sync(new Message(this.user.getKennung(), "LEAVE", "", Customtime.get()));
                 this.user.leaveChat();
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "LEFT", "Chat verlassen.", Customtime.get()));
+                this.oos.writeObject(this.security
+                        .encryptMessage(new Message("server", "LEFT", "Chat verlassen.", Customtime.get())));
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
     public void send(Message msg) {
         try {
             this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-            this.oos.writeObject(msg);
+            this.oos.writeObject(this.security.encryptMessage(msg));
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -325,6 +339,7 @@ public class Connection extends Thread {
 
     private void serverregister(Message msg) {
         this.users.adduser(new User(msg.getSender(), msg.getText()));
+        System.out.println(msg.getSender() + " hat sich registriert und angemeldet.");
     }
 
     private void serverconnect(Message msg) {
@@ -374,7 +389,7 @@ public class Connection extends Thread {
             boolean done = false;
             while (!done) {
                 this.ois = new ObjectInputStream(this.connection.getInputStream());
-                Message msg = (Message) this.ois.readObject();
+                Message msg = this.security.decryptMessage((Message) this.ois.readObject());
                 if (msg.getType().equals("DONE")) {
                     done = true;
                     System.out.println(msg.getText());
@@ -392,7 +407,7 @@ public class Connection extends Thread {
                 }
             }
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -400,14 +415,16 @@ public class Connection extends Thread {
         try {
             this.serverconnection = true;
             this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-            this.oos.writeObject(new Message("server", "INIT", "Starting init...", Customtime.get()));
+            this.oos.writeObject(
+                    this.security.encryptMessage(new Message("server", "INIT", "Starting init...", Customtime.get())));
             // chats senden
             ArrayList<Chat> chats = this.getAllChats();
             for (int i = 0; i < chats.size(); i++) {
                 Chat chat = chats.get(i);
                 // send users
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "NEWCHAT", this.chatuserstring(chat), Customtime.get()));
+                this.oos.writeObject(this.security
+                        .encryptMessage(new Message("server", "NEWCHAT", this.chatuserstring(chat), Customtime.get())));
                 // send messages
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 this.oos.writeObject(chat.getChat());
@@ -421,15 +438,16 @@ public class Connection extends Thread {
                         tmp = u.getActiveChat().getChatPartner(u).getKennung();
                     }
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                    this.oos.writeObject(new Message(u.getKennung(), "ONLINE", tmp, Customtime.get()));
+                    this.oos.writeObject(
+                            this.security.encryptMessage(new Message(u.getKennung(), "ONLINE", tmp, Customtime.get())));
                 }
             }
             // mitteilen dass init zuende ist
             this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-            this.oos.writeObject(
-                    new Message("server", "DONE", "Initialized " + chats.size() + " chats.", Customtime.get()));
+            this.oos.writeObject(this.security.encryptMessage(
+                    new Message("server", "DONE", "Initialized " + chats.size() + " chats.", Customtime.get())));
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 

@@ -8,10 +8,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import javax.sound.sampled.SourceDataLine;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -27,27 +25,24 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-import com.google.api.SystemParameter;
-
-import chatsystemerweiterung.GUI.Listen;
 import chatsystemerweiterung.database_firestore.saveData;
 import chatsystemerweiterung.rsa.Security;
 import chatsystemerweiterung.server.Customtime;
 import chatsystemerweiterung.server.Message;
-import chatsystemerweiterung.server.User;
 
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ChatFenster extends JFrame {
+	private static final long serialVersionUID = 2572190480168115289L;
 
 	private Socket connection;
 	protected static JTextField tf_message;
 	private static JButton btn_sendMessage;
 	private static JMenuBar mnbr_chat;
 	private static JMenu mnu_chatInfo;
-	private static JMenuItem mnuitm_account;
 	private static JMenuItem mnuitm_logout;
 	private static JMenuItem mnuitm_chatOverview;
 	private static JPanel pnl_main;
@@ -59,32 +54,43 @@ public class ChatFenster extends JFrame {
 	private static Border greenborder;
 	private static Border blackborder;
 	private static JPanel pnl_messages;
-	private static JTextArea ta_Messages;
-	private static Border blackline;
+	private JTextArea ta_Messages;
 	private static JButton btn_emojis;
-	private static JFrame frm_chatwindow;
-
-	private boolean end;
-	private ObjectOutputStream oos;
-	private ObjectInputStream ois;
 
 	private ArrayList<Message> chat;
-	private String user, partner;
+	private String user, partner, chatname;
 	private SimpleDateFormat sdf;
 
 	private saveData save;
 	private Security security;
+	private ArrayList<String> chats, users;
 
-	public ChatFenster(Socket con, String user) {
-		super("Chat Window");
+	public ChatFenster(Socket con, String user, ArrayList<Message> chat, String chatname, ArrayList<String> chats,
+			ArrayList<String> users) {
+		this.chats = chats;
+		this.users = users;
 		this.sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-		connection = con;
-		this.user = user;
-		partner = "LB";
-		end = false;
+		this.chat = chat;
 		ta_Messages = new JTextArea();
+		if (this.chat == null) {
+			this.chat = new ArrayList<Message>();
+		} else {
+			this.initChat();
+		}
+		this.chatname = chatname;
+		this.setTitle("Chat with " + this.chatname);
+		this.connection = con;
+		this.user = user;
 		save = new saveData();
 		this.security = new Security();
+		this.build();
+	}
+
+	private void initChat() {
+		for (Message msg : this.chat) {
+			this.ta_Messages.setText(this.ta_Messages.getText() + this.sdf.format(msg.getTime()) + " " + msg.getSender()
+					+ ": " + msg.getText() + '\n');
+		}
 	}
 
 	public void sent(Message text) {
@@ -99,44 +105,11 @@ public class ChatFenster extends JFrame {
 	public void printMsg(Message msg) {
 		ta_Messages.append(this.sdf.format(msg.getTime()) + " " + msg.getSender() + ": " + msg.getText() + '\n');
 		ta_Messages.setCaretPosition(ta_Messages.getDocument().getLength());
-		System.out.println(this.sdf.format(msg.getTime()) + " " + msg.getSender() + ": " + msg.getText());
 		save.saveChat(partner, user, msg.getText(), (String) this.sdf.format(msg.getTime()));
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public void build() {
-
-		// Verbindung zum anderen Chatpartner aufbauen
-		try {
-			this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-			// kennung einlesen --> Hardgecoded für anfang
-			// System.out.println("Kennung ihres Chatpartners eingeben:");
-			// String p = this.console.readLine();
-			// chat aufbauen
-			Message msg = this.security.encryptMessage(new Message(user, "CONNECT", partner, Customtime.get()));
-			this.oos.writeObject(msg);
-			// wenn erfolgreich, dann angemeldeten nutzer setzen
-			this.ois = new ObjectInputStream(this.connection.getInputStream());
-			Message ans = (Message) ois.readObject();
-
-			if (ans.getType().equals("NEWCHAT")) {
-				System.out.println(ans.getText());
-				System.out.println("Neuer Chat generiert. LosChatten");
-			} else if (ans.getType().equals("LOADCHAT")) {
-				System.out.println(ans.getText());
-				System.out.println("Chat schon vorhanden. Chathistorie laden");
-				this.ois = new ObjectInputStream(this.connection.getInputStream());
-				this.chat = (ArrayList<Message>) ois.readObject();
-			} else {
-				System.out.println(ans.getText());
-			}
-
-		} catch (IOException e) {
-			System.err.println(e);
-		} catch (ClassNotFoundException e) {
-			System.err.println(e);
-		}
 
 		JFrame frm_chatwindow = new JFrame();
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -149,29 +122,10 @@ public class ChatFenster extends JFrame {
 		pnl_messages = new JPanel(new GridLayout(1, 1));
 		pnl_bottom = new JPanel();
 		pnl_bottom.setLayout(new BoxLayout(pnl_bottom, BoxLayout.LINE_AXIS));
-		mnbr_chat = new JMenuBar();
-		mnuitm_logout = new JMenuItem("Logout");
-		mnuitm_account = new JMenuItem("Account");
-		mnuitm_chatOverview = new JMenuItem("Chat Übersicht");
-		mnu_chatInfo = new JMenu("Menü");
-		this.setJMenuBar(mnbr_chat);
-		mnu_chatInfo.add(mnuitm_account);
-		mnu_chatInfo.add(mnuitm_logout);
-		mnu_chatInfo.add(mnuitm_chatOverview);
-		mnbr_chat.add(mnu_chatInfo);
-
 		ta_Messages.setBorder(blackborder);
 		ta_Messages.setEditable(false);
-		mnbr_chat.setFont(new Font("Calibri", Font.BOLD, 20));
-		mnbr_chat.setForeground(new Color(255, 255, 255));
-		mnu_chatInfo.setFont(new Font("Calibri", Font.BOLD, 20));
-		mnu_chatInfo.setForeground(new Color(0, 0, 0));
-		mnuitm_logout.setFont(new Font("Calibri", Font.BOLD, 20));
-		mnuitm_logout.setForeground(new Color(0, 0, 0));
-		mnuitm_account.setFont(new Font("Calibri", Font.BOLD, 20));
-		mnuitm_account.setForeground(new Color(0, 0, 0));
-		mnuitm_chatOverview.setFont(new Font("Calibri", Font.BOLD, 20));
-		mnuitm_chatOverview.setForeground(new Color(0, 0, 0));
+
+		this.initMenu();
 
 		lbl_title = new JLabel("Chat Program");
 		lbl_title.setForeground(new Color(255, 255, 255));
@@ -235,7 +189,7 @@ public class ChatFenster extends JFrame {
 						oos.writeObject(msg);
 
 					} catch (IOException err) {
-						System.err.println(err);
+						err.printStackTrace();
 					}
 				}
 			}
@@ -246,7 +200,7 @@ public class ChatFenster extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				EmojiOverview emojiWindow = new EmojiOverview();
+				new EmojiOverview();
 				frm_chatwindow.setVisible(false);
 			}
 
@@ -254,15 +208,68 @@ public class ChatFenster extends JFrame {
 
 		Listen listen = new Listen(connection, this);
 		listen.start();
-
 		this.getContentPane().add(pnl_main);
 		this.setSize(500, 500);
 		this.setVisible(true);
 	}
 
-	// public static void main(String[] args) {
-	// ChatFenster f1 =new ChatFenster();
+	private void initMenu() {
+		mnbr_chat = new JMenuBar();
+		mnuitm_logout = new JMenuItem("Logout");
+		mnuitm_logout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				logout();
+			}
+		});
+		mnuitm_chatOverview = new JMenuItem("Chat Übersicht");
+		mnuitm_chatOverview.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				backtochat();
+			}
 
-	// }
+		});
+		mnu_chatInfo = new JMenu("Menü");
+		this.setJMenuBar(mnbr_chat);
+		mnu_chatInfo.add(mnuitm_logout);
+		mnu_chatInfo.add(mnuitm_chatOverview);
+		mnbr_chat.add(mnu_chatInfo);
+		mnbr_chat.setFont(new Font("Calibri", Font.BOLD, 20));
+		mnbr_chat.setForeground(new Color(255, 255, 255));
+		mnu_chatInfo.setFont(new Font("Calibri", Font.BOLD, 20));
+		mnu_chatInfo.setForeground(new Color(0, 0, 0));
+		mnuitm_logout.setFont(new Font("Calibri", Font.BOLD, 20));
+		mnuitm_logout.setForeground(new Color(0, 0, 0));
+		mnuitm_chatOverview.setFont(new Font("Calibri", Font.BOLD, 20));
+		mnuitm_chatOverview.setForeground(new Color(0, 0, 0));
+	}
+
+	private void logout() {
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(this.connection.getOutputStream());
+			oos.writeObject(this.security.encryptMessage(new Message(this.user, "LOGOUT", "", new Date())));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onLogout() {
+		this.dispose();
+	}
+
+	private void backtochat() {
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(this.connection.getOutputStream());
+			oos.writeObject(this.security.encryptMessage(new Message(this.user, "LEAVE", "", new Date())));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onLeft() {
+		this.dispose();
+		new ChatOverview(this.connection, this.user, this.chats, this.users);
+	}
 
 }
