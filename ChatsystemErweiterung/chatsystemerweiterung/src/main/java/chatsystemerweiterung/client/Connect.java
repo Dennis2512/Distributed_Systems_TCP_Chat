@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import chatsystemerweiterung.rsa.Security;
 import chatsystemerweiterung.server.Customtime;
 import chatsystemerweiterung.server.Message;
 
@@ -16,11 +17,13 @@ public class Connect extends Thread {
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private ArrayList<Message> chat;
+    private Security security;
 
     public Connect(Socket connection, String user) {
         this.console = new BufferedReader(new InputStreamReader(System.in));
         this.connection = connection;
         this.user = user;
+        this.security = new Security();
     }
 
     @SuppressWarnings("unchecked")
@@ -32,10 +35,10 @@ public class Connect extends Thread {
                 System.out.println("Kennung ihres Chatpartners eingeben:");
                 String p = this.console.readLine();
                 // chat aufbauen
-                this.oos.writeObject(new Message(user, "CONNECT", p, Customtime.get()));
+                this.oos.writeObject(this.security.encryptMessage(new Message(user, "CONNECT", p, Customtime.get())));
                 // wenn erfolgreich, dann angemeldeten nutzer setzen
                 this.ois = new ObjectInputStream(this.connection.getInputStream());
-                Message ans = (Message) ois.readObject();
+                Message ans = this.security.decryptMessage((Message) ois.readObject());
                 if (ans.getType().equals("NEWCHAT")) {
                     this.partner = p;
                     System.out.println(ans.getText());
@@ -49,9 +52,9 @@ public class Connect extends Thread {
                 }
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 

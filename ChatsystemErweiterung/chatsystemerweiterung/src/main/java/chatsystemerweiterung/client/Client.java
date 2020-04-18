@@ -75,14 +75,14 @@ public class Client {
             }
 
         } catch (InterruptedException e) {
-            System.err.println(e);
+            e.printStackTrace();
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         } finally {
             try {
                 connection.close();
             } catch (IOException e) {
-                System.err.println(e);
+                e.printStackTrace();
             }
         }
 

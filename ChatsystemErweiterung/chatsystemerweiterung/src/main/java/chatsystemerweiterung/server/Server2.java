@@ -39,7 +39,7 @@ public class Server2 {
             }
 
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         } finally {
             server.close();
         }

@@ -1,7 +1,7 @@
 package chatsystemerweiterung.GUI;
 
+import chatsystemerweiterung.rsa.Security;
 import chatsystemerweiterung.server.Message;
-import chatsystemerweiterung.server.User;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -19,7 +19,6 @@ import java.util.Date;
 
 public class Login extends JFrame {
 
-  private ChatFenster cF;
   private static final long serialVersionUID = -3535356855875972122L;
   private JLabel lbl_kennung;
   private JLabel lbl_password;
@@ -47,9 +46,11 @@ public class Login extends JFrame {
   private ObjectOutputStream oos;
   // information to keep around
   private Socket connection;
+  private Security security;
 
   public Login(Socket con) {
     this.connection = con;
+    this.security = new Security();
   }
 
   public void build(Socket con) {
@@ -161,34 +162,33 @@ public class Login extends JFrame {
 
         String kennung = tf_kennung.getText();
         String password = String.valueOf(tf_password.getPassword());
-
+        Message msg = security.encryptMessage(new Message(kennung, "LOGIN", password, new Date()));
         // versucht sich mit den gelesenen Infos anzumelden
         try {
           oos = new ObjectOutputStream(connection.getOutputStream());
-          oos.writeObject(new Message(kennung, "LOGIN", password, new Date()));
+          oos.writeObject(msg);
           // wenn erfolgreich, dann angemeldeten nutzer setzen
           ois = new ObjectInputStream(connection.getInputStream());
-          Message ans = (Message) ois.readObject();
-
-          if (ans.getType().equals("SUCCESS")) {
+          Message decryptedmsg = security.decryptMessage((Message) ois.readObject());
+          if (decryptedmsg.getType().equals("SUCCESS")) {
             // hier wird der string für die übersicht geholt
             ois = new ObjectInputStream(connection.getInputStream());
             ArrayList<String> chats = (ArrayList<String>) ois.readObject();
-
-            cF = new ChatFenster(connection, kennung);
-            cF.build();
-
+            ois = new ObjectInputStream(connection.getInputStream());
+            ArrayList<String> users = (ArrayList<String>) ois.readObject();
             loginFenster.dispose();
-            JOptionPane.showMessageDialog(loginFenster, "Angemeldet als " + kennung);
+            // starten chat overview
+            new ChatOverview(connection, kennung, chats, users);
+
           } else {
             tf_kennung.setBackground(new Color(255, 107, 107));
             tf_password.setBackground(new Color(255, 107, 107));
             kennung = "";
             password = "";
-            JOptionPane.showMessageDialog(loginFenster, ans.getText());
+            JOptionPane.showMessageDialog(loginFenster, decryptedmsg.getText());
           }
         } catch (IOException e) {
-          System.err.println(e);
+          e.printStackTrace();
         } catch (ClassNotFoundException e) {
           e.printStackTrace();
         }
@@ -199,6 +199,7 @@ public class Login extends JFrame {
     btn_register.addActionListener(new ActionListener() {
 
       @Override
+      @SuppressWarnings("unchecked")
       public void actionPerformed(ActionEvent e) {
         String kennung = tf_kennung.getText().toString();
         String passwordCleartext = String.valueOf(tf_password.getPassword());
@@ -208,24 +209,26 @@ public class Login extends JFrame {
           oos = new ObjectOutputStream(connection.getOutputStream());
 
           // versuchen mit kennung und password anzumelden
-          oos.writeObject(new Message(kennung, "REGISTER", passwordCleartext, new Date()));
+          oos.writeObject(security.encryptMessage(new Message(kennung, "REGISTER", passwordCleartext, new Date())));
           // wenn erfolgreich, dann angemeldeten nutzer setzen
           ois = new ObjectInputStream(connection.getInputStream());
 
-          Message ans = (Message) ois.readObject();
+          Message ans = security.decryptMessage((Message) ois.readObject());
 
           // wenn erfolgreich Login-Fenster schließen und Chatfenster öffnen
           if (ans.getType().equals("SUCCESS")) {
-            // ChatFenster chatwindow = new ChatFenster();
-            // loginFenster.dispose();
-            JOptionPane.showMessageDialog(loginFenster, "Registrierung erfolgreich");
+            ois = new ObjectInputStream(connection.getInputStream());
+            ArrayList<String> users = (ArrayList<String>) ois.readObject();
+            loginFenster.dispose();
+            // starten chat overview
+            new ChatOverview(connection, kennung, new ArrayList<String>(), users);
           } else {
             tf_kennung.setBackground(new Color(255, 107, 107));
             tf_password.setBackground(new Color(255, 107, 107));
             JOptionPane.showMessageDialog(loginFenster, ans.getText());
           }
         } catch (IOException ex) {
-          System.err.println(ex);
+          ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
           ex.printStackTrace();
         }

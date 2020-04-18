@@ -13,14 +13,14 @@ public class Users {
     private ArrayList<User> users;
 
     public Users() throws IOException {
-        // this.filepath = Paths.get("").toAbsolutePath().normalize().toString();
-        // if (!this.filepath.contains("ChatsystemErweiterung")) {
-        // this.filepath += "\\ChatsystemErweiterung";
-        // }
-        // this.filepath += "\\users.txt";
-        // this.userfile = new File(this.filepath);
+        this.filepath = Paths.get("").toAbsolutePath().normalize().toString();
+        if (!this.filepath.contains("ChatsystemErweiterung")) {
+            this.filepath += "\\ChatsystemErweiterung";
+        }
+        this.filepath += "\\users.txt";
+        this.userfile = new File(this.filepath);
 
-        this.userfile = new File("./ChatsystemErweiterung/users.txt");
+        this.userfile = new File(this.filepath);
         this.users = new ArrayList<User>();
         this.writer = new BufferedWriter(new FileWriter(userfile, true));
         this.init();
@@ -61,7 +61,7 @@ public class Users {
             this.users.add(new User(kennung, password));
             return true;
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
             System.out.println("Error while register");
             return false;
         }
@@ -104,4 +104,12 @@ public class Users {
         return list;
     }
 
+    public ArrayList<String> toUserlist(User user) {
+        ArrayList<String> list = new ArrayList<String>();
+        for (User u : this.users) {
+            if (user != u)
+                list.add(u.getKennung());
+        }
+        return list;
+    }
 }

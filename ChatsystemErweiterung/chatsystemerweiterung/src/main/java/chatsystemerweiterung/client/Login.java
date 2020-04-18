@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import chatsystemerweiterung.rsa.Security;
 import chatsystemerweiterung.server.Customtime;
 import chatsystemerweiterung.server.Message;
 
@@ -14,10 +15,12 @@ public class Login extends Thread {
     private ObjectOutputStream oos;
     private String kennung;
     private Socket connection;
+    private Security security;
 
     public Login(Socket connection) {
         this.console = new BufferedReader(new InputStreamReader(System.in));
         this.connection = connection;
+        this.security = new Security();
     }
 
     @SuppressWarnings("unchecked")
@@ -32,11 +35,11 @@ public class Login extends Thread {
                 System.out.println("Password:");
                 String p = this.console.readLine();
                 // versuchen mit kennung und password anzumelden
-                this.oos.writeObject(new Message(k, "LOGIN", p, Customtime.get()));
+                this.oos.writeObject(this.security.encryptMessage(new Message(k, "LOGIN", p, Customtime.get())));
                 // wenn erfolgreich, dann angemeldeten nutzer setzen
                 this.ois = new ObjectInputStream(this.connection.getInputStream());
 
-                Message ans = (Message) this.ois.readObject();
+                Message ans = this.security.decryptMessage((Message) this.ois.readObject());
                 if (ans.getType().equals("SUCCESS")) {
                     this.kennung = k;
                     System.out.println("Angemeldet als " + this.kennung);
@@ -48,9 +51,9 @@ public class Login extends Thread {
                 }
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 

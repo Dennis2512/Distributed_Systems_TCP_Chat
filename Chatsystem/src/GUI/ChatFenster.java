@@ -22,6 +22,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import java.awt.GraphicsEnvironment;
+import java.awt.*;
+import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.io.*;
+
+
 
 public class ChatFenster extends JFrame {
 
@@ -44,7 +51,10 @@ public class ChatFenster extends JFrame {
 	private static JTextArea ta_Messages;
     private static Border blackline;
     private static JButton btn_emojis;
-    private static JFrame frm_chatwindow;
+	private static JFrame frm_chatwindow;
+	private static Font customFont;
+	private static InputStream stream;
+
 	
 	
 	public ChatFenster() {
@@ -60,6 +70,27 @@ public class ChatFenster extends JFrame {
 		pnl_messages = new JPanel(new GridLayout(1, 1));
 		pnl_bottom = new JPanel();
 		pnl_bottom.setLayout(new BoxLayout(pnl_bottom, BoxLayout.LINE_AXIS));
+
+		try {
+			
+
+		//Alternative 1
+			/*stream = this.getClass().getResourceAsStream("/assets/seguiemj.ttf");
+			customFont= Font.createFont(Font.TRUETYPE_FONT, stream);
+		   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		   ge.registerFont(customFont);
+		   stream.close();
+		   */
+		  customFont = Font.createFont(Font.TRUETYPE_FONT, new File("Chatsystem\\assets\\seguiemj.ttf")).deriveFont(12f);
+          GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+          ge.registerFont(customFont);
+	 } catch (IOException e) {
+		   e.printStackTrace();
+	   }catch(FontFormatException ef) {
+		   ef.printStackTrace();
+	  }
+
+
 		mnbr_chat = new JMenuBar();
 		mnuitm_logout = new JMenuItem("Logout");
 		mnuitm_account = new JMenuItem("Account");
@@ -74,6 +105,7 @@ public class ChatFenster extends JFrame {
 		ta_Messages = new JTextArea();
 		ta_Messages.setBorder(blackborder);
 		ta_Messages.setEditable(false);
+	ta_Messages.setFont(customFont.deriveFont(18.0f));
 		mnbr_chat.setFont(new Font("Calibri", Font.BOLD, 20));
 		mnbr_chat.setForeground(new Color(255, 255, 255));
 		mnu_chatInfo.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -101,7 +133,7 @@ public class ChatFenster extends JFrame {
         btn_emojis.setForeground(new Color(255, 255, 255));
         btn_emojis.setFont(new Font("Calibri", Font.BOLD, 30));
 		tf_message = new JTextField();
-		tf_message.setFont(new Font("Calibri", Font.BOLD, 30));
+		tf_message.setFont(customFont);
 		tf_message.setBorder(greenborder);
 		pnl_top.add(lbl_title);
 		pnl_messages.add(ta_Messages);
@@ -148,7 +180,7 @@ public class ChatFenster extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e){
 					EmojiOverview emojiWindow = new EmojiOverview();
-					frm_chatwindow.setVisible(false);
+					frm_chatwindow.dispose();
 				}
 				
 			});
@@ -160,13 +192,13 @@ public class ChatFenster extends JFrame {
 	
 	
 	
-	//public static void main(String[] args) {
-	//	ChatFenster f1 =new ChatFenster();
+	public static void main(String[] args) {
+	ChatFenster f1 =new ChatFenster();
 		
 		
 	
 		
-	//}
+	}
 	
 	
 }
