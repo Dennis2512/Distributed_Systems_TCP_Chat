@@ -4,412 +4,166 @@ import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.vdurmont.emoji.EmojiParser;
 
 public class EmojiOverview extends JFrame {
 
     private static JPanel pnl_emojisOverview;
-    private static JButton btn_relieved;
-    private static JButton btn_pray;
-    private static JButton btn_violin;
-    private static JButton btn_angry;
-    private static JButton btn_monocle;
-    private static JButton btn_point_up;
-    private static JButton btn_ok;
-    private static JButton btn_angel;
-    private static JButton btn_happy;
-    private static JButton btn_shush;
-    private static JButton btn_think;
-    private static JButton btn_money;
-    private static JButton btn_sweat;
-    private static JButton btn_loveeyes;
-    private static JButton btn_pensive;
-    private static JButton btn_fit;
-    private static JButton btn_brokenHeart;
-    private static JButton btn_rollingEyes;
-    private static JButton btn_inLove;
-    private static JButton btn_unhappy;
-    private static JButton btn_shruggin;
-    private static JButton btn_heart;
-    private static JButton btn_pointRight;
-    private static JButton btn_djinn;
-    private static JButton btn_grim;
-    private static JButton btn_cry;
-    private static JButton btn_moon;
-    private static JButton btn_pointLeft;
-    private static JButton btn_callMe;
-    private static JButton btn_mustache;
-    private static JButton btn_rofl;
-    private static JButton btn_thumb;
+    private static JButton btn_smiley;
     private static JButton btn_smile;
-    private static JButton btn_joy;
-    private static JButton btn_heartYellow;
-    private static JButton btn_heartBlack;
-    private static JButton btn_anotherSmile;
-    private static JButton btn_fullMoon;
-    private static JButton btn_grin;
-    private static JButton btn_sun;
-    private static JButton btn_thumbDown;
-    private static JButton btn_tongueOut;
-    private static JButton btn_100;
+    private static JButton btn_grinning;
+    private static JButton btn_blush;
     private static JButton btn_wink;
+    private static JButton btn_heart_eyes;
+    private static JButton btn_kissing_heart;
+    private static JButton btn_kissing_closed_eyes;
+    private static JButton btn_kissing;
+    private static JButton btn_kissing_smiling_eyes;
+    private static JButton btn_stuck_out_tongue_winking_eye;
+    private static JButton btn_stuck_out_tongue_closed_eyes;
+    private static JButton btn_stuck_out_tongue;
+    private static JButton btn_flushed;
+    private static JButton btn_grin;
+    private static JButton btn_pensive;
+    private static JButton btn_relieved;
+    private static JButton btn_unamused;
+    private static JButton btn_disappointed;
+    private static JButton btn_persevere;
+    private static JButton btn_cry;
+    private static JButton btn_joy;
+    private static JButton btn_sob;
+    private static JButton btn_sleepy;
+    private static JButton btn_disappointed_relieved;
+    private static JButton btn_cold_sweat;
+    private static JButton btn_sweat_smile;
+    private static JButton btn_sweat;
+    private static JButton btn_weary;
+    private static JButton btn_tired_face;
+    private static JButton btn_fearful;
+    private static JButton btn_scream;
+    private static JButton btn_angry;
+    private static JButton btn_rage;
+    private static JButton btn_triumph;
+    private static JButton btn_confounded;
+    private static JButton btn_moneyFace;
+    private static JButton btn_yum;
+    private static JButton btn_mask;
     private static JButton btn_sunglasses;
-    private static JButton btn_glasses;
-    private static JButton btn_party;
+    private static JButton btn_sleeping;
+    private static JButton btn_dizzyFace;
+    private static JButton btn_astonished;
+    private static JButton btn_worried;
+    private static JButton btn_frowning;
+    private static JButton btn_anguished;
+    private static JButton btn_smiling_imp;
 
     public EmojiOverview() {
-
+        super("Emojis Overview");
         pnl_emojisOverview = new JPanel(new GridLayout(5, 10, 1, 1));
 
         // Initialize Buttons in Grid
-        btn_relieved = new JButton(emojiFinder.emojis[0]);
-        btn_pray = new JButton(emojiFinder.emojis[1]);
-        btn_violin = new JButton(emojiFinder.emojis[2]);
-        btn_angry = new JButton(emojiFinder.emojis[3]);
-        btn_monocle = new JButton(emojiFinder.emojis[4]);
-        btn_point_up = new JButton(emojiFinder.emojis[5]);
-        btn_ok = new JButton(emojiFinder.emojis[6]);
-        btn_angel = new JButton(emojiFinder.emojis[7]);
-        btn_happy = new JButton(emojiFinder.emojis[8]);
-        btn_shush = new JButton(emojiFinder.emojis[9]);
-        btn_think = new JButton(emojiFinder.emojis[10]);
-        btn_money = new JButton(emojiFinder.emojis[11]);
-        btn_sweat = new JButton(emojiFinder.emojis[12]);
-        btn_loveeyes = new JButton(emojiFinder.emojis[13]);
-        btn_pensive = new JButton(emojiFinder.emojis[14]);
-        btn_fit = new JButton(emojiFinder.emojis[15]);
-        btn_brokenHeart = new JButton(emojiFinder.emojis[16]);
-        btn_rollingEyes = new JButton(emojiFinder.emojis[17]);
-        btn_inLove = new JButton(emojiFinder.emojis[18]);
-        btn_unhappy = new JButton(emojiFinder.emojis[19]);
-        btn_shruggin = new JButton(emojiFinder.emojis[20]);
-        btn_heart = new JButton(emojiFinder.emojis[21]);
-        btn_pointRight = new JButton(emojiFinder.emojis[22]);
-        btn_djinn = new JButton(emojiFinder.emojis[23]);
-        btn_grim = new JButton(emojiFinder.emojis[24]);
-        btn_cry = new JButton(emojiFinder.emojis[25]);
-        btn_moon = new JButton(emojiFinder.emojis[26]);
-        btn_pointLeft = new JButton(emojiFinder.emojis[27]);
-        btn_callMe = new JButton(emojiFinder.emojis[28]);
-        btn_mustache = new JButton(emojiFinder.emojis[29]);
-        btn_rofl = new JButton(emojiFinder.emojis[30]);
-        btn_thumb = new JButton(emojiFinder.emojis[31]);
-        btn_smile = new JButton(emojiFinder.emojis[32]);
-        btn_joy = new JButton(emojiFinder.emojis[33]);
-        btn_heartYellow = new JButton(emojiFinder.emojis[34]);
-        btn_heartBlack = new JButton(emojiFinder.emojis[35]);
-        btn_anotherSmile = new JButton(emojiFinder.emojis[36]);
-        btn_fullMoon = new JButton(emojiFinder.emojis[37]);
-        btn_grin = new JButton(emojiFinder.emojis[38]);
-        btn_sun = new JButton(emojiFinder.emojis[39]);
-        btn_thumbDown = new JButton(emojiFinder.emojis[40]);
-        btn_tongueOut = new JButton(emojiFinder.emojis[41]);
-        btn_100 = new JButton(emojiFinder.emojis[42]);
-        btn_wink = new JButton(emojiFinder.emojis[43]);
-        btn_sunglasses = new JButton(emojiFinder.emojis[44]);
-        btn_glasses = new JButton(emojiFinder.emojis[45]);
-        btn_party = new JButton(emojiFinder.emojis[46]);
+        btn_smiley = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[0]));
+        btn_smile = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[1]));
+        btn_grinning = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[2]));
+        btn_blush = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[3]));
+        btn_wink = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[4]));
+        btn_heart_eyes = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[5]));
+        btn_kissing_heart = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[6]));
+        btn_kissing_closed_eyes = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[7]));
+        btn_kissing = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[8]));
+        btn_kissing_smiling_eyes = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[9]));
+        btn_stuck_out_tongue_winking_eye  = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[10]));
+        btn_stuck_out_tongue_closed_eyes = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[11]));
+        btn_stuck_out_tongue = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[12]));
+        btn_flushed = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[13]));
+        btn_grin = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[14]));
+        btn_pensive = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[15]));
+        btn_relieved = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[16]));
+        btn_unamused = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[17]));
+        btn_disappointed = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[18]));
+        btn_persevere = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[19]));
+        btn_cry = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[20]));
+        btn_joy = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[21]));
+        btn_sob = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[22]));
+        btn_sleepy = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[23]));
+        btn_disappointed_relieved = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[24]));
+        btn_cold_sweat = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[25]));
+        btn_sweat_smile = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[26]));
+        btn_sweat = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[27]));
+        btn_weary = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[28]));
+        btn_tired_face = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[29]));
+        btn_fearful = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[30]));
+        btn_scream = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[31]));
+        btn_angry = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[32]));
+        btn_rage = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[33]));
+        btn_triumph = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[34]));
+        btn_confounded = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[35]));
+        btn_moneyFace = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[36]));
+        btn_yum = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[37]));
+        btn_mask = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[38]));
+        btn_sunglasses = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[39]));
+        btn_sleeping = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[40]));
+        btn_dizzyFace = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[41]));
+        btn_astonished = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[42]));
+        btn_worried = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[43]));
+        btn_frowning = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[44]));
+        btn_anguished = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[45]));
+        btn_smiling_imp= new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[46]));
 
         // Add Buttons to Panel
-        pnl_emojisOverview.add(btn_relieved);
-        pnl_emojisOverview.add(btn_pray);
-        pnl_emojisOverview.add(btn_violin);
-        pnl_emojisOverview.add(btn_angry);
-        pnl_emojisOverview.add(btn_monocle);
-        pnl_emojisOverview.add(btn_point_up);
-        pnl_emojisOverview.add(btn_ok);
-        pnl_emojisOverview.add(btn_angel);
-        pnl_emojisOverview.add(btn_happy);
-        pnl_emojisOverview.add(btn_shush);
-        pnl_emojisOverview.add(btn_think);
-        pnl_emojisOverview.add(btn_money);
-        pnl_emojisOverview.add(btn_sweat);
-        pnl_emojisOverview.add(btn_loveeyes);
-        pnl_emojisOverview.add(btn_pensive);
-        pnl_emojisOverview.add(btn_fit);
-        pnl_emojisOverview.add(btn_brokenHeart);
-        pnl_emojisOverview.add(btn_rollingEyes);
-        pnl_emojisOverview.add(btn_inLove);
-        pnl_emojisOverview.add(btn_unhappy);
-        pnl_emojisOverview.add(btn_shruggin);
-        pnl_emojisOverview.add(btn_heart);
-        pnl_emojisOverview.add(btn_pointRight);
-        pnl_emojisOverview.add(btn_djinn);
-        pnl_emojisOverview.add(btn_grim);
-        pnl_emojisOverview.add(btn_cry);
-        pnl_emojisOverview.add(btn_moon);
-        pnl_emojisOverview.add(btn_pointLeft);
-        pnl_emojisOverview.add(btn_callMe);
-        pnl_emojisOverview.add(btn_mustache);
-        pnl_emojisOverview.add(btn_rofl);
-        pnl_emojisOverview.add(btn_thumb);
+        pnl_emojisOverview.add(btn_smiley);
         pnl_emojisOverview.add(btn_smile);
-        pnl_emojisOverview.add(btn_joy);
-        pnl_emojisOverview.add(btn_heartYellow);
-        pnl_emojisOverview.add(btn_heartBlack);
-        pnl_emojisOverview.add(btn_anotherSmile);
-        pnl_emojisOverview.add(btn_fullMoon);
-        pnl_emojisOverview.add(btn_grin);
-        pnl_emojisOverview.add(btn_sun);
-        pnl_emojisOverview.add(btn_thumbDown);
-        pnl_emojisOverview.add(btn_tongueOut);
-        pnl_emojisOverview.add(btn_100);
+        pnl_emojisOverview.add(btn_grinning);
+        pnl_emojisOverview.add(btn_blush);
         pnl_emojisOverview.add(btn_wink);
+        pnl_emojisOverview.add(btn_heart_eyes);
+        pnl_emojisOverview.add(btn_kissing_heart);
+        pnl_emojisOverview.add(btn_kissing_closed_eyes);
+        pnl_emojisOverview.add(btn_kissing);
+        pnl_emojisOverview.add(btn_kissing_smiling_eyes);
+        pnl_emojisOverview.add(btn_stuck_out_tongue_winking_eye);
+        pnl_emojisOverview.add(btn_stuck_out_tongue_closed_eyes);
+        pnl_emojisOverview.add(btn_stuck_out_tongue);
+        pnl_emojisOverview.add(btn_flushed);
+        pnl_emojisOverview.add(btn_grin);
+        pnl_emojisOverview.add(btn_pensive);
+        pnl_emojisOverview.add(btn_relieved);
+        pnl_emojisOverview.add(btn_unamused);
+        pnl_emojisOverview.add(btn_disappointed);
+        pnl_emojisOverview.add(btn_persevere);
+        pnl_emojisOverview.add(btn_cry);
+        pnl_emojisOverview.add(btn_sob);
+        pnl_emojisOverview.add(btn_joy);
+        pnl_emojisOverview.add(btn_sleepy);
+        pnl_emojisOverview.add(btn_disappointed_relieved);
+        pnl_emojisOverview.add(btn_cold_sweat);
+        pnl_emojisOverview.add(btn_sweat_smile);
+        pnl_emojisOverview.add(btn_sweat);
+        pnl_emojisOverview.add(btn_weary);
+        pnl_emojisOverview.add(btn_tired_face);
+        pnl_emojisOverview.add(btn_fearful);
+        pnl_emojisOverview.add(btn_scream);
+        pnl_emojisOverview.add(btn_angry);
+        pnl_emojisOverview.add(btn_rage);
+        pnl_emojisOverview.add(btn_triumph);
+        pnl_emojisOverview.add(btn_confounded);
+        pnl_emojisOverview.add(btn_moneyFace);
+        pnl_emojisOverview.add(btn_yum);
+        pnl_emojisOverview.add(btn_mask);
         pnl_emojisOverview.add(btn_sunglasses);
-        pnl_emojisOverview.add(btn_glasses);
-        pnl_emojisOverview.add(btn_party);
-
-        btn_relieved.addActionListener(new ActionListener() {
+        pnl_emojisOverview.add(btn_sleeping);
+        pnl_emojisOverview.add(btn_dizzyFace);
+        pnl_emojisOverview.add(btn_astonished);
+        pnl_emojisOverview.add(btn_worried);
+        pnl_emojisOverview.add(btn_frowning);
+        pnl_emojisOverview.add(btn_anguished);
+        pnl_emojisOverview.add(btn_smiling_imp);
+        btn_smiley.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String emoji = btn_relieved.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_pray.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_pray.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_violin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_violin.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_angry.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_angry.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_monocle.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_monocle.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_point_up.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_point_up.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_ok.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_ok.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_angel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_angel.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_happy.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_happy.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_shush.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_shush.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_think.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_think.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_money.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_money.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_sweat.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_sweat.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_loveeyes.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_loveeyes.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_pensive.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_pensive.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_fit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_fit.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_brokenHeart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_brokenHeart.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_rollingEyes.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_rollingEyes.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_inLove.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_inLove.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_unhappy.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_unhappy.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_shruggin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_shruggin.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_heart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_heart.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_pointRight.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-        btn_djinn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_djinn.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_grim.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_grim.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_cry.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_cry.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_moon.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_moon.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_pointLeft.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_pointLeft.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_callMe.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_callMe.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_mustache.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_mustache.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_rofl.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_rofl.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_thumb.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_thumb.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                String emoji = btn_smiley.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
             }
         });
 
@@ -417,87 +171,26 @@ public class EmojiOverview extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String emoji = btn_smile.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
             }
         });
 
-        btn_joy.addActionListener(new ActionListener() {
+        btn_grinning.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String emoji = btn_joy.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                String emoji = btn_grinning.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
             }
         });
 
-        btn_heartYellow.addActionListener(new ActionListener() {
+        btn_blush.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String emoji = btn_heartYellow.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_heartBlack.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_heartBlack.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_anotherSmile.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_anotherSmile.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_fullMoon.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_fullMoon.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_grin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_grin.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_sun.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_sun.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_thumbDown.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_thumbDown.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_tongueOut.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_tongueOut.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-            }
-        });
-
-        btn_100.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emoji = btn_100.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                String emoji = btn_blush.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
             }
         });
 
@@ -505,7 +198,350 @@ public class EmojiOverview extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String emoji = btn_wink.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_heart_eyes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_heart_eyes.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_kissing_heart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_kissing_heart.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_kissing_closed_eyes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_kissing_closed_eyes.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_kissing.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_kissing.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_kissing_smiling_eyes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_kissing_smiling_eyes.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_stuck_out_tongue_winking_eye.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_stuck_out_tongue_winking_eye.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_stuck_out_tongue_closed_eyes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_stuck_out_tongue_closed_eyes.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_stuck_out_tongue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_stuck_out_tongue.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_flushed.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_flushed.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_grin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_grin.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_pensive.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_pensive.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_relieved.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_relieved.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_unamused.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_unamused.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_disappointed.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_disappointed.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_persevere.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_persevere.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_cry.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_cry.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_sob.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_sob.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_joy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_joy.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_sleepy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_sleepy.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_disappointed_relieved.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_disappointed_relieved.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_cry.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_cry.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_cold_sweat.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_cold_sweat.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_sweat_smile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_sweat_smile.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_sweat.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_sweat.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_weary.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_weary.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_tired_face.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_tired_face.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_fearful.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_fearful.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_smile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_smile.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_joy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_joy.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_scream.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_scream.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_angry.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_angry.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_rage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_rage.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_triumph.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_triumph.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_grin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_grin.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_confounded.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_confounded.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_moneyFace.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_moneyFace.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_yum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_yum.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_mask.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_mask.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
             }
         });
 
@@ -513,26 +549,75 @@ public class EmojiOverview extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String emoji = btn_sunglasses.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
             }
         });
 
-        btn_glasses.addActionListener(new ActionListener() {
+        btn_sleeping.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String emoji = btn_glasses.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                String emoji = btn_sleeping.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
             }
         });
 
-        btn_party.addActionListener(new ActionListener() {
+        btn_dizzyFace.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String emoji = btn_party.getText();
-                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
-
+                String emoji = btn_dizzyFace.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
             }
         });
+
+        btn_astonished.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_astonished.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_worried.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_worried.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_frowning.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_frowning.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_anguished.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_anguished.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+        btn_smiling_imp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emoji = btn_smiling_imp.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + EmojiParser.parseToUnicode(emoji));
+                setVisible(false);
+            }
+        });
+
+
 
         this.getContentPane().add(pnl_emojisOverview);
         this.setSize(500, 500);

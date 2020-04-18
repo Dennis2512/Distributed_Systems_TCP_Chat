@@ -27,6 +27,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.BufferedInputStream;
 import java.io.*;
+//import com.vdurmont.emoji.EmojiParser;
 
 
 
@@ -71,17 +72,8 @@ public class ChatFenster extends JFrame {
 		pnl_bottom = new JPanel();
 		pnl_bottom.setLayout(new BoxLayout(pnl_bottom, BoxLayout.LINE_AXIS));
 
-		try {
-			
-
-		//Alternative 1
-			/*stream = this.getClass().getResourceAsStream("/assets/seguiemj.ttf");
-			customFont= Font.createFont(Font.TRUETYPE_FONT, stream);
-		   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		   ge.registerFont(customFont);
-		   stream.close();
-		   */
-		  customFont = Font.createFont(Font.TRUETYPE_FONT, new File("Chatsystem\\assets\\seguiemj.ttf")).deriveFont(12f);
+	/*	try {
+		  customFont = Font.createFont(Font.TRUETYPE_FONT, new File("Chatsystem\\assets\\seguiemj.ttf")).deriveFont(20f);
           GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
           ge.registerFont(customFont);
 	 } catch (IOException e) {
@@ -89,7 +81,7 @@ public class ChatFenster extends JFrame {
 	   }catch(FontFormatException ef) {
 		   ef.printStackTrace();
 	  }
-
+*/
 
 		mnbr_chat = new JMenuBar();
 		mnuitm_logout = new JMenuItem("Logout");
@@ -105,7 +97,7 @@ public class ChatFenster extends JFrame {
 		ta_Messages = new JTextArea();
 		ta_Messages.setBorder(blackborder);
 		ta_Messages.setEditable(false);
-	ta_Messages.setFont(customFont.deriveFont(18.0f));
+	//ta_Messages.setFont(customFont.deriveFont(18.0f));
 		mnbr_chat.setFont(new Font("Calibri", Font.BOLD, 20));
 		mnbr_chat.setForeground(new Color(255, 255, 255));
 		mnu_chatInfo.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -133,7 +125,7 @@ public class ChatFenster extends JFrame {
         btn_emojis.setForeground(new Color(255, 255, 255));
         btn_emojis.setFont(new Font("Calibri", Font.BOLD, 30));
 		tf_message = new JTextField();
-		tf_message.setFont(customFont);
+	//	tf_message.setFont(customFont);
 		tf_message.setBorder(greenborder);
 		pnl_top.add(lbl_title);
 		pnl_messages.add(ta_Messages);

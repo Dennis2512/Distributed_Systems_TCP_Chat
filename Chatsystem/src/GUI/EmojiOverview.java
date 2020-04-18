@@ -9,10 +9,10 @@ package GUI;
     import java.io.IOException;
     import java.io.File;
     import java.io.*;
+    //import com.vdurmont.emoji.EmojiParser;
 
 
 public class EmojiOverview extends JFrame{
-
 
     private static JPanel pnl_emojisOverview;
     private static JButton btn_relieved;
@@ -70,22 +70,17 @@ public class EmojiOverview extends JFrame{
 
 
     public EmojiOverview(){
-
         pnl_emojisOverview = new JPanel(new GridLayout(5, 10, 1, 1));
         
-        try {
-        //     stream = this.getClass().getResourceAsStream("/assets/seguiemj.ttf");
-		//	customFont= Font.createFont(Font.TRUETYPE_FONT, stream);
-		 //  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-         //  ge.registerFont(customFont);
-         customFont = Font.createFont(Font.TRUETYPE_FONT, new File("Chatsystem\\assets\\seguiemj.ttf")).deriveFont(12f);
+      /*  try {
+         customFont = Font.createFont(Font.TRUETYPE_FONT, new File("Chatsystem\\assets\\seguiemj.ttf")).deriveFont(20f);
          GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
          ge.registerFont(customFont);
 	   } catch (IOException e) {
 		   e.printStackTrace();
 	   } catch(FontFormatException ef) {
 		   ef.printStackTrace();
-	   }
+	   }*/
 
 
         //Initialize Buttons in Grid
@@ -139,6 +134,7 @@ public class EmojiOverview extends JFrame{
 
        
        //Set Fonts for emoji buttons
+       /*
        btn_relieved.setFont(customFont.deriveFont(18.0f));
        btn_pray.setFont(customFont.deriveFont(18.0f));
        btn_violin.setFont(customFont.deriveFont(18.0f));
@@ -186,6 +182,7 @@ public class EmojiOverview extends JFrame{
        btn_sunglasses.setFont(customFont.deriveFont(18.0f));
        btn_glasses.setFont(customFont.deriveFont(18.0f));
        btn_party.setFont(customFont.deriveFont(18.0f));
+       */
 
         //Add Buttons to Panel
         pnl_emojisOverview.add(btn_relieved);
@@ -241,6 +238,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
                 String emoji = btn_relieved.getText();
                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+               setVisible(false);
 			}
         });
 
@@ -249,6 +247,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_pray.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -257,6 +256,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_violin.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -265,6 +265,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_angry.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -273,6 +274,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_monocle.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -281,6 +283,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_point_up.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -289,6 +292,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_ok.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -297,6 +301,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_angel.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -305,6 +310,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_happy.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -313,6 +319,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_shush.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -321,6 +328,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_think.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -329,6 +337,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_money.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -337,6 +346,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_sweat.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -345,6 +355,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_loveeyes.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -353,6 +364,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_pensive.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -361,6 +373,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_fit.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -369,6 +382,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_brokenHeart.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -377,6 +391,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_rollingEyes.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -385,6 +400,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_inLove.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -393,6 +409,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_unhappy.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -401,6 +418,8 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_shruggin.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
+                
 			}
         });
 
@@ -409,13 +428,16 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_heart.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
         btn_pointRight.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+                String emoji = btn_pointRight.getText();
+                ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -424,6 +446,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_djinn.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -432,6 +455,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_grim.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -440,6 +464,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_cry.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -448,6 +473,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_moon.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -456,6 +482,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_pointLeft.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -464,6 +491,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_callMe.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -472,6 +500,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_mustache.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -480,6 +509,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_rofl.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -488,6 +518,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_thumb.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -496,6 +527,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_smile.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -504,6 +536,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_joy.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -512,6 +545,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_heartYellow.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -520,6 +554,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_heartBlack.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -528,6 +563,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_anotherSmile.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -536,6 +572,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_fullMoon.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -544,6 +581,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_grin.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -552,6 +590,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_sun.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -560,6 +599,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_thumbDown.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -568,6 +608,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_tongueOut.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -576,6 +617,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_100.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -584,6 +626,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_wink.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -592,6 +635,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_sunglasses.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -600,6 +644,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String emoji = btn_glasses.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
 			}
         });
 
@@ -608,6 +653,7 @@ public class EmojiOverview extends JFrame{
 			public void actionPerformed(ActionEvent e) {
                 String emoji = btn_party.getText();
                 ChatFenster.tf_message.setText(ChatFenster.tf_message.getText() + emoji);
+                setVisible(false);
                 
 			}
         });
