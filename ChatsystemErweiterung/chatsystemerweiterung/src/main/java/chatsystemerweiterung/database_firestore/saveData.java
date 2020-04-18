@@ -17,7 +17,7 @@ public class saveData {
 
     public void saveChat(String sender, String partner, String msg, String time) {
         try {
-            String path = "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
+            String path = "./src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
 
             FileInputStream serviceAccount = new FileInputStream(path);
 
@@ -60,8 +60,8 @@ public class saveData {
 
     // try {
 
-    // String path =
-    // "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
+    // String path = "/Users/julie/Documents/DHBW/Verteilte
+    // Systeme/Distributed_Systems_TCP_Chat/ChatsystemErweiterung/chatsystemerweiterung/src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
 
     // FileInputStream serviceAccount = new FileInputStream(path);
 
