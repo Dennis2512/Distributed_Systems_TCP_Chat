@@ -23,7 +23,7 @@ public class Server1 {
             // anderem server bescheid geben
             con.send(new Message("server", "SERVERINIT", "This is the serverconnection", new Date()));
         } catch (IOException e) {
-            // nichts zu tun
+            // nichts tun
         }
 
         try {
