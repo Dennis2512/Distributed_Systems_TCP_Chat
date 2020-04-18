@@ -23,6 +23,8 @@ public class saveData {
                 filepath += "\\ChatsystemErweiterung";
             }
             filepath += "\\chatsystemerweiterung\\src\\main\\java\\chatsystemerweiterung\\database_firestore\\serviceAccountKey.json";
+            // String path =
+            // "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
 
             FileInputStream serviceAccount = new FileInputStream(filepath);
 
@@ -37,7 +39,7 @@ public class saveData {
         Firestore db = FirestoreClient.getFirestore();
 
         // Collection: chats, Document: chatroom_name
-        DocumentReference docRef1 = db.collection("chats").document(sender + "_" + partner);
+        DocumentReference docRef1 = db.collection("chats").document(sender).collection(partner).document();
         Map<String, Object> data = new HashMap<>();
         data.put("timestmp", time);
         data.put("sender", sender);
@@ -45,7 +47,7 @@ public class saveData {
         data.put("msg", msg);
 
         // zweiter Chatpartner daten
-        DocumentReference docRef2 = db.collection("chats").document(sender + "_" + partner);
+        DocumentReference docRef2 = db.collection("chats").document(partner).collection(sender).document();
         Map<String, Object> data2 = new HashMap<>();
         data2.put("timestmp", time);
         data2.put("sender", sender);
@@ -64,8 +66,8 @@ public class saveData {
 
     // try {
 
-    // String path = "/Users/julie/Documents/DHBW/Verteilte
-    // Systeme/Distributed_Systems_TCP_Chat/ChatsystemErweiterung/chatsystemerweiterung/src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
+    // String path =
+    // "ChatsystemErweiterung/chatsystemerweiterung/src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
 
     // FileInputStream serviceAccount = new FileInputStream(path);
 
