@@ -18,17 +18,11 @@ public class saveData {
 
     public void saveChat(String sender, String partner, String msg, String time) {
         try {
-<<<<<<< HEAD
-            String path = "./src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
-=======
             String filepath = Paths.get("").toAbsolutePath().normalize().toString();
             if (!filepath.contains("ChatsystemErweiterung")) {
                 filepath += "\\ChatsystemErweiterung";
             }
             filepath += "\\chatsystemerweiterung\\src\\main\\java\\chatsystemerweiterung\\database_firestore\\serviceAccountKey.json";
-            // String path =
-            // "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
->>>>>>> ae028b660d9d3ce5a667d2cb1093b022ffa8818a
 
             FileInputStream serviceAccount = new FileInputStream(filepath);
 
