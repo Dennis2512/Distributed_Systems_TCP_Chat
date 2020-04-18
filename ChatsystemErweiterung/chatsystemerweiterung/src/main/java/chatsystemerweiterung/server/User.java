@@ -80,8 +80,8 @@ public class User {
         this.chats.add(chat);
     }
 
-    public void write(Message msg) {
-        this.activeChat.send(msg);
+    public void write(Message msg, boolean serverConnection) {
+        this.activeChat.send(msg, serverConnection);
     }
 
     public void leaveChat() {

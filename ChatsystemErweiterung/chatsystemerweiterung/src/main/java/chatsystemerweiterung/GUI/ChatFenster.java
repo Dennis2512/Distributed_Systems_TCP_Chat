@@ -25,7 +25,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-import chatsystemerweiterung.database_firestore.saveData;
 import chatsystemerweiterung.rsa.Security;
 import chatsystemerweiterung.server.Customtime;
 import chatsystemerweiterung.server.Message;
@@ -61,7 +60,6 @@ public class ChatFenster extends JFrame {
 	private String user, partner, chatname;
 	private SimpleDateFormat sdf;
 
-	private saveData save;
 	private Security security;
 	private ArrayList<String> chats, users;
 
@@ -81,7 +79,6 @@ public class ChatFenster extends JFrame {
 		this.setTitle("Chat with " + this.chatname);
 		this.connection = con;
 		this.user = user;
-		save = new saveData();
 		this.security = new Security();
 		this.build();
 	}
@@ -97,7 +94,6 @@ public class ChatFenster extends JFrame {
 		ta_Messages.setText(ta_Messages.getText() + text.getText() + '\n');
 		tf_message.setText("");
 		ta_Messages.setCaretPosition(this.ta_Messages.getDocument().getLength());
-		save.saveChat(user, partner, text.getText(), (String) this.sdf.format(text.getTime()));
 
 	}
 
@@ -105,7 +101,6 @@ public class ChatFenster extends JFrame {
 	public void printMsg(Message msg) {
 		ta_Messages.append(this.sdf.format(msg.getTime()) + " " + msg.getSender() + ": " + msg.getText() + '\n');
 		ta_Messages.setCaretPosition(ta_Messages.getDocument().getLength());
-		save.saveChat(partner, user, msg.getText(), (String) this.sdf.format(msg.getTime()));
 
 	}
 

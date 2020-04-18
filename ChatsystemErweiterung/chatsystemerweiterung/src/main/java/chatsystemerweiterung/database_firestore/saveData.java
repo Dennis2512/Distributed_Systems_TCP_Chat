@@ -2,8 +2,11 @@ package chatsystemerweiterung.database_firestore;
 
 import java.io.FileInputStream;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
 
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -14,11 +17,55 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 
+import chatsystemerweiterung.server.Message;
+import chatsystemerweiterung.server.User;
+
 public class saveData {
 
-    public void saveChat(String sender, String partner, String msg, String time) {
+    String chatname;
+    String sender, text, filepath;
+    Date time;
+    Message msg;
+    ArrayList<User> partner;
+    ArrayList<String> teilnehmer;
+
+    public void saveChat(Message message, ArrayList<User> userList) {
+
+        teilnehmer = new ArrayList<String>();
+        System.out.println("Methode saveChat wurde aufgerufen");
+        
+        this.msg = message;
+        time = msg.getTime();
+        sender = msg.getSender();
+        partner = userList;
+        text = this.msg.getText();
+
+        for(User u: partner) {
+            teilnehmer.add(u.getKennung());
+            System.out.println(u.getKennung());
+        }
+
+        // teilnehmer.add(sender);
+        String tmp = "";
+        Collections.sort(teilnehmer);
+        
+        for(int i = 0; i < teilnehmer.size(); i++) {
+            tmp = tmp + teilnehmer.get(i) + "_";
+            /* if(i == teilnehmer.size()-1) {
+                tmp = tmp + teilnehmer.get(i);
+            } */
+        }
+
+        chatname = tmp;
+        if (chatname != null && chatname.length() > 0 && chatname.charAt(chatname.length() - 1) == '_') {
+            chatname = chatname.substring(0, chatname.length() - 1);
+        }
+
+        System.out.println("Chatname: " + chatname);
+
         try {
-            String filepath = Paths.get("").toAbsolutePath().normalize().toString();
+            filepath = "";
+            filepath = Paths.get("").toAbsolutePath().normalize().toString();
             if (!filepath.contains("ChatsystemErweiterung")) {
                 filepath += "\\ChatsystemErweiterung";
             }
@@ -38,60 +85,19 @@ public class saveData {
 
         Firestore db = FirestoreClient.getFirestore();
 
-        // Collection: chats, Document: chatroom_name
-        DocumentReference docRef1 = db.collection("chats").document(sender).collection(partner).document();
+        // DocumentReference docRef1 = db.collection("chats").document(chatname).collection("nachrichten").document();
+
         Map<String, Object> data = new HashMap<>();
         data.put("timestmp", time);
         data.put("sender", sender);
-        data.put("partner", partner);
-        data.put("msg", msg);
+        data.put("msg", text);
 
-        // zweiter Chatpartner daten
-        DocumentReference docRef2 = db.collection("chats").document(partner).collection(sender).document();
-        Map<String, Object> data2 = new HashMap<>();
-        data2.put("timestmp", time);
-        data2.put("sender", sender);
-        data2.put("partner", partner);
-        data2.put("msg", msg);
+        db.collection("chats").document(chatname).collection("nachrichten").document().set(data);
 
         // asynchronously write data
-        ApiFuture<WriteResult> result = docRef1.set(data);
-        System.out.println(result.toString());
+        // ApiFuture<WriteResult> result = docRef1.set(data);
+        // System.out.println(result.toString());
 
-        ApiFuture<WriteResult> result2 = docRef2.set(data);
-        System.out.println(result2.toString());
     }
-
-    // public static void main(String[] args) {
-
-    // try {
-
-    // String path =
-    // "ChatsystemErweiterung/chatsystemerweiterung/src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
-
-    // FileInputStream serviceAccount = new FileInputStream(path);
-
-    // FirebaseOptions options = new FirebaseOptions.Builder()
-    // .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-    // .setDatabaseUrl("https://distributedsystemstcpchat.firebaseio.com").build();
-
-    // FirebaseApp.initializeApp(options);
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-
-    // Firestore db = FirestoreClient.getFirestore();
-
-    // // Collection: chats, Document: chatroom_name
-    // DocumentReference docRef = db.collection("chats").document("dn_test");
-    // Map<String, Object> data = new HashMap<>();
-    // data.put("timestmp", "123456");
-    // data.put("sender", "Dennis");
-    // data.put("partner", "Lukas");
-    // data.put("msg", "Hallo du da");
-    // // asynchronously write data
-    // ApiFuture<WriteResult> result = docRef.set(data);
-    // System.out.println(result.toString());
-    // }
-
+    
 }

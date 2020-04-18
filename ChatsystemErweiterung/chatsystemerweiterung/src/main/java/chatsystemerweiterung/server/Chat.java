@@ -3,17 +3,25 @@ package chatsystemerweiterung.server;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import chatsystemerweiterung.database_firestore.saveData;
+import chatsystemerweiterung.database_firestore.saveData_thread;
+
 public class Chat {
 
     private ArrayList<User> users;
     private ArrayList<Message> chat;
+    private saveData_thread sdt;
+    private saveData sd;
 
     public Chat(ArrayList<User> users) {
         this.users = users;
         this.chat = new ArrayList<Message>();
+        // this.sd = new saveData();
+        this.sdt = new saveData_thread();
     }
 
-    public void send(Message msg) {
+    public void send(Message msg, boolean serverConnection) {
+        System.out.println("Chat.java wurde aufgerufen");
         this.chat.add(msg);
         // nachricht an die richtige position bringen
         Collections.sort(this.chat);
@@ -24,6 +32,12 @@ public class Chat {
             if (tmp.getActiveChat() == this && !tmp.getKennung().equals(msg.getSender()) && tmp.isOnline()) {
                 tmp.send(msg);
             }
+        }
+        // Normales Speichern in die DB
+        // sd.saveChat(msg, users);
+        // Speichern in die DB mit Thread
+        if(!serverConnection) {
+            sdt.run(msg, users);
         }
     }
 

@@ -266,7 +266,7 @@ public class Connection extends Thread {
             } else {
                 Date time = Customtime.get();
                 msg.setTime(time);
-                this.user.write(msg);
+                this.user.write(msg, false);
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
                 this.oos.writeObject(this.security.encryptMessage(new Message("server", "SENT",
@@ -362,7 +362,7 @@ public class Connection extends Thread {
 
     private void servermessage(Message msg) {
         User user = this.users.getUser(msg.getSender());
-        user.write(msg);
+        user.write(msg, true);
     }
 
     private void serverleave(Message msg) {

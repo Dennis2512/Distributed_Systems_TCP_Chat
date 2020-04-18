@@ -24,6 +24,7 @@ public class Server1 {
             con.send(new Message("server", "SERVERINIT", "This is the serverconnection", new Date()));
         } catch (IOException e) {
             // nichts zu tun
+            // TODO: Hier DB abrufen
         }
 
         try {
