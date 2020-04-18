@@ -62,9 +62,9 @@ public class LukasClient {
 
             }
         } catch (ConnectException e) {
-            System.err.println(e);
+            e.printStackTrace();
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

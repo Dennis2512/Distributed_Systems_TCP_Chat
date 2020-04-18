@@ -39,7 +39,7 @@ public class Connect extends Thread {
                 }
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
 
     }

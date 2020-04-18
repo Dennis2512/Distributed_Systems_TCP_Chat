@@ -32,9 +32,9 @@ public class ConsoleThread extends Thread {
 
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         } catch (InterruptedException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 

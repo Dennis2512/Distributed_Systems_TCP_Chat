@@ -187,7 +187,7 @@ public class Login extends JFrame {
             JOptionPane.showMessageDialog(loginFenster, ans.getText());
           }
         } catch (IOException e) {
-          System.err.println(e);
+          e.printStackTrace();
         } catch (ClassNotFoundException e) {
           e.printStackTrace();
         }
@@ -224,7 +224,7 @@ public class Login extends JFrame {
             JOptionPane.showMessageDialog(loginFenster, ans.getText());
           }
         } catch (IOException ex) {
-          System.err.println(ex);
+          ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
           ex.printStackTrace();
         }

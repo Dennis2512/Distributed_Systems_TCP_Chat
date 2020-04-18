@@ -15,9 +15,9 @@ public class Server {
     private ServerSocket serverSocket;
     private Socket connection;
     private String chatverlauf;
-    private LinkedList<String> auftragsQueue;//Vermutlich kein String -> NEED TO VERIFY
+    private LinkedList<String> auftragsQueue;// Vermutlich kein String -> NEED TO VERIFY
 
-    public Server(int serverPort, String serverName){
+    public Server(int serverPort, String serverName) {
         this.serverPort = serverPort;
         this.serverName = serverName;
         this.serverPrintWriter = null;
@@ -26,59 +26,60 @@ public class Server {
         this.chatverlauf = "";
         this.auftragsQueue = null;
     }
-    public void startServer(){
-        try{
+
+    public void startServer() {
+        try {
             this.serverSocket = new ServerSocket(this.serverPort);
             System.out.println("Following Server is running: " + this.serverName);
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
     }
-    public void connectServer(){
-        while (true){
-            try{
+
+    public void connectServer() {
+        while (true) {
+            try {
                 this.connection = this.serverSocket.accept();
             } catch (Exception e) {
-                System.err.println(e);
+                e.printStackTrace();
             } finally {
                 try {
-                    if (connection != null) connection.close();
+                    if (connection != null)
+                        connection.close();
                 } catch (Exception e) {
-                    System.err.println(e);
+                    e.printStackTrace();
                 }
             }
         }
 
     }
 
-    public void disconnectServer(){
+    public void disconnectServer() {
         try {
             this.connection.close();
             System.out.println("Server: " + this.serverName + " is disconnected");
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
 
-    public void serverWriter(){
-        try{
+    public void serverWriter() {
+        try {
             serverPrintWriter = new PrintWriter(connection.getOutputStream());
             Date now = new Date();
             serverPrintWriter.println(now.toString());
             serverPrintWriter.flush();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
-    public void createWorker(){
+
+    public void createWorker() {
 
     }
-    
-
-
-
 
     private static final int SERVER_PORT = 188;
+
     public static void main(String[] args) {
         int port = SERVER_PORT;
         PrintWriter out = null;
@@ -95,16 +96,17 @@ public class Server {
                     out.println(now.toString());
                     out.flush();
                 } catch (Exception e) {
-                    System.err.println(e);
+                    e.printStackTrace();
                 } finally {
                     try {
-                        if (connection != null) connection.close();
+                        if (connection != null)
+                            connection.close();
                     } catch (Exception e) {
-                        System.err.println(e);
+                        e.printStackTrace();
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }

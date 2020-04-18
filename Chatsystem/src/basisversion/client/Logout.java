@@ -31,9 +31,9 @@ public class Logout extends Thread {
                 System.out.println(msg.getText());
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 

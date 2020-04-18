@@ -100,7 +100,7 @@ public class Connection extends Thread {
                 }
             }
         } catch (ClassNotFoundException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -133,7 +133,7 @@ public class Connection extends Thread {
                 }
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -160,7 +160,7 @@ public class Connection extends Thread {
                 }
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -186,7 +186,7 @@ public class Connection extends Thread {
                         new Message("server", "error", "Abmelden geht nur für angemeldete Nutzer", Customtime.get()));
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -227,7 +227,7 @@ public class Connection extends Thread {
                 }
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -250,7 +250,7 @@ public class Connection extends Thread {
                 this.sync(msg);
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -269,7 +269,7 @@ public class Connection extends Thread {
                 this.oos.writeObject(new Message("server", "LEFT", "Chat verlassen.", Customtime.get()));
             }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -278,7 +278,7 @@ public class Connection extends Thread {
             this.oos = new ObjectOutputStream(this.connection.getOutputStream());
             this.oos.writeObject(msg);
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -377,7 +377,7 @@ public class Connection extends Thread {
                 }
             }
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -414,7 +414,7 @@ public class Connection extends Thread {
             this.oos.writeObject(
                     new Message("server", "DONE", "Initialized " + chats.size() + " chats.", Customtime.get()));
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 

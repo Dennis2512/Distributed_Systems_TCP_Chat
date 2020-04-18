@@ -25,7 +25,7 @@ public class LukasServer {
                 ucon.start();
             }
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         } finally {
             server.close();
         }
