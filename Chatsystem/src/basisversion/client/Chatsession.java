@@ -128,4 +128,12 @@ public class Chatsession extends JFrame implements ActionListener {
         this.textfield.setText("");
         this.textarea.setCaretPosition(this.textarea.getDocument().getLength());
     }
+
+    public void onConnLost(){
+        //Neuen connection mit Socket mit anderen port
+        //listenchat starten
+        // wenn nicht möglich dann fenster schließen
+            //->exit
+        System.exit(0);
+    }
 } // class

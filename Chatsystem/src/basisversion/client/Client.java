@@ -8,6 +8,9 @@ public class Client {
     public static void main(String[] args) {
         Socket connection = null;
         int port = selectPort();
+        BufferedReader console = null;
+        String user = null;
+        Login login = null;
         while (connection == null) {
             // connection null setzen
             //
@@ -16,21 +19,31 @@ public class Client {
                 connection = new Socket("localhost", port);
                 System.out.println("Verbunden mit Server " + (port == 187 ? 1 : 2));
 
-                BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+                console = new BufferedReader(new InputStreamReader(System.in));
+                //login after reconnection
+                if (user != null){
+                    login = new Login(connection);
+                    login.start();
+                    login.join();
+                    user = login.getKennung();
+                    if (user == null) {
+                        connection = null;
+                        continue;
+                    }
+                }
                 // login or register
-                String user = null;
-                while (user == null) {
+                if (user == null) {
                     System.out.println("Do you want to login or register? (l/r)");
                     String answer = console.readLine();
                     if (answer.equals("l")) {
                         // start login
-                        Login login = new Login(connection);
+                        login = new Login(connection);
                         login.start();
                         login.join();
                         user = login.getKennung();
                         if (user == null) {
                             connection = null;
-                            break;
+                            continue;
                         }
 
                     } else if (answer.equals("r")) {
@@ -47,10 +60,9 @@ public class Client {
                         System.out.println("Unknown command: " + answer);
                     }
                 }
-                if (user == null)
-                    continue;
+                
                 boolean offline = false;
-                while (!offline) {
+                if (!offline == true) {
                     System.out.println("Do you want to start a Chat or logout? (c/l)");
                     String action = console.readLine();
                     if (action.equals("c")) {
@@ -58,10 +70,15 @@ public class Client {
                         Connect connect = new Connect(connection, user);
                         connect.start();
                         connect.join();
-                        // chat starten, und erst fortfahren sobald der chat geschlossen wurde
-                        Chatsession c = new Chatsession(connect.getChat(), connection, user, connect.getPartner());
-                        while (c.isDisplayable()) {
-                            Thread.sleep(200);
+                        if (connect.getPartner() == null){
+                            connection = null;
+                            continue;
+                        } else {
+                            // chat starten, und erst fortfahren sobald der chat geschlossen wurde
+                            Chatsession c = new Chatsession(connect.getChat(), connection, user, connect.getPartner());
+                            while (c.isDisplayable()) {
+                                Thread.sleep(200);
+                            }
                         }
 
                     } else if (action.equals("l")) {

@@ -42,7 +42,7 @@ public class Connect extends Thread {
                 } else if (ans.getType().equals("LOADCHAT")) {
                     System.out.println(ans.getText());
                     this.ois = new ObjectInputStream(this.connection.getInputStream());
-                    this.chat = (ArrayList<Message>) ois.readObject();
+                    this.chat = (ArrasyList<Message>) ois.readObject();
                     this.partner = p;
                 } else {
                     System.out.println(ans.getText());
