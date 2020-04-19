@@ -123,8 +123,8 @@ public class Connection extends Thread {
             } else {
                 // prüfen ob passwort korrekt war
                 if (tmp.login(msg.getText(), this)) {
-                    // aktuellen nutzer dieser verbindung setzen
                     this.sync(msg);
+                    // aktuellen nutzer dieser verbindung setzen
                     this.user = tmp;
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                     this.oos.writeObject(this.security
