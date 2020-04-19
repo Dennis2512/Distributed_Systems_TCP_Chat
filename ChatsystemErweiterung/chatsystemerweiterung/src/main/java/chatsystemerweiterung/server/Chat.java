@@ -11,7 +11,7 @@ public class Chat {
     private ArrayList<User> users;
     private ArrayList<Message> chat;
     private saveData_thread sdt;
-    private saveData sd;
+    // private saveData sd;
 
     public Chat(ArrayList<User> users) {
         this.users = users;
@@ -35,6 +35,7 @@ public class Chat {
         }
         // Normales Speichern in die DB
         // sd.saveChat(msg, users);
+        
         // Speichern in die DB mit Thread
         if(!serverConnection) {
             sdt.run(msg, users);
