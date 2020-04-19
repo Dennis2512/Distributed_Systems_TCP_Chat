@@ -70,4 +70,12 @@ public class Users {
             this.users.add(user);
     }
 
+    public void onServerShutdown() {
+        for (User u : this.users) {
+            if (u.isOnline() && u.getConnection() == null) {
+                u.logout();
+            }
+        }
+    }
+
 }

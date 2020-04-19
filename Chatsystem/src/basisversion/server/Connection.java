@@ -91,6 +91,7 @@ public class Connection extends Thread {
             if (this.serverconnection) {
                 this.connections.remove(this);
                 System.out.println("Verbindung zum Server wurde verloren.");
+                this.users.onServerShutdown();
             } else {
                 if (this.user != null) {
                     this.sync(new Message(this.user.getKennung(), "DISCONNECT", "", new Date()));
