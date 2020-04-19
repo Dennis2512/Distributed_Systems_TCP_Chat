@@ -30,8 +30,7 @@ public class Listen extends Thread {
                 if (msg.getType().equals("MSG")) {
                     cFenster.printMsg(msg);
                 } else if (msg.getType().equals("SENT")) {
-                    cFenster.sent(msg);
-                    // this.chatsession.sent(msg.getText());
+                    this.cFenster.sent(msg);
                 } else if (msg.getType().equals("LEFT")) {
                     this.cFenster.onLeft();
                     this.end = true;

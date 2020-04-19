@@ -113,9 +113,6 @@ public class saveData {
     // Methode zum Laden und Zuweisen der Chats
     public void initChat(Users users) {
 
-        partner = new ArrayList<User>();
-        messageList = new ArrayList<>();
-
         // DB-Verbindung
         try {
             // Pfad zur serviceAccount.json
@@ -137,7 +134,6 @@ public class saveData {
         }
 
         Firestore db = FirestoreClient.getFirestore();
-        Map<String, Map<String, Object>> map = new HashMap<>();
 
         // Prüfe, ob Chat bereits vorhanden ist
         try {
@@ -145,6 +141,9 @@ public class saveData {
             List<QueryDocumentSnapshot> documents = past.get().getDocuments();
 
             for (QueryDocumentSnapshot qds : documents) {
+                Map<String, Map<String, Object>> map = new HashMap<>();
+                partner = new ArrayList<User>();
+                messageList = new ArrayList<>();
 
                 String documentName = qds.getId();
 

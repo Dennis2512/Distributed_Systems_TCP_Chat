@@ -70,7 +70,7 @@ public class ChatFenster extends JFrame {
 		this.users = users;
 		this.sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 		this.chat = chat;
-		ta_Messages = new JTextArea();
+		this.ta_Messages = new JTextArea();
 		if (this.chat == null) {
 			this.chat = new ArrayList<Message>();
 		} else {
@@ -93,16 +93,16 @@ public class ChatFenster extends JFrame {
 	}
 
 	public void sent(Message text) {
-		ta_Messages.setText(ta_Messages.getText() + text.getText() + '\n');
+		this.ta_Messages.setText(this.ta_Messages.getText() + text.getText() + '\n');
 		tf_message.setText("");
-		ta_Messages.setCaretPosition(this.ta_Messages.getDocument().getLength());
+		this.ta_Messages.setCaretPosition(this.ta_Messages.getDocument().getLength());
 
 	}
 
 	// empfangene Nachricht setzen
 	public void printMsg(Message msg) {
-		ta_Messages.append(this.sdf.format(msg.getTime()) + " " + msg.getSender() + ": " + msg.getText() + '\n');
-		ta_Messages.setCaretPosition(ta_Messages.getDocument().getLength());
+		this.ta_Messages.append(this.sdf.format(msg.getTime()) + " " + msg.getSender() + ": " + msg.getText() + '\n');
+		this.ta_Messages.setCaretPosition(ta_Messages.getDocument().getLength());
 
 	}
 
@@ -121,6 +121,8 @@ public class ChatFenster extends JFrame {
 		pnl_bottom.setLayout(new BoxLayout(pnl_bottom, BoxLayout.LINE_AXIS));
 		ta_Messages.setBorder(blackborder);
 		ta_Messages.setEditable(false);
+		ta_Messages.setWrapStyleWord(true);
+		ta_Messages.setLineWrap(true);
 
 		this.initMenu();
 

@@ -18,7 +18,6 @@ public class Chat {
     }
 
     public void send(Message msg, boolean serverConnection) {
-        System.out.println("Chat.java wurde aufgerufen");
         this.chat.add(msg);
         // nachricht an die richtige position bringen
         Collections.sort(this.chat);

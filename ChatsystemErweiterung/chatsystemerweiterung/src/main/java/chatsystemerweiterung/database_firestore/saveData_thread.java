@@ -15,11 +15,11 @@ public class saveData_thread extends Thread {
     // Nutze RSA zum Ver- und Entschlüsseln der Daten
     public saveData_thread() {
         this.security = new Security();
+        this.sd = new saveData();
     }
 
     // Startet saveData in einem seperaten Thread
     public void run(Message msg, ArrayList<User> userList) {
-        this.sd = new saveData();
         sd.saveChat(this.security.encryptMessage(msg), userList);
     }
 }
