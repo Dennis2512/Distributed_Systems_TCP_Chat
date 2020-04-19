@@ -141,5 +141,9 @@ public class User {
         }
         return names;
     }
-    
+
+    public Connection getConnection() {
+        return this.con;
+    }
+
 }

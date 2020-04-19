@@ -45,7 +45,7 @@ public class Listen extends Thread {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Verbindung zum Server getrennt...");
+            this.cFenster.reload();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

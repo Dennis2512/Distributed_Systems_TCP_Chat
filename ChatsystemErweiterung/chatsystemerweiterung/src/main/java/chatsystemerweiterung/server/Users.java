@@ -112,4 +112,12 @@ public class Users {
         }
         return list;
     }
+
+    public void onServerShutdown() {
+        for (User u : this.users) {
+            if (u.isOnline() && u.getConnection() == null) {
+                u.logout();
+            }
+        }
+    }
 }

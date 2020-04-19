@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.BorderFactory;
@@ -57,14 +58,14 @@ public class ChatFenster extends JFrame {
 	private static JButton btn_emojis;
 
 	private ArrayList<Message> chat;
-	private String user, partner, chatname;
+	private String user, chatname, password;
 	private SimpleDateFormat sdf;
 
 	private Security security;
 	private ArrayList<String> chats, users;
 
-	public ChatFenster(Socket con, String user, ArrayList<Message> chat, String chatname, ArrayList<String> chats,
-			ArrayList<String> users) {
+	public ChatFenster(Socket con, String user, String password, ArrayList<Message> chat, String chatname,
+			ArrayList<String> chats, ArrayList<String> users) {
 		this.chats = chats;
 		this.users = users;
 		this.sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -79,6 +80,7 @@ public class ChatFenster extends JFrame {
 		this.setTitle("Chat with " + this.chatname);
 		this.connection = con;
 		this.user = user;
+		this.password = password;
 		this.security = new Security();
 		this.build();
 	}
@@ -176,13 +178,11 @@ public class ChatFenster extends JFrame {
 				} else {
 					String nachricht = tf_message.getText();
 					nachricht = emojiFinder.shortcutSwitcher(nachricht);
+					Message msg = security.encryptMessage(new Message(user, "MSG", nachricht, Customtime.get()));
 					// nachricht senden
 					try {
-
 						ObjectOutputStream oos = new ObjectOutputStream(connection.getOutputStream());
-						Message msg = security.encryptMessage(new Message(user, "MSG", nachricht, Customtime.get()));
 						oos.writeObject(msg);
-
 					} catch (IOException err) {
 						err.printStackTrace();
 					}
@@ -264,7 +264,45 @@ public class ChatFenster extends JFrame {
 
 	public void onLeft() {
 		this.dispose();
-		new ChatOverview(this.connection, this.user, this.chats, this.users);
+		new ChatOverview(this.connection, this.user, this.password, this.chats, this.users);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void reload() {
+		try {
+			this.connection = new Socket("localhost", this.connection.getPort() == 187 ? 188 : 187);
+			ObjectOutputStream oos = new ObjectOutputStream(this.connection.getOutputStream());
+			oos.writeObject(this.security.encryptMessage(new Message(this.user, "LOGIN", this.password, new Date())));
+			ObjectInputStream ois = new ObjectInputStream(this.connection.getInputStream());
+			Message ans = this.security.decryptMessage((Message) ois.readObject());
+			if (ans.getType().equals("SUCCESS")) {
+				ois = new ObjectInputStream(this.connection.getInputStream());
+				this.chats = (ArrayList<String>) ois.readObject();
+				ois = new ObjectInputStream(this.connection.getInputStream());
+				this.users = (ArrayList<String>) ois.readObject();
+				oos = new ObjectOutputStream(this.connection.getOutputStream());
+				oos.writeObject(
+						this.security.encryptMessage(new Message(this.user, "CONNECT", this.chatname, new Date())));
+				ois = new ObjectInputStream(this.connection.getInputStream());
+				ans = this.security.decryptMessage((Message) ois.readObject());
+				if (ans.getType().equals("LOADCHAT")) {
+					ois = new ObjectInputStream(this.connection.getInputStream());
+					this.chat = (ArrayList<Message>) ois.readObject();
+					this.initChat();
+					Listen listen = new Listen(this.connection, this);
+					listen.start();
+				} else {
+					System.out.println("Error when switching Server. Could not reconnect to chat.");
+					System.exit(0);
+				}
+			} else {
+				System.out.println("Error when switching Server. Could not be logged in.");
+				System.exit(0);
+			}
+		} catch (Exception e) {
+			System.out.println("Servers went offline.");
+			System.exit(0);
+		}
 	}
 
 }

@@ -89,6 +89,7 @@ public class Connection extends Thread {
 
         } catch (IOException e) {
             if (this.serverconnection) {
+                this.users.onServerShutdown();
                 this.connections.remove(this);
                 System.out.println("Verbindung zum Server wurde verloren.");
             } else {

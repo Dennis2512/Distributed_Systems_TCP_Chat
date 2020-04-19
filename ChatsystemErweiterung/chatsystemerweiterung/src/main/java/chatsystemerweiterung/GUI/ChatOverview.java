@@ -25,7 +25,7 @@ public class ChatOverview extends JFrame implements ActionListener {
     private static final long serialVersionUID = -6596937811705258413L;
 
     private Socket connection;
-    private String user;
+    private String user, password;
     private ArrayList<String> chats;
     private JPanel panel;
     private JScrollPane scroll;
@@ -33,10 +33,12 @@ public class ChatOverview extends JFrame implements ActionListener {
     private Security security;
     private ArrayList<String> users;
 
-    public ChatOverview(Socket connection, String user, ArrayList<String> chats, ArrayList<String> users) {
+    public ChatOverview(Socket connection, String user, String password, ArrayList<String> chats,
+            ArrayList<String> users) {
         this.connection = connection;
         this.security = new Security();
         this.user = user;
+        this.password = password;
         this.chats = chats;
         this.users = users;
         // initinalisiere btnlist
@@ -107,52 +109,92 @@ public class ChatOverview extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String names = e.getActionCommand();
         names = names.substring(11);
-        onChatClicked(names);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void onChatClicked(String names) {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(connection.getOutputStream());
-            oos.writeObject(this.security.encryptMessage(new Message(user, "CONNECT", names, new Date())));
-            ObjectInputStream ois = new ObjectInputStream(connection.getInputStream());
-            Message ans = this.security.decryptMessage((Message) ois.readObject());
-            if (ans.getType().equals("LOADCHAT")) {
-                ois = new ObjectInputStream(this.connection.getInputStream());
-                ArrayList<Message> chat = (ArrayList<Message>) ois.readObject();
-                new ChatFenster(this.connection, this.user, chat, names, chats, users);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, ans.getText());
+            onChatClicked(names);
+        } catch (IOException err) {
+            try {
+                connection = new Socket("localhost", connection.getPort() == 187 ? 188 : 187);
+                relogin();
+                onChatClicked(names);
+            } catch (Exception errr) {
+                System.out.println("You were logged off.");
+                System.exit(0);
             }
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } catch (ClassNotFoundException e1) {
-            e1.printStackTrace();
+        } catch (ClassNotFoundException err) {
+            err.printStackTrace();
         }
     }
 
     @SuppressWarnings("unchecked")
+    private void onChatClicked(String names) throws IOException, ClassNotFoundException {
+        ObjectOutputStream oos = new ObjectOutputStream(connection.getOutputStream());
+        oos.writeObject(this.security.encryptMessage(new Message(user, "CONNECT", names, new Date())));
+        ObjectInputStream ois = new ObjectInputStream(connection.getInputStream());
+        Message ans = this.security.decryptMessage((Message) ois.readObject());
+        if (ans.getType().equals("LOADCHAT")) {
+            ois = new ObjectInputStream(this.connection.getInputStream());
+            ArrayList<Message> chat = (ArrayList<Message>) ois.readObject();
+            new ChatFenster(this.connection, this.user, this.password, chat, names, chats, users);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, ans.getText());
+        }
+
+    }
+
     public void addChat(String chat) {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(this.connection.getOutputStream());
-            oos.writeObject(this.security.encryptMessage(new Message(this.user, "CONNECT", chat, new Date())));
-            ObjectInputStream ois = new ObjectInputStream(this.connection.getInputStream());
-            Message msg = this.security.decryptMessage((Message) ois.readObject());
-            if (msg.getType().equals("NEWCHAT")) {
-                this.chats.add(chat);
-                new ChatFenster(this.connection, this.user, null, chat, chats, users);
-                this.dispose();
-            } else if (msg.getType().equals("LOADCHAT")) {
-                ois = new ObjectInputStream(this.connection.getInputStream());
-                ArrayList<Message> chatverlauf = (ArrayList<Message>) ois.readObject();
-                new ChatFenster(this.connection, this.user, chatverlauf, chat, chats, users);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, msg.getText());
+            this.onAddChat(chat);
+        } catch (IOException e) {
+            try {
+                // Verbindung zu Server verloren
+                // Verbindung zu neuem Server aufbauen und erneut anmelden
+                this.connection = new Socket("localhost", connection.getPort() == 187 ? 188 : 187);
+                this.relogin();
+                this.onAddChat(chat);
+            } catch (Exception err) {
+                System.out.println("Servers went offline.");
+                System.exit(0);
             }
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void onAddChat(String chat) throws IOException, ClassNotFoundException {
+        ObjectOutputStream oos = new ObjectOutputStream(this.connection.getOutputStream());
+        oos.writeObject(this.security.encryptMessage(new Message(this.user, "CONNECT", chat, new Date())));
+        ObjectInputStream ois = new ObjectInputStream(this.connection.getInputStream());
+        Message msg = this.security.decryptMessage((Message) ois.readObject());
+        if (msg.getType().equals("NEWCHAT")) {
+            this.chats.add(chat);
+            new ChatFenster(this.connection, this.user, this.password, null, chat, chats, users);
+            this.dispose();
+        } else if (msg.getType().equals("LOADCHAT")) {
+            ois = new ObjectInputStream(this.connection.getInputStream());
+            ArrayList<Message> chatverlauf = (ArrayList<Message>) ois.readObject();
+            new ChatFenster(this.connection, this.user, this.password, chatverlauf, chat, chats, users);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, msg.getText());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void relogin() throws IOException, ClassNotFoundException {
+        ObjectOutputStream oos = new ObjectOutputStream(this.connection.getOutputStream());
+        oos.writeObject(this.security.encryptMessage(new Message(this.user, "LOGIN", this.password, new Date())));
+        ObjectInputStream ois = new ObjectInputStream(this.connection.getInputStream());
+        Message msg = this.security.decryptMessage((Message) ois.readObject());
+        if (msg.getType().equals("SUCCESS")) {
+            ois = new ObjectInputStream(this.connection.getInputStream());
+            this.chats = (ArrayList<String>) ois.readObject();
+            ois = new ObjectInputStream(this.connection.getInputStream());
+            this.users = (ArrayList<String>) ois.readObject();
+        } else {
+            System.out.println("You were logged off.");
+            System.exit(0);
         }
     }
 

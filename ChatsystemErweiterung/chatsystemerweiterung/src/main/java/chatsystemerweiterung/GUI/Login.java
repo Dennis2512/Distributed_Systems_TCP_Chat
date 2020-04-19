@@ -160,16 +160,16 @@ public class Login extends JFrame {
       public void actionPerformed(ActionEvent ae) {
 
         String kennung = tf_kennung.getText();
-        Message msg = security
-            .encryptMessage(new Message(kennung, "LOGIN", String.valueOf(tf_password.getPassword()), new Date()));
+        String password = String.valueOf(tf_password.getPassword());
+        Message msg = security.encryptMessage(new Message(kennung, "LOGIN", password, new Date()));
         // versucht sich mit den gelesenen Infos anzumelden
         try {
-          login(msg, kennung);
+          login(msg, kennung, password);
         } catch (IOException e) {
           // verbindung zu server abgebrochen
           try {
             connection = new Socket("localhost", connection.getPort() == 187 ? 188 : 187);
-            login(msg, kennung);
+            login(msg, kennung, password);
           } catch (Exception err) {
             System.out.println("Servers are offline...");
             System.exit(0);
@@ -186,16 +186,16 @@ public class Login extends JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         String kennung = tf_kennung.getText().toString();
-        Message msg = security
-            .encryptMessage(new Message(kennung, "REGISTER", String.valueOf(tf_password.getPassword()), new Date()));
+        String password = String.valueOf(tf_password.getPassword());
+        Message msg = security.encryptMessage(new Message(kennung, "REGISTER", password, new Date()));
 
         try {
-          register(msg, kennung);
+          register(msg, kennung, password);
         } catch (IOException ex) {
           // verbindung zu server abgebrochen
           try {
             connection = new Socket("localhost", connection.getPort() == 187 ? 188 : 187);
-            register(msg, kennung);
+            register(msg, kennung, password);
           } catch (Exception err) {
             System.out.println("Servers are offline...");
             System.exit(0);
@@ -223,7 +223,7 @@ public class Login extends JFrame {
   } // build
 
   @SuppressWarnings("unchecked")
-  private void login(Message msg, String kennung) throws IOException, ClassNotFoundException {
+  private void login(Message msg, String kennung, String password) throws IOException, ClassNotFoundException {
     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
     this.oos.writeObject(msg);
     // wenn erfolgreich, dann angemeldeten nutzer setzen
@@ -237,7 +237,7 @@ public class Login extends JFrame {
       ArrayList<String> users = (ArrayList<String>) this.ois.readObject();
       this.loginFenster.dispose();
       // starten chat overview
-      new ChatOverview(this.connection, kennung, chats, users);
+      new ChatOverview(this.connection, kennung, password, chats, users);
 
     } else {
       this.tf_kennung.setBackground(new Color(255, 107, 107));
@@ -247,7 +247,7 @@ public class Login extends JFrame {
   } // login
 
   @SuppressWarnings("unchecked")
-  private void register(Message msg, String kennung) throws IOException, ClassNotFoundException {
+  private void register(Message msg, String kennung, String password) throws IOException, ClassNotFoundException {
     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
     this.oos.writeObject(msg);
     // wenn erfolgreich, dann angemeldeten nutzer setzen
@@ -261,7 +261,7 @@ public class Login extends JFrame {
       ArrayList<String> users = (ArrayList<String>) this.ois.readObject();
       this.loginFenster.dispose();
       // starten chat overview
-      new ChatOverview(this.connection, kennung, new ArrayList<String>(), users);
+      new ChatOverview(this.connection, kennung, password, new ArrayList<String>(), users);
     } else {
       this.tf_kennung.setBackground(new Color(255, 107, 107));
       this.tf_password.setBackground(new Color(255, 107, 107));
