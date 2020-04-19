@@ -172,12 +172,13 @@ public class saveData {
                         messageList.add(tmpMsg);
                     }
                 
-            String chatteilnehmer = qds.getId();
-            String[] einTeilnehmer = chatteilnehmer.split("_");
-            for(String teilnehmer: einTeilnehmer) {
-                partner.add(users.getUser(teilnehmer));
-            }
-            createChat(messageList, partner);
+                String chatteilnehmer = qds.getId();
+                String[] einTeilnehmer = chatteilnehmer.split("_");
+                for(String teilnehmer: einTeilnehmer) {
+                    partner.add(users.getUser(teilnehmer));
+                    System.out.println(teilnehmer);
+                }
+                createChat(messageList, partner);
             }
             
         } catch (Exception e) {
