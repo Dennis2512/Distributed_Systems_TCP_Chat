@@ -28,12 +28,6 @@ public class Server1 {
             // nichts zu tun
             saveData sd = new saveData();
             sd.initChat(users);
-            // Hier DB abrufen
-            // initChat(users) -> auf Obj Operationen ausführen
-            // Aufruf auch in Server 2
-            // Users nicht neu erzeugen
-            // ArrayList vom Typ Messages -> wenn Chat erzeugt wurde setChat(ArrayList setzen in einem Stück)
-            // das NICHT als Thread machen
         }
 
         try {
