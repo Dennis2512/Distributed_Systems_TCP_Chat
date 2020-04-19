@@ -3,6 +3,7 @@ package basisversion.client;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 
 import basisversion.server.Customtime;
 import basisversion.server.Message;
@@ -11,22 +12,25 @@ public class Connect extends Thread {
 
     private BufferedReader console;
 
-    private String partner, user;
+    private String partner, user, password;
     private Socket connection;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private ArrayList<Message> chat;
+    private boolean end;
 
-    public Connect(Socket connection, String user) {
+    public Connect(Socket connection, String user, String password) {
         this.console = new BufferedReader(new InputStreamReader(System.in));
         this.connection = connection;
         this.user = user;
+        this.password = password;
+        this.end = false;
     }
 
     @SuppressWarnings("unchecked")
     public void run() {
-        try {
-            while (partner == null) {
+        while (!this.end) {
+            try {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 // kennung einlesen
                 System.out.println("Kennung ihres Chatpartners eingeben:");
@@ -38,21 +42,40 @@ public class Connect extends Thread {
                 Message ans = (Message) ois.readObject();
                 if (ans.getType().equals("NEWCHAT")) {
                     this.partner = p;
+                    this.end = true;
                     System.out.println(ans.getText());
                 } else if (ans.getType().equals("LOADCHAT")) {
                     System.out.println(ans.getText());
                     this.ois = new ObjectInputStream(this.connection.getInputStream());
                     this.chat = (ArrayList<Message>) ois.readObject();
                     this.partner = p;
+                    this.end = true;
                 } else {
                     System.out.println(ans.getText());
                 }
+            } catch (IOException e) {
+                try {
+                    System.out.println("Server connection was lost, trying to reconnect...");
+                    this.connection = new Socket("localhost", this.connection.getPort() == 187 ? 188 : 187);
+                    System.out.println("Verbunden mit Server " + (this.connection.getPort() == 187 ? 1 : 2));
+                    // erneut anmelden
+                    this.oos = new ObjectOutputStream(this.connection.getOutputStream());
+                    this.oos.writeObject(new Message(this.user, "LOGIN", this.password, new Date()));
+                    this.ois = new ObjectInputStream(this.connection.getInputStream());
+                    Message ans = (Message) ois.readObject();
+                    if (!ans.getType().equals("SUCCESS")) {
+                        System.out.println("Error when switching Servers. Unable to login.");
+                        System.exit(0);
+                    }
+                } catch (Exception err) {
+                    System.out.println("Servers went offline.");
+                    System.exit(0);
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
+
     }
 
     public ArrayList<Message> getChat() {
@@ -61,5 +84,9 @@ public class Connect extends Thread {
 
     public String getPartner() {
         return this.partner;
+    }
+
+    public Socket getConnection() {
+        return this.connection;
     }
 }

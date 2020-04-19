@@ -2,7 +2,6 @@ package basisversion.client;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import basisversion.server.Customtime;
 import basisversion.server.Message;
@@ -12,7 +11,7 @@ public class Login extends Thread {
     private BufferedReader console;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
-    private String kennung;
+    private String kennung, password;
     private Socket connection;
     private boolean end;
 
@@ -22,10 +21,9 @@ public class Login extends Thread {
         this.end = false;
     }
 
-    @SuppressWarnings("unchecked")
     public void run() {
-        try {
-            while (!this.end) {
+        while (!this.end) {
+            try {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 // kennung einlesen
                 System.out.println("Kennung:");
@@ -41,28 +39,36 @@ public class Login extends Thread {
                 Message ans = (Message) this.ois.readObject();
                 if (ans.getType().equals("SUCCESS")) {
                     this.kennung = k;
+                    this.password = p;
                     this.end = true;
                     System.out.println("Angemeldet als " + this.kennung);
-                    this.ois = new ObjectInputStream(this.connection.getInputStream());
-                    ArrayList<ArrayList<String>> chatoverview = (ArrayList<ArrayList<String>>) this.ois.readObject();
-                    System.out.println(chatoverview.size());
                 } else {
                     System.out.println(ans.getText());
                 }
+            } catch (IOException e) {
+                try {
+                    System.out.println("Server connection was lost, trying to reconnect...");
+                    this.connection = new Socket("localhost", this.connection.getPort() == 187 ? 188 : 187);
+                    System.out.println("Verbunden mit Server " + (this.connection.getPort() == 187 ? 1 : 2));
+                } catch (Exception err) {
+                    System.out.println("Servers went offline.");
+                    System.exit(0);
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            this.end = true;
-            this.connection = null;
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            this.end = true;
-            this.connection = null;
         }
     }
 
     public String getKennung() {
         return this.kennung;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public Socket getConnection() {
+        return this.connection;
     }
 }

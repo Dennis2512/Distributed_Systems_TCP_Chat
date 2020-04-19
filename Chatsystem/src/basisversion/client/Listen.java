@@ -34,8 +34,8 @@ public class Listen extends Thread {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
             this.chatsession.onConnLost();
+            this.end = true;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

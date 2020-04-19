@@ -2,6 +2,7 @@ package basisversion.client;
 
 import java.awt.event.*;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
@@ -19,12 +20,13 @@ public class Chatsession extends JFrame implements ActionListener {
     private JTextField textfield;
     private JLabel label;
     private JButton button;
-    private String user, partner;
+    private String user, partner, password;
     private JScrollPane scroll;
 
-    public Chatsession(ArrayList<Message> initchat, Socket connection, String user, String partner) {
+    public Chatsession(ArrayList<Message> initchat, Socket connection, String user, String password, String partner) {
         this.connection = connection;
         this.user = user;
+        this.password = password;
         this.partner = partner;
         if (initchat == null) {
             this.chat = new ArrayList<Message>();
@@ -84,12 +86,7 @@ public class Chatsession extends JFrame implements ActionListener {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                try {
-                    ObjectOutputStream oos = new ObjectOutputStream(connection.getOutputStream());
-                    oos.writeObject(new Message(user, "LEAVE", "", Customtime.get()));
-                } catch (IOException err) {
-                    err.printStackTrace();
-                }
+                onClose();
             }
         });
 
@@ -129,11 +126,52 @@ public class Chatsession extends JFrame implements ActionListener {
         this.textarea.setCaretPosition(this.textarea.getDocument().getLength());
     }
 
-    public void onConnLost(){
-        //Neuen connection mit Socket mit anderen port
-        //listenchat starten
-        // wenn nicht möglich dann fenster schließen
-            //->exit
-        System.exit(0);
+    private void onClose() {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(this.connection.getOutputStream());
+            oos.writeObject(new Message(this.user, "LEAVE", "", new Date()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void onConnLost() {
+        // Neuen connection mit Socket mit anderen port
+        // listenchat starten
+        try {
+            this.connection = new Socket("localhost", this.connection.getPort() == 187 ? 188 : 187);
+            ObjectOutputStream oos = new ObjectOutputStream(this.connection.getOutputStream());
+            oos.writeObject(new Message(this.user, "LOGIN", this.password, Customtime.get()));
+            ObjectInputStream ois = new ObjectInputStream(this.connection.getInputStream());
+            Message ans = (Message) ois.readObject();
+            if (ans.getType().equals("SUCCESS")) {
+                oos = new ObjectOutputStream(this.connection.getOutputStream());
+                oos.writeObject(new Message(this.user, "CONNECT", this.partner, Customtime.get()));
+                ois = new ObjectInputStream(this.connection.getInputStream());
+                ans = (Message) ois.readObject();
+                if (ans.getType().equals("LOADCHAT")) {
+                    ois = new ObjectInputStream(this.connection.getInputStream());
+                    this.chat = (ArrayList<Message>) ois.readObject();
+                    this.textarea.setText(this.chatToString(this.chat));
+                    Listen listen = new Listen(this.connection, this);
+                    listen.start();
+                } else {
+                    System.out.println("Error when switching Server. Could not reconnect to chat.");
+                    System.exit(0);
+                }
+            } else {
+                System.out.println("Error when switching Server. Could not login.");
+                System.exit(0);
+            }
+        } catch (Exception e) {
+            System.out.println("Servers went offline.");
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    public Socket getConnection() {
+        return this.connection;
     }
 } // class

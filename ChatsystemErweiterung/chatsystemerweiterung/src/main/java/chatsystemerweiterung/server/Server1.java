@@ -25,7 +25,6 @@ public class Server1 {
             // anderem server bescheid geben
             con.send(new Message("server", "SERVERINIT", "This is the serverconnection", new Date()));
         } catch (IOException e) {
-            // nichts zu tun
             saveData sd = new saveData();
             sd.initChat(users);
         }

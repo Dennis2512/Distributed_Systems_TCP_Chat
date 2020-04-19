@@ -125,9 +125,6 @@ public class Connection extends Thread {
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                     this.oos.writeObject(new Message("server", "SUCCESS", "Angemeldet.", Customtime.get()));
                     System.out.println(msg.getSender() + " hat sich angemeldet.");
-                    // alle bisherigen chats des angemeldeten nutzers mitsenden
-                    this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                    this.oos.writeObject(this.user.getChatOverview());
                 } else { // falsches passwort
                     this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                     this.oos.writeObject(new Message("server", "error", "Falsches Passwort", Customtime.get()));

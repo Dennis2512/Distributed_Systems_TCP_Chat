@@ -12,16 +12,18 @@ public class Register extends Thread {
     private Socket connection;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
-    private String kennung;
+    private String kennung, password;
+    private boolean end;
 
     public Register(Socket connection) {
         this.connection = connection;
         this.console = new BufferedReader(new InputStreamReader(System.in));
+        this.end = false;
     }
 
     public void run() {
-        try {
-            while (this.kennung == null) {
+        while (!this.end) {
+            try {
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
                 // kennung einlesen
                 System.out.println("Kennung:");
@@ -35,20 +37,37 @@ public class Register extends Thread {
                 this.ois = new ObjectInputStream(connection.getInputStream());
                 Message ans = (Message) ois.readObject();
                 if (ans.getType().equals("SUCCESS")) {
+                    this.end = true;
                     this.kennung = k;
+                    this.password = p;
                     System.out.println("Registriert. Angemeldet als " + this.kennung);
                 } else {
                     System.out.println(ans.getText());
                 }
+            } catch (IOException e) {
+                try {
+                    System.out.println("Server connection was lost, trying to reconnect...");
+                    this.connection = new Socket("localhost", this.connection.getPort() == 187 ? 188 : 187);
+                    System.out.println("Verbunden mit Server " + (this.connection.getPort() == 187 ? 1 : 2));
+                } catch (Exception err) {
+                    System.out.println("Servers went offline.");
+                    System.exit(0);
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
     public String getKennung() {
         return this.kennung;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public Socket getConnection() {
+        return this.connection;
     }
 }
