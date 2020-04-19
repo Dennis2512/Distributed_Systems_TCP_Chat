@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import chatsystemerweiterung.database_firestore.saveData;
+
 public class Server2 {
     private static int exchangeport = 187;
 
@@ -23,6 +25,8 @@ public class Server2 {
             con.send(new Message("server", "SERVERINIT", "This is the serverconnection", new Date()));
         } catch (IOException e) {
             // nichts zu tun
+            saveData sd = new saveData();
+            sd.initChat(users);
         }
 
         try {

@@ -5,6 +5,8 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Date;
 
+import chatsystemerweiterung.database_firestore.saveData;
+
 public class Server1 {
     private static int exchangeport = 188;
 
@@ -24,7 +26,14 @@ public class Server1 {
             con.send(new Message("server", "SERVERINIT", "This is the serverconnection", new Date()));
         } catch (IOException e) {
             // nichts zu tun
-            // TODO: Hier DB abrufen
+            saveData sd = new saveData();
+            sd.initChat(users);
+            // Hier DB abrufen
+            // initChat(users) -> auf Obj Operationen ausführen
+            // Aufruf auch in Server 2
+            // Users nicht neu erzeugen
+            // ArrayList vom Typ Messages -> wenn Chat erzeugt wurde setChat(ArrayList setzen in einem Stück)
+            // das NICHT als Thread machen
         }
 
         try {
