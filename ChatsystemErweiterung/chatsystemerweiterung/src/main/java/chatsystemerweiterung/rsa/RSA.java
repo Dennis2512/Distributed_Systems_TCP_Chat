@@ -8,16 +8,11 @@ public class RSA {
 
     public static String encry(String word, BigInteger n, BigInteger e) {
         String wordPrep = "";
-        // System.out.println(word);
         for (int i = 0; i < word.length(); i++) {
             int cacheInt = (int) word.charAt(i) + 10000;
             wordPrep = wordPrep + (cacheInt);
-            // System.out.println("Wordprep: "+wordPrep);
         }
         BigInteger wordPasInt = new BigInteger(wordPrep);
-        // System.out.println("wordPasInt: "+wordPasInt);
-        // System.out.println("Verschlüsselt: "+wordPasInt.modPow(e,n));
-        // System.out.println("STOP");
         String erg = "" + wordPasInt.modPow(e, n);
         return erg;
     }
@@ -25,7 +20,6 @@ public class RSA {
     public static String decry(String word, BigInteger n, BigInteger d) {
         BigInteger wordAsInt = new BigInteger(word);
         word = "" + wordAsInt.modPow(d, n);
-        // System.out.println(word);
         String cacheWord = "";
         for (int i = 0; i < word.length(); i++) {
             try {
@@ -34,13 +28,9 @@ public class RSA {
                 char char3 = word.charAt(i + 2);
                 char char4 = word.charAt(i + 3);
                 char char5 = word.charAt(i + 4);
-                // System.out.println("Chars: "+char1+char2+char3);
                 String chars = "" + char1 + char2 + char3 + char4 + char5;
-                // System.out.println("Chars: "+chars);
                 int letter = Integer.parseInt(chars) - 10000;
-                // System.out.println("Letters: "+letter);
                 char cacheChar = (char) letter;
-                // System.out.println("CacheCahr: "+cacheChar);
                 cacheWord = cacheWord + cacheChar;
                 i = i + 4;
             } catch (Exception e) {

@@ -1,8 +1,6 @@
-package chatsystemerweiterung.GUI;
+package chatsystemerweiterung.rsa;
 
 import java.math.BigInteger;
-
-import chatsystemerweiterung.rsa.*;
 
 public class HashPassword {
     public static String hashWithRSA(String word) {

@@ -2,6 +2,8 @@ package chatsystemerweiterung.server;
 
 import java.util.ArrayList;
 
+import chatsystemerweiterung.rsa.HashPassword;
+
 public class User {
 
     private String kennung;
@@ -20,7 +22,8 @@ public class User {
 
     // login
 
-    public boolean login(String password, Connection con) {
+    public boolean login(String pwd, Connection con) {
+        String password = HashPassword.hashWithRSA(pwd);
         if (this.password.equals(password)) {
             this.con = con;
             this.online = true;

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import com.vdurmont.emoji.EmojiParser;
 
 public class EmojiOverview extends JFrame {
+    private static final long serialVersionUID = -1935516020694444631L;
 
     private static JPanel pnl_emojisOverview;
     private static JButton btn_smiley;
@@ -72,7 +73,7 @@ public class EmojiOverview extends JFrame {
         btn_kissing_closed_eyes = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[7]));
         btn_kissing = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[8]));
         btn_kissing_smiling_eyes = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[9]));
-        btn_stuck_out_tongue_winking_eye  = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[10]));
+        btn_stuck_out_tongue_winking_eye = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[10]));
         btn_stuck_out_tongue_closed_eyes = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[11]));
         btn_stuck_out_tongue = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[12]));
         btn_flushed = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[13]));
@@ -108,7 +109,7 @@ public class EmojiOverview extends JFrame {
         btn_worried = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[43]));
         btn_frowning = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[44]));
         btn_anguished = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[45]));
-        btn_smiling_imp= new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[46]));
+        btn_smiling_imp = new JButton(EmojiParser.parseToUnicode(emojiFinder.shortcuts[46]));
 
         // Add Buttons to Panel
         pnl_emojisOverview.add(btn_smiley);
@@ -616,8 +617,6 @@ public class EmojiOverview extends JFrame {
                 setVisible(false);
             }
         });
-
-
 
         this.getContentPane().add(pnl_emojisOverview);
         this.setSize(500, 500);
