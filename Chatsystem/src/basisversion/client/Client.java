@@ -39,6 +39,10 @@ public class Client {
                         register.start();
                         register.join();
                         user = register.getKennung();
+                        if (user == null) {
+                            connection = null;
+                            break;
+                        }
                     } else {
                         System.out.println("Unknown command: " + answer);
                     }
