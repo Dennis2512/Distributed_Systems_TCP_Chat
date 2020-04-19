@@ -19,7 +19,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 
-import chatsystemerweiterung.GUI.NewChat;
 import chatsystemerweiterung.server.Chat;
 import chatsystemerweiterung.server.Message;
 import chatsystemerweiterung.server.User;
@@ -32,7 +31,7 @@ public class saveData {
     Date time;
     Message msg;
     ArrayList<User> partner;
-    ArrayList<String> teilnehmer;
+    ArrayList<String> teilnehmer, userKennung;
     ArrayList<Message> messageList;
 
     public saveData() {
@@ -130,57 +129,57 @@ public class saveData {
 
         Firestore db = FirestoreClient.getFirestore();
         Map<String, Map<String, Object>> map = new HashMap<>();
-        ArrayList<User> userList = users.getUsers();
 
         // Prüfe, ob Chat bereits vorhanden ist
         try {
             ApiFuture<QuerySnapshot> past = db.collection("chats").get();
             List<QueryDocumentSnapshot> documents = past.get().getDocuments();
-            for(User u : userList) {
-                for (QueryDocumentSnapshot qds : documents) {
-                    if(qds.getId().contains(u.getKennung())) {
+            
+            for (QueryDocumentSnapshot qds : documents) {
+                
+                    String documentName = qds.getId();
 
-                        String documentName = qds.getId();
-
-                        // Hole Daten aus der DB
-                        try {
-                            ApiFuture<QuerySnapshot> future =
-                            db.collection("chats").document(documentName).collection("nachrichten").get();
-                            List<QueryDocumentSnapshot> nachrichten = future.get().getDocuments();
-                            for(DocumentSnapshot document : nachrichten) {
-                                System.out.println("Gefundenes Dokument: " + document.getId());
-                                map.put(document.getId(),document.getData());
-                            }
-                            for(Map.Entry<String, Map<String, Object>> entry : map.entrySet()) {
-                                System.out.println("Schlüssel in Map: " + entry.getKey());
-                                for(Map.Entry<String, Object> innerEntry : entry.getValue().entrySet()) {
-                                    System.out.println(innerEntry.getKey() + " : " + innerEntry.getValue());
-                                    // Parsen der Message
-                                    switch(innerEntry.getKey()) {
-                                        case "text":
-                                            this.text = (String)innerEntry.getValue();
-                                            break;
-                                        case "sender":
-                                            this.sender = (String)innerEntry.getValue();
-                                            break;
-                                        case "type":
-                                            this.type = (String)innerEntry.getValue();
-                                            break;
-                                        case "timestmp":
-                                            this.time = (Date)innerEntry.getValue();
-                                            break;
-                                    }
-                                }
-                                // Fügt die Message zu einer Liste mit allen Messages hinzu
-                                Message tmpMsg = parseToMessage(text, sender, type, time);
-                                messageList.add(tmpMsg);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    // Hole Daten aus der DB
+                    ApiFuture<QuerySnapshot> future =
+                    db.collection("chats").document(documentName).collection("nachrichten").get();
+                    List<QueryDocumentSnapshot> nachrichten = future.get().getDocuments();
+                    for(DocumentSnapshot document : nachrichten) {
+                        System.out.println("Gefundenes Dokument: " + document.getId());
+                        map.put(document.getId(),document.getData());
                     }
-                }
+                    for(Map.Entry<String, Map<String, Object>> entry : map.entrySet()) {
+                        System.out.println("Schlüssel in Map: " + entry.getKey());
+                        for(Map.Entry<String, Object> innerEntry : entry.getValue().entrySet()) {
+                            System.out.println(innerEntry.getKey() + " : " + innerEntry.getValue());
+                            // Parsen der Message
+                            switch(innerEntry.getKey()) {
+                                case "text":
+                                    this.text = (String)innerEntry.getValue();
+                                    break;
+                                case "sender":
+                                    this.sender = (String)innerEntry.getValue();
+                                    break;
+                                case "type":
+                                    this.type = (String)innerEntry.getValue();
+                                    break;
+                                case "timestmp":
+                                    this.time = (Date)innerEntry.getValue();
+                                    break;
+                            }
+                        }
+                        // Fügt die Message zu einer Liste mit allen Messages hinzu
+                        Message tmpMsg = parseToMessage(text, sender, type, time);
+                        messageList.add(tmpMsg);
+                    }
+                
+            String chatteilnehmer = qds.getId();
+            String[] einTeilnehmer = chatteilnehmer.split("_");
+            for(String teilnehmer: einTeilnehmer) {
+                partner.add(users.getUser(teilnehmer));
             }
+            createChat(messageList, partner);
+            }
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -194,6 +193,9 @@ public class saveData {
     public void createChat(ArrayList<Message> messageList, ArrayList<User> users) {
         Chat chat = new Chat(users);
         chat.setChat(messageList);
+        for(User tmp : users) {
+            tmp.addChat(chat);
+        }
         // ArrayList<Message> sortedChats = messageList;
     }
     
