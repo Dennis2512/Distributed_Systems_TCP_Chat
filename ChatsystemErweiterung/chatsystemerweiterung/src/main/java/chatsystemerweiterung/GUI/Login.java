@@ -157,38 +157,23 @@ public class Login extends JFrame {
 
       // login Button
       @Override
-      @SuppressWarnings("unchecked")
       public void actionPerformed(ActionEvent ae) {
 
         String kennung = tf_kennung.getText();
-        String password = String.valueOf(tf_password.getPassword());
-        Message msg = security.encryptMessage(new Message(kennung, "LOGIN", password, new Date()));
+        Message msg = security
+            .encryptMessage(new Message(kennung, "LOGIN", String.valueOf(tf_password.getPassword()), new Date()));
         // versucht sich mit den gelesenen Infos anzumelden
         try {
-          oos = new ObjectOutputStream(connection.getOutputStream());
-          oos.writeObject(msg);
-          // wenn erfolgreich, dann angemeldeten nutzer setzen
-          ois = new ObjectInputStream(connection.getInputStream());
-          Message decryptedmsg = security.decryptMessage((Message) ois.readObject());
-          if (decryptedmsg.getType().equals("SUCCESS")) {
-            // hier wird der string für die übersicht geholt
-            ois = new ObjectInputStream(connection.getInputStream());
-            ArrayList<String> chats = (ArrayList<String>) ois.readObject();
-            ois = new ObjectInputStream(connection.getInputStream());
-            ArrayList<String> users = (ArrayList<String>) ois.readObject();
-            loginFenster.dispose();
-            // starten chat overview
-            new ChatOverview(connection, kennung, chats, users);
-
-          } else {
-            tf_kennung.setBackground(new Color(255, 107, 107));
-            tf_password.setBackground(new Color(255, 107, 107));
-            kennung = "";
-            password = "";
-            JOptionPane.showMessageDialog(loginFenster, decryptedmsg.getText());
-          }
+          login(msg, kennung);
         } catch (IOException e) {
-          e.printStackTrace();
+          // verbindung zu server abgebrochen
+          try {
+            connection = new Socket("localhost", connection.getPort() == 187 ? 188 : 187);
+            login(msg, kennung);
+          } catch (Exception err) {
+            System.out.println("Servers are offline...");
+            System.exit(0);
+          }
         } catch (ClassNotFoundException e) {
           e.printStackTrace();
         }
@@ -199,36 +184,22 @@ public class Login extends JFrame {
     btn_register.addActionListener(new ActionListener() {
 
       @Override
-      @SuppressWarnings("unchecked")
       public void actionPerformed(ActionEvent e) {
         String kennung = tf_kennung.getText().toString();
-        String passwordCleartext = String.valueOf(tf_password.getPassword());
-        // String passwordHashed = HashPassword.hashWithRSA(passwordCleartext);
+        Message msg = security
+            .encryptMessage(new Message(kennung, "REGISTER", String.valueOf(tf_password.getPassword()), new Date()));
 
         try {
-          oos = new ObjectOutputStream(connection.getOutputStream());
-
-          // versuchen mit kennung und password anzumelden
-          oos.writeObject(security.encryptMessage(new Message(kennung, "REGISTER", passwordCleartext, new Date())));
-          // wenn erfolgreich, dann angemeldeten nutzer setzen
-          ois = new ObjectInputStream(connection.getInputStream());
-
-          Message ans = security.decryptMessage((Message) ois.readObject());
-
-          // wenn erfolgreich Login-Fenster schließen und Chatfenster öffnen
-          if (ans.getType().equals("SUCCESS")) {
-            ois = new ObjectInputStream(connection.getInputStream());
-            ArrayList<String> users = (ArrayList<String>) ois.readObject();
-            loginFenster.dispose();
-            // starten chat overview
-            new ChatOverview(connection, kennung, new ArrayList<String>(), users);
-          } else {
-            tf_kennung.setBackground(new Color(255, 107, 107));
-            tf_password.setBackground(new Color(255, 107, 107));
-            JOptionPane.showMessageDialog(loginFenster, ans.getText());
-          }
+          register(msg, kennung);
         } catch (IOException ex) {
-          ex.printStackTrace();
+          // verbindung zu server abgebrochen
+          try {
+            connection = new Socket("localhost", connection.getPort() == 187 ? 188 : 187);
+            register(msg, kennung);
+          } catch (Exception err) {
+            System.out.println("Servers are offline...");
+            System.exit(0);
+          }
         } catch (ClassNotFoundException ex) {
           ex.printStackTrace();
         }
@@ -236,6 +207,7 @@ public class Login extends JFrame {
 
     });
 
+    // clear button
     btn_clear.addActionListener(new ActionListener() {
 
       @Override
@@ -248,6 +220,53 @@ public class Login extends JFrame {
       }
     });
 
+  } // build
+
+  @SuppressWarnings("unchecked")
+  private void login(Message msg, String kennung) throws IOException, ClassNotFoundException {
+    this.oos = new ObjectOutputStream(this.connection.getOutputStream());
+    this.oos.writeObject(msg);
+    // wenn erfolgreich, dann angemeldeten nutzer setzen
+    this.ois = new ObjectInputStream(this.connection.getInputStream());
+    Message decryptedmsg = this.security.decryptMessage((Message) this.ois.readObject());
+    if (decryptedmsg.getType().equals("SUCCESS")) {
+      // hier wird der string für die übersicht geholt
+      ois = new ObjectInputStream(this.connection.getInputStream());
+      ArrayList<String> chats = (ArrayList<String>) this.ois.readObject();
+      ois = new ObjectInputStream(this.connection.getInputStream());
+      ArrayList<String> users = (ArrayList<String>) this.ois.readObject();
+      this.loginFenster.dispose();
+      // starten chat overview
+      new ChatOverview(this.connection, kennung, chats, users);
+
+    } else {
+      this.tf_kennung.setBackground(new Color(255, 107, 107));
+      this.tf_password.setBackground(new Color(255, 107, 107));
+      JOptionPane.showMessageDialog(this.loginFenster, decryptedmsg.getText());
+    }
+  } // login
+
+  @SuppressWarnings("unchecked")
+  private void register(Message msg, String kennung) throws IOException, ClassNotFoundException {
+    this.oos = new ObjectOutputStream(this.connection.getOutputStream());
+    this.oos.writeObject(msg);
+    // wenn erfolgreich, dann angemeldeten nutzer setzen
+    this.ois = new ObjectInputStream(this.connection.getInputStream());
+
+    Message ans = this.security.decryptMessage((Message) this.ois.readObject());
+
+    // wenn erfolgreich Login-Fenster schließen und Chatfenster öffnen
+    if (ans.getType().equals("SUCCESS")) {
+      this.ois = new ObjectInputStream(this.connection.getInputStream());
+      ArrayList<String> users = (ArrayList<String>) this.ois.readObject();
+      this.loginFenster.dispose();
+      // starten chat overview
+      new ChatOverview(this.connection, kennung, new ArrayList<String>(), users);
+    } else {
+      this.tf_kennung.setBackground(new Color(255, 107, 107));
+      this.tf_password.setBackground(new Color(255, 107, 107));
+      JOptionPane.showMessageDialog(this.loginFenster, ans.getText());
+    }
   }
 
-}
+} // class

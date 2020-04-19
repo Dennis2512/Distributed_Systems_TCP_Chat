@@ -3,7 +3,6 @@ package chatsystemerweiterung.server;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import chatsystemerweiterung.database_firestore.saveData;
 import chatsystemerweiterung.database_firestore.saveData_thread;
 
 public class Chat {
@@ -11,12 +10,10 @@ public class Chat {
     private ArrayList<User> users;
     private ArrayList<Message> chat;
     private saveData_thread sdt;
-    // private saveData sd;
 
     public Chat(ArrayList<User> users) {
         this.users = users;
         this.chat = new ArrayList<Message>();
-        // this.sd = new saveData();
         this.sdt = new saveData_thread();
     }
 
@@ -33,11 +30,7 @@ public class Chat {
                 tmp.send(msg);
             }
         }
-        // Normales Speichern in die DB
-        // sd.saveChat(msg, users);
-        
-        // Speichern in die DB mit Thread
-        if(!serverConnection) {
+        if (!serverConnection) {
             sdt.run(msg, users);
         }
     }
