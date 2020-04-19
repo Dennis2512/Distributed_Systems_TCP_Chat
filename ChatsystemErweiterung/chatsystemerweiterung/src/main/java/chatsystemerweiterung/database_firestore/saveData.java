@@ -5,29 +5,37 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Date;
 
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 
 import chatsystemerweiterung.server.Message;
 import chatsystemerweiterung.server.User;
+import chatsystemerweiterung.server.Users;
 
 public class saveData {
 
     String chatname;
-    String sender, text, filepath;
+    String sender, text, filepath, type;
     Date time;
     Message msg;
     ArrayList<User> partner;
     ArrayList<String> teilnehmer;
+    ArrayList<Message> messageList;
+
+    public saveData() {
+        
+    }
 
     public void saveChat(Message message, ArrayList<User> userList) {
 
@@ -45,15 +53,11 @@ public class saveData {
             System.out.println(u.getKennung());
         }
 
-        // teilnehmer.add(sender);
         String tmp = "";
         Collections.sort(teilnehmer);
         
         for(int i = 0; i < teilnehmer.size(); i++) {
             tmp = tmp + teilnehmer.get(i) + "_";
-            /* if(i == teilnehmer.size()-1) {
-                tmp = tmp + teilnehmer.get(i);
-            } */
         }
 
         chatname = tmp;
@@ -85,19 +89,83 @@ public class saveData {
 
         Firestore db = FirestoreClient.getFirestore();
 
-        // DocumentReference docRef1 = db.collection("chats").document(chatname).collection("nachrichten").document();
-
         Map<String, Object> data = new HashMap<>();
-        data.put("timestmp", time);
+        data.put("text", text);
         data.put("sender", sender);
-        data.put("msg", text);
+        data.put("timestmp", time);
+        data.put("type", "MSG");
 
         db.collection("chats").document(chatname).collection("nachrichten").document().set(data);
 
-        // asynchronously write data
-        // ApiFuture<WriteResult> result = docRef1.set(data);
-        // System.out.println(result.toString());
+    }
 
+    public void initChat(Users users) {
+
+        messageList = new ArrayList<Message>();
+
+        try {
+            filepath = "";
+            filepath = Paths.get("").toAbsolutePath().normalize().toString();
+            if (!filepath.contains("ChatsystemErweiterung")) {
+                filepath += "\\ChatsystemErweiterung";
+            }
+            filepath += "\\chatsystemerweiterung\\src\\main\\java\\chatsystemerweiterung\\database_firestore\\serviceAccountKey.json";
+            // String path =
+            // "src/main/java/chatsystemerweiterung/database_firestore/serviceAccountKey.json";
+
+            FileInputStream serviceAccount = new FileInputStream(filepath);
+
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setDatabaseUrl("https://distributedsystemstcpchat.firebaseio.com").build();
+            FirebaseApp.initializeApp(options);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Firestore db = FirestoreClient.getFirestore();
+        Map<String, Map<String, Object>> map = new HashMap<>();
+
+        try {
+            ApiFuture<QuerySnapshot> future =
+            db.collection("chats").document("DN_JP").collection("nachrichten").get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            for(DocumentSnapshot document : documents) {
+                System.out.println("Gefundenes Dokument: " + document.getId());
+                map.put(document.getId(),document.getData());
+            }
+            for(Map.Entry<String, Map<String, Object>> entry : map.entrySet()) {
+                System.out.println("Schlüssel in Map: " + entry.getKey());
+                for(Map.Entry<String, Object> innerEntry : entry.getValue().entrySet()) {
+                    System.out.println(innerEntry.getKey() + " : " + innerEntry.getValue());
+                    switch(innerEntry.getKey()) {
+                        case "text":
+                            this.text = (String)innerEntry.getValue();
+                            break;
+                        case "sender":
+                            this.sender = (String)innerEntry.getValue();
+                            break;
+                        case "type":
+                            this.type = (String)innerEntry.getValue();
+                            break;
+                        case "timestmp":
+                            this.time = (Date)innerEntry.getValue();
+                            break;
+                    }
+                }
+
+                Message tmpMsg = parseToMessage(text, sender, type, time);
+                messageList.add(tmpMsg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+
+    public Message parseToMessage(String text, String sender, String type, Date time) {
+        Message msg = new Message(sender, type, text, time);
+        return msg;
     }
     
 }

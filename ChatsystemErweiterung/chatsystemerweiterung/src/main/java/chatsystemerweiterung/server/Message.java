@@ -18,6 +18,10 @@ public class Message implements Serializable, Comparable<Message> {
         this.type = type;
     }
 
+    public Message() {
+        
+    }
+
     public void setTime(Date time) {
         this.time = time;
     }
