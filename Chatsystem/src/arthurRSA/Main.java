@@ -11,6 +11,8 @@ public class Main {
         while(true){
             RSAKeyGen generator = new RSAKeyGen();
         publicKey keyA = generator.getPublicKey();
+        System.out.println("n: "+keyA.getN());
+        System.out.println("E: "+keyA.getE());
         privateKey keyB = generator.getPrivateKey();
         String testWord = "Hier ist ein Testtext Oki😌🖤♡♥❤❧";
         System.out.println(testWord+"<---------------------------------------------------------------");

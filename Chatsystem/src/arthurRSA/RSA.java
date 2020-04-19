@@ -53,8 +53,10 @@ public class RSA {
 
     public static BigInteger getPrime(){
         BigInteger p = BigInteger.probablePrime(4096,new Random());
+        //BigInteger p = BigInteger.probablePrime(2048,new Random());
         while (!testPrime(p)){
             p = BigInteger.probablePrime(4096,new Random());
+            //p = BigInteger.probablePrime(2048,new Random());
         }
         return p;
     }
