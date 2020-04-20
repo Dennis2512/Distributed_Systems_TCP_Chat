@@ -58,7 +58,7 @@ public class ChatFenster extends JFrame {
 	private static JPanel pnl_messages;
 	private JTextArea ta_Messages;
 	private static JButton btn_emojis;
-	private  JScrollPane scrollMessages;
+	private JScrollPane scrollMessages;
 
 	private ArrayList<Message> chat;
 	private String user, chatname, password;
@@ -74,12 +74,6 @@ public class ChatFenster extends JFrame {
 		this.sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 		this.chat = chat;
 		this.ta_Messages = new JTextArea();
-		this.scrollMessages = new JScrollPane(this.ta_Messages);
-		this.scrollMessages.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		
-
-
-
 
 		if (this.chat == null) {
 			this.chat = new ArrayList<Message>();
@@ -155,8 +149,8 @@ public class ChatFenster extends JFrame {
 		tf_message.setFont(new Font("Calibri", Font.BOLD, 30));
 		tf_message.setBorder(greenborder);
 		pnl_top.add(lbl_title);
-		//pnl_messages.add(ta_Messages);
-		pnl_messages.add(this.scrollMessages);
+		// pnl_messages.add(ta_Messages);
+		pnl_messages.add(this.ta_Messages);
 
 		pnl_main.add(pnl_top, BorderLayout.NORTH);
 		pnl_main.add(pnl_center, BorderLayout.CENTER);
