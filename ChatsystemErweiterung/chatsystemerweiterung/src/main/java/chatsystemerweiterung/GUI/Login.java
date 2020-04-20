@@ -60,7 +60,6 @@ public class Login extends JFrame {
     loginFenster.setTitle("Login");
     loginFenster.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     loginFenster.getContentPane().setBackground(new Color(119, 136, 153));
-    // pnl_mainWindow = new JPanel(new BorderLayout());
     blackborder = BorderFactory.createLineBorder(new Color(46, 139, 87), 2);
 
     pnl_mainWindow = new JPanel(new GridLayout(3, 1));
@@ -75,14 +74,8 @@ public class Login extends JFrame {
     pnl_gridCenterThirdTop = new JPanel(new GridLayout(1, 1));
     pnl_gridCenterFourthTop = new JPanel(new GridLayout(1, 2));
 
-    // pnl_bottom = new JPanel(new GridLayout(1, 3));
     pnl_bottom = new JPanel();
     pnl_bottom.setLayout(new BoxLayout(pnl_bottom, BoxLayout.LINE_AXIS));
-
-    // pnl_mainWindow.add(pnl_header, BorderLayout.NORTH);
-    // pnl_mainWindow.add(pnl_center, BorderLayout.CENTER);
-    // pnl_mainWindow.add(pnl_bottom, BorderLayout.SOUTH);
-
     pnl_header.setBackground(new Color(46, 139, 87));
     pnl_mainWindow.add(pnl_header);
     pnl_mainWindow.add(pnl_center);
@@ -125,13 +118,8 @@ public class Login extends JFrame {
     btn_register.setForeground(new Color(255, 255, 255));
     btn_register.setFont(new Font("Calibri", Font.BOLD, 30));
     lbl_kennung.setToolTipText("Bitte geben Sie im benachbarten Textfeld Ihre Kennung ein!");
-    // lbl_kennung.setIcon(new ImageIcon(Login.class.getResource("/kennung.png")));
     lbl_password.setToolTipText("Bitte geben Sie im benachbarten Textfeld Ihr Passwort ein!");
-    // lbl_password.setIcon(new
-    // ImageIcon(Login.class.getResource("/password.png")));
-    // tf_kennung.setToolTipText("Bitte geben Sie Ihre Kennung ein: ");
-    // tf_password.setToolTipText("Bitte geben Sie Ihr Passwort ein: ");
-
+ 
     pnl_header.add(lbl_header);
 
     pnl_gridCenterSecondTop.add(lbl_kennung);
@@ -141,16 +129,12 @@ public class Login extends JFrame {
 
     pnl_bottom.add(Box.createHorizontalGlue());
     pnl_bottom.add(btn_clear);
-    // pnl_bottom.add(Box.createRigidArea(new Dimension(500, 0)));
     pnl_bottom.add(Box.createHorizontalGlue());
     pnl_bottom.add(btn_register);
-    // pnl_bottom.add(Box.createRigidArea(new Dimension(500, 0)));
     pnl_bottom.add(Box.createHorizontalGlue());
     pnl_bottom.add(btn_login);
     pnl_bottom.add(Box.createHorizontalGlue());
     loginFenster.getContentPane().add(pnl_mainWindow);
-    // loginFenster.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    // loginFenster.setUndecorated(true);
     loginFenster.pack();
     loginFenster.setVisible(true);
     btn_login.addActionListener(new ActionListener() {

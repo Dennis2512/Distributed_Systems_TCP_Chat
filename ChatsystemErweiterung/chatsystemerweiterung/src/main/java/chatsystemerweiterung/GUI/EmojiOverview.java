@@ -623,11 +623,5 @@ public class EmojiOverview extends JFrame {
         this.setVisible(true);
     }
 
-    // public static void main(String args[]){
-
-    // Add ActionListener for each emojibutton
-    // EmojiOverview eo = new EmojiOverview();
-
-    // }
 
 }
