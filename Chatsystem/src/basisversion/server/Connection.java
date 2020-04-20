@@ -2,6 +2,7 @@ package basisversion.server;
 
 import java.io.*;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -240,11 +241,12 @@ public class Connection extends Thread {
                 this.oos.writeObject(new Message("server", "error", "Chat nicht gefunden.", Customtime.get()));
             } else {
                 Date time = Customtime.get();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
                 msg.setTime(time);
                 this.user.write(msg);
                 this.oos = new ObjectOutputStream(this.connection.getOutputStream());
-                this.oos.writeObject(new Message("server", "SENT", time + " " + msg.getSender() + ": " + msg.getText(),
-                        Customtime.get()));
+                this.oos.writeObject(new Message("server", "SENT",
+                        sdf.format(time) + " " + msg.getSender() + ": " + msg.getText(), Customtime.get()));
                 this.sync(msg);
             }
         } catch (IOException e) {

@@ -4,3 +4,4 @@ kennung_DN_password_DNpass
 kennung_JP_password_JPpass
 kennung_TT_password_password
 kennung_TT2_password_password
+kennung_TestUser_password_testpwd

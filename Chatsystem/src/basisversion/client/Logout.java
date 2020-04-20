@@ -27,6 +27,7 @@ public class Logout extends Thread {
             Message msg = (Message) this.ois.readObject();
             if (msg.getType().equals("SUCCESS")) {
                 this.success = true;
+                System.out.println("Erfolgreich abgemeldet.");
             } else {
                 System.out.println(msg.getText());
             }
@@ -41,6 +42,7 @@ public class Logout extends Thread {
                 Message msg = (Message) this.ois.readObject();
                 if (msg.getType().equals("SUCCESS")) {
                     this.success = true;
+                    System.out.println("Erfolgreich abgemeldet.");
                 } else {
                     System.out.println(msg.getText());
                 }
